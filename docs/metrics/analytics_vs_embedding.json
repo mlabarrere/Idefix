@@ -1,0 +1,30 @@
+{
+  "intra_cohesion": {
+    "analytics": 0.6709,
+    "embedding": 0.7049,
+    "gain_pct": 5.1
+  },
+  "silhouette": {
+    "analytics": -0.2738,
+    "embedding": 0.0214
+  },
+  "modularity": {
+    "analytics": 0.7547,
+    "embedding": 0.6301
+  },
+  "n_communities": {
+    "analytics": 27,
+    "embedding": 17
+  },
+  "n_communities_raw": {
+    "analytics": 512,
+    "embedding": 464
+  },
+  "partition_agreement": {
+    "nmi": 0.8873,
+    "ari": 0.5276,
+    "n_common": 1170
+  },
+  "n_bridges": 40,
+  "metric_note": "intra_cohesion = cosinus moyen intra-communauté (embeddings locaux), plus haut = groupes plus cohérents. silhouette (Rousseeuw 1987) = cohésion/séparation. modularité (Newman 2006) sur le graphe de LIENS. n_communities = communautés conservées (≥2 canaux). TRADE-OFF : l'embedding monte la cohésion sémantique mais baisse la modularité (les arêtes sémantiques traversent les communautés structurelles) — deux objectifs distincts, pas une régression."
+}

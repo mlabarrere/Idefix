@@ -1,0 +1,1403 @@
+{
+  "coverage_callout": "Liens DIRECTS et observables russo-sphère <-> véhicule extrême droite / souverainiste-identitaire (reprise de contenu). HORS PÉRIMÈTRE ASSUMÉ : la diffusion en aval vers la politique française grand public / les élus — chaîne trop indirecte et non instrumentable avec ces données (un relais peut être formaté par un tiers européen, etc.). On ne revendique QUE le lien direct. Telegram seul ; signaux sparse par nature — traces nommées et vérifiables, jamais un volume gonflé. Attribution T1/T2 ; jamais de commanditaire (T3) ni de lien de message direct revendiqué.",
+  "stats": {
+    "fr_side": 35,
+    "ru_side": 336,
+    "ru_targeting_france": 230,
+    "media_traces_cross": 24,
+    "media_traces_ru_to_fr": 6,
+    "domain_bridges": 14
+  },
+  "theme_spine": {
+    "fr_side_total": 35,
+    "ru_side_total": 336,
+    "ru_targeting_france": 230,
+    "hidden_attackers": [
+      {
+        "username": "BeornAndTheShieldmaiden",
+        "france_targeting": 0.699,
+        "fr_score": 0.087
+      },
+      {
+        "username": "ambabakov",
+        "france_targeting": 0.69,
+        "fr_score": 0.0
+      },
+      {
+        "username": "peresidok",
+        "france_targeting": 0.673,
+        "fr_score": 0.0
+      },
+      {
+        "username": "geo_grandmasters",
+        "france_targeting": 0.648,
+        "fr_score": 0.067
+      },
+      {
+        "username": "imperiumtalk",
+        "france_targeting": 0.64,
+        "fr_score": 0.003
+      },
+      {
+        "username": "nmakeevaZ",
+        "france_targeting": 0.64,
+        "fr_score": 0.0
+      },
+      {
+        "username": "otryadkovpaka",
+        "france_targeting": 0.64,
+        "fr_score": 0.0
+      },
+      {
+        "username": "lantratovaDOBRO",
+        "france_targeting": 0.631,
+        "fr_score": 0.007
+      },
+      {
+        "username": "tgrussia",
+        "france_targeting": 0.631,
+        "fr_score": 0.0
+      },
+      {
+        "username": "PolitPochta",
+        "france_targeting": 0.631,
+        "fr_score": 0.0
+      },
+      {
+        "username": "ambrus_djibouti_somalia",
+        "france_targeting": 0.62,
+        "fr_score": 0.14
+      },
+      {
+        "username": "kstati_p",
+        "france_targeting": 0.62,
+        "fr_score": 0.003
+      },
+      {
+        "username": "sonar_21",
+        "france_targeting": 0.607,
+        "fr_score": 0.037
+      },
+      {
+        "username": "zhivoff",
+        "france_targeting": 0.607,
+        "fr_score": 0.0
+      },
+      {
+        "username": "blondinka_dk",
+        "france_targeting": 0.591,
+        "fr_score": 0.0
+      }
+    ]
+  },
+  "timeline": {
+    "span": {
+      "min_ts": "2021-01-09T11:51:05+00:00",
+      "max_ts": "2026-06-08T16:47:06.776863+00:00"
+    },
+    "monthly": [
+      {
+        "month": "2021-01",
+        "ru": 0,
+        "fr": 65
+      },
+      {
+        "month": "2021-02",
+        "ru": 0,
+        "fr": 60
+      },
+      {
+        "month": "2021-03",
+        "ru": 0,
+        "fr": 30
+      },
+      {
+        "month": "2021-04",
+        "ru": 0,
+        "fr": 20
+      },
+      {
+        "month": "2021-05",
+        "ru": 0,
+        "fr": 37
+      },
+      {
+        "month": "2021-06",
+        "ru": 0,
+        "fr": 33
+      },
+      {
+        "month": "2021-07",
+        "ru": 0,
+        "fr": 17
+      },
+      {
+        "month": "2021-08",
+        "ru": 0,
+        "fr": 20
+      },
+      {
+        "month": "2021-09",
+        "ru": 0,
+        "fr": 3
+      },
+      {
+        "month": "2021-10",
+        "ru": 0,
+        "fr": 5
+      },
+      {
+        "month": "2021-11",
+        "ru": 0,
+        "fr": 7
+      },
+      {
+        "month": "2021-12",
+        "ru": 0,
+        "fr": 1
+      },
+      {
+        "month": "2022-02",
+        "ru": 0,
+        "fr": 252
+      },
+      {
+        "month": "2022-03",
+        "ru": 0,
+        "fr": 5
+      },
+      {
+        "month": "2022-04",
+        "ru": 0,
+        "fr": 3
+      },
+      {
+        "month": "2022-06",
+        "ru": 13,
+        "fr": 11
+      },
+      {
+        "month": "2022-07",
+        "ru": 10,
+        "fr": 0
+      },
+      {
+        "month": "2022-08",
+        "ru": 8,
+        "fr": 12
+      },
+      {
+        "month": "2022-09",
+        "ru": 9,
+        "fr": 0
+      },
+      {
+        "month": "2022-10",
+        "ru": 6,
+        "fr": 0
+      },
+      {
+        "month": "2022-11",
+        "ru": 6,
+        "fr": 4
+      },
+      {
+        "month": "2022-12",
+        "ru": 66,
+        "fr": 4
+      },
+      {
+        "month": "2023-01",
+        "ru": 70,
+        "fr": 0
+      },
+      {
+        "month": "2023-02",
+        "ru": 44,
+        "fr": 272
+      },
+      {
+        "month": "2023-03",
+        "ru": 72,
+        "fr": 35
+      },
+      {
+        "month": "2023-04",
+        "ru": 24,
+        "fr": 6
+      },
+      {
+        "month": "2023-05",
+        "ru": 18,
+        "fr": 13
+      },
+      {
+        "month": "2023-06",
+        "ru": 34,
+        "fr": 15
+      },
+      {
+        "month": "2023-07",
+        "ru": 32,
+        "fr": 3
+      },
+      {
+        "month": "2023-08",
+        "ru": 31,
+        "fr": 6
+      },
+      {
+        "month": "2023-09",
+        "ru": 36,
+        "fr": 191
+      },
+      {
+        "month": "2023-10",
+        "ru": 56,
+        "fr": 69
+      },
+      {
+        "month": "2023-11",
+        "ru": 55,
+        "fr": 3
+      },
+      {
+        "month": "2023-12",
+        "ru": 39,
+        "fr": 25
+      },
+      {
+        "month": "2024-01",
+        "ru": 56,
+        "fr": 47
+      },
+      {
+        "month": "2024-02",
+        "ru": 75,
+        "fr": 16
+      },
+      {
+        "month": "2024-03",
+        "ru": 70,
+        "fr": 0
+      },
+      {
+        "month": "2024-04",
+        "ru": 121,
+        "fr": 1
+      },
+      {
+        "month": "2024-05",
+        "ru": 105,
+        "fr": 41
+      },
+      {
+        "month": "2024-06",
+        "ru": 183,
+        "fr": 14
+      },
+      {
+        "month": "2024-07",
+        "ru": 209,
+        "fr": 15
+      },
+      {
+        "month": "2024-08",
+        "ru": 131,
+        "fr": 26
+      },
+      {
+        "month": "2024-09",
+        "ru": 53,
+        "fr": 29
+      },
+      {
+        "month": "2024-10",
+        "ru": 67,
+        "fr": 58
+      },
+      {
+        "month": "2024-11",
+        "ru": 45,
+        "fr": 22
+      },
+      {
+        "month": "2024-12",
+        "ru": 38,
+        "fr": 56
+      },
+      {
+        "month": "2025-01",
+        "ru": 191,
+        "fr": 56
+      },
+      {
+        "month": "2025-02",
+        "ru": 187,
+        "fr": 34
+      },
+      {
+        "month": "2025-03",
+        "ru": 220,
+        "fr": 39
+      },
+      {
+        "month": "2025-04",
+        "ru": 194,
+        "fr": 59
+      },
+      {
+        "month": "2025-05",
+        "ru": 211,
+        "fr": 44
+      },
+      {
+        "month": "2025-06",
+        "ru": 299,
+        "fr": 53
+      },
+      {
+        "month": "2025-07",
+        "ru": 376,
+        "fr": 43
+      },
+      {
+        "month": "2025-08",
+        "ru": 630,
+        "fr": 43
+      },
+      {
+        "month": "2025-09",
+        "ru": 984,
+        "fr": 70
+      },
+      {
+        "month": "2025-10",
+        "ru": 1253,
+        "fr": 130
+      },
+      {
+        "month": "2025-11",
+        "ru": 1776,
+        "fr": 217
+      },
+      {
+        "month": "2025-12",
+        "ru": 1872,
+        "fr": 417
+      },
+      {
+        "month": "2026-01",
+        "ru": 2667,
+        "fr": 347
+      },
+      {
+        "month": "2026-02",
+        "ru": 4715,
+        "fr": 1085
+      },
+      {
+        "month": "2026-03",
+        "ru": 8651,
+        "fr": 1113
+      },
+      {
+        "month": "2026-04",
+        "ru": 25691,
+        "fr": 2914
+      },
+      {
+        "month": "2026-05",
+        "ru": 21061,
+        "fr": 1141
+      }
+    ],
+    "crossings": [
+      {
+        "first_ts": "2025-12-14T16:28:56+00:00",
+        "velocity_hours": 0.3,
+        "ru_user": "archiveskadosh",
+        "fr_user": "subversionprotestante",
+        "media_hash": "AgADBAtrG_Bv-FE"
+      },
+      {
+        "first_ts": "2026-03-04T14:20:21+00:00",
+        "velocity_hours": 4.5,
+        "ru_user": "arktosmedia",
+        "fr_user": "InstitutILIADE",
+        "media_hash": "AgADMw1rG2TfSVE"
+      },
+      {
+        "first_ts": "2026-04-20T10:49:31+00:00",
+        "velocity_hours": 0.0,
+        "ru_user": "arktosmedia",
+        "fr_user": "InstitutILIADE",
+        "media_hash": "AgADTw1rG4BZMFM"
+      },
+      {
+        "first_ts": "2026-05-21T06:52:02+00:00",
+        "velocity_hours": 2.5,
+        "ru_user": "dominiquevenner",
+        "fr_user": "InstitutILIADE",
+        "media_hash": "AgADSA5rG2cYeFA"
+      },
+      {
+        "first_ts": "2026-05-22T09:01:16+00:00",
+        "velocity_hours": 4.1,
+        "ru_user": "arktosmedia",
+        "fr_user": "InstitutILIADE",
+        "media_hash": "AgADMg5rG6TBgVA"
+      },
+      {
+        "first_ts": "2026-06-05T15:22:28+00:00",
+        "velocity_hours": 0.1,
+        "ru_user": "VivreEuropeen",
+        "fr_user": "InstitutILIADE",
+        "media_hash": "AgADug5rG_9PGVE"
+      }
+    ]
+  },
+  "media_traces": [
+    {
+      "media_hash": "AgADTw1rG4BZMFM",
+      "origin_side": "RU",
+      "ru_to_fr": true,
+      "first_ts": "2026-04-20T10:49:31+00:00",
+      "velocity_hours": 0.0,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "fr_score": 0.043,
+          "france_targeting": 0.17,
+          "ts": "2026-04-20T10:49:31+00:00",
+          "delay_hours": 0.0,
+          "text": "Our Civilization: European or 'Judeo-Christian'? by Henri Levavasseur Henri Levavasseur co"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-04-20T10:52:18+00:00",
+          "delay_hours": 0.0,
+          "text": "Our Civilization: European or 'Judeo-Christian'? by Henri Levavasseur Henri Levavasseur co"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADug5rG_9PGVE",
+      "origin_side": "RU",
+      "ru_to_fr": true,
+      "first_ts": "2026-06-05T15:22:28+00:00",
+      "velocity_hours": 0.1,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001503069807,
+          "username": "VivreEuropeen",
+          "title": "Vivre Européen | Laurent",
+          "side": "RU",
+          "fr_score": 0.081,
+          "france_targeting": 0.21,
+          "ts": "2026-06-05T15:22:28+00:00",
+          "delay_hours": 0.0,
+          "text": "🌞 Aujourd’hui, direction le SUD de la FRANCE en compagnie de Raphaël AYMA. Pendant quelque"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-06-05T15:30:59+00:00",
+          "delay_hours": 0.1,
+          "text": "🌞 Aujourd’hui, direction le SUD de la FRANCE en compagnie de Raphaël AYMA. Pendant quelque"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADBAtrG_Bv-FE",
+      "origin_side": "RU",
+      "ru_to_fr": true,
+      "first_ts": "2025-12-14T16:28:56+00:00",
+      "velocity_hours": 0.3,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "fr_score": 0.147,
+          "france_targeting": 0.37,
+          "ts": "2025-12-14T16:28:56+00:00",
+          "delay_hours": 0.0,
+          "text": "« Un pet si horrible et si grand que le cul papal a lâché ici ! Il a certainement poussé d"
+        },
+        {
+          "channel_id": -1002369538428,
+          "username": "subversionprotestante",
+          "title": "Lumières sur le protestantisme",
+          "side": "FR",
+          "fr_score": 0.419,
+          "france_targeting": 0.428,
+          "ts": "2025-12-14T16:46:31+00:00",
+          "delay_hours": 0.3,
+          "text": "« Un pet si horrible et si grand que le cul papal a lâché ici ! Il a certainement poussé d"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADSA5rG2cYeFA",
+      "origin_side": "RU",
+      "ru_to_fr": true,
+      "first_ts": "2026-05-21T06:52:02+00:00",
+      "velocity_hours": 2.5,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003833298970,
+          "username": "dominiquevenner",
+          "title": "Dominique Venner officiel",
+          "side": "RU",
+          "fr_score": 0.0,
+          "france_targeting": 0.0,
+          "ts": "2026-05-21T06:52:02+00:00",
+          "delay_hours": 0.0,
+          "text": "Les Éditions de la Nouvelle Librairie viennent de rééditer Le Cœur rebelle, un des plus be"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-05-21T09:20:44+00:00",
+          "delay_hours": 2.5,
+          "text": "Les Éditions de la Nouvelle Librairie viennent de rééditer Le Cœur rebelle, un des plus be"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADMg5rG6TBgVA",
+      "origin_side": "RU",
+      "ru_to_fr": true,
+      "first_ts": "2026-05-22T09:01:16+00:00",
+      "velocity_hours": 4.1,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "fr_score": 0.043,
+          "france_targeting": 0.17,
+          "ts": "2026-05-22T09:01:16+00:00",
+          "delay_hours": 0.0,
+          "text": "“Identitarians of all countries, unite!” In this interview with Breizh-Info, Jean-Yves Le "
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-05-22T13:09:51+00:00",
+          "delay_hours": 4.1,
+          "text": "“Identitarians of all countries, unite!” In this interview with Breizh-Info, Jean-Yves Le "
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADMw1rG2TfSVE",
+      "origin_side": "RU",
+      "ru_to_fr": true,
+      "first_ts": "2026-03-04T14:20:21+00:00",
+      "velocity_hours": 4.5,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "fr_score": 0.043,
+          "france_targeting": 0.17,
+          "ts": "2026-03-04T14:20:21+00:00",
+          "delay_hours": 0.0,
+          "text": "ARKTOS IS DELIVERING AN EXTREMELY STRONG LINEUP FOR SPRING 2026 • American History Z: Gen "
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-03-04T18:52:21+00:00",
+          "delay_hours": 4.5,
+          "text": "ARKTOS IS DELIVERING AN EXTREMELY STRONG LINEUP FOR SPRING 2026 • American History Z: Gen "
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADcg1rG2n0oFE",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-03-13T09:20:34+00:00",
+      "velocity_hours": 0.1,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-03-13T09:20:34+00:00",
+          "delay_hours": 0.0,
+          "text": "🌍 Remigration, For a Europe for Our Children by Jean-Yves Le Gallou is now available in En"
+        },
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "fr_score": 0.043,
+          "france_targeting": 0.17,
+          "ts": "2026-03-13T09:26:11+00:00",
+          "delay_hours": 0.1,
+          "text": "🌍 Remigration, For a Europe for Our Children by Jean-Yves Le Gallou is now available in En"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADEA5rG8eH6FM",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-07T15:55:00+00:00",
+      "velocity_hours": 0.9,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-05-07T15:55:00+00:00",
+          "delay_hours": 0.0,
+          "text": "Retrouvons-nous au printemps 2027 ! 📅 L'Institut Iliade vous donne rendez-vous le samedi 3"
+        },
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "fr_score": 0.043,
+          "france_targeting": 0.17,
+          "ts": "2026-05-07T16:50:00+00:00",
+          "delay_hours": 0.9,
+          "text": "Retrouvons-nous au printemps 2027 ! 📅 L'Institut Iliade vous donne rendez-vous le samedi 3"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADaAxrG6HH8VE",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2025-12-14T07:27:36+00:00",
+      "velocity_hours": 1.9,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002369538428,
+          "username": "subversionprotestante",
+          "title": "Lumières sur le protestantisme",
+          "side": "FR",
+          "fr_score": 0.419,
+          "france_targeting": 0.428,
+          "ts": "2025-12-14T07:27:36+00:00",
+          "delay_hours": 0.0,
+          "text": "Discours prononcé par Jules Ferry (protestant et franc-maçon) pour l’inauguration, en nove"
+        },
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "fr_score": 0.147,
+          "france_targeting": 0.37,
+          "ts": "2025-12-14T09:22:11+00:00",
+          "delay_hours": 1.9,
+          "text": "Discours prononcé par Jules Ferry (protestant et franc-maçon) pour l’inauguration, en nove"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADGg9rG8xwSVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-25T04:07:58+00:00",
+      "velocity_hours": 2.0,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-25T04:07:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1941. Un 25 mai, à Vichy, le maréchal Pétain ajoute une nouvelle fête au calendrier: la fê"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-25T06:06:17+00:00",
+          "delay_hours": 2.0,
+          "text": "1941. Un 25 mai, à Vichy, le maréchal Pétain ajoute une nouvelle fête au calendrier: la fê"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADBBBrG8KOSVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-25T04:05:58+00:00",
+      "velocity_hours": 2.0,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-25T04:05:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1887. Un 25 mai, à Benevento, naissance de Francesco Forgione, le Padre Pio, grand mystiqu"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-25T06:05:57+00:00",
+          "delay_hours": 2.0,
+          "text": "1887. Un 25 mai, à Benevento, naissance de Francesco Forgione, le Padre Pio, grand mystiqu"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADGQ9rG8xwSVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-25T04:03:58+00:00",
+      "velocity_hours": 2.0,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-25T04:03:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1793. Un 25 mai, après la prise de Fontenay-le-Comte par les Vendéens, création du Grand C"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-25T06:05:32+00:00",
+          "delay_hours": 2.0,
+          "text": "1793. Un 25 mai, après la prise de Fontenay-le-Comte par les Vendéens, création du Grand C"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADAg5rG1RRaFI",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-04-01T09:11:17+00:00",
+      "velocity_hours": 4.5,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "fr_score": 0.19,
+          "france_targeting": 0.51,
+          "ts": "2026-04-01T09:11:17+00:00",
+          "delay_hours": 0.0,
+          "text": "L'Institut Iliade fait de la civilisation européenne son horizon et son combat principal. "
+        },
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "fr_score": 0.043,
+          "france_targeting": 0.17,
+          "ts": "2026-04-01T13:42:05+00:00",
+          "delay_hours": 4.5,
+          "text": "L'Institut Iliade fait de la civilisation européenne son horizon et son combat principal. "
+        }
+      ]
+    },
+    {
+      "media_hash": "AgAD9Q5rG-A8eVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-27T04:14:01+00:00",
+      "velocity_hours": 14.9,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-27T04:14:01+00:00",
+          "delay_hours": 0.0,
+          "text": "1970. Un 27 mai, interdiction du mouvement maoïste de la garde prolétarienne, dont nombre "
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-27T19:09:03+00:00",
+          "delay_hours": 14.9,
+          "text": "1970. Un 27 mai, interdiction du mouvement maoïste de la garde prolétarienne, dont nombre "
+        }
+      ]
+    },
+    {
+      "media_hash": "AgAD9A5rG-A8eVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-27T04:12:01+00:00",
+      "velocity_hours": 14.9,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-27T04:12:01+00:00",
+          "delay_hours": 0.0,
+          "text": "1906. Un 27 mai, béatification par Saint Pie X des 16 Carmélites de Compiègne, guillotinée"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-27T19:08:52+00:00",
+          "delay_hours": 14.9,
+          "text": "1906. Un 27 mai, béatification par Saint Pie X des 16 Carmélites de Compiègne, guillotinée"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgAD8w5rG-A8eVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-27T04:10:01+00:00",
+      "velocity_hours": 15.0,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-27T04:10:01+00:00",
+          "delay_hours": 0.0,
+          "text": "1894. Un 27 mai, naissance à Courbevoie (Seine), de Louis Ferdinand Destouches, dit Louis-"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-27T19:08:42+00:00",
+          "delay_hours": 15.0,
+          "text": "1894. Un 27 mai, naissance à Courbevoie (Seine), de Louis Ferdinand Destouches, dit Louis-"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADAhBrG8KOSVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-24T04:09:58+00:00",
+      "velocity_hours": 16.7,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-24T04:09:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1901. Un 24 mai, initiation maçonnique, à la loge Studholme de Londres, de Winston Churchi"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-24T20:54:25+00:00",
+          "delay_hours": 16.7,
+          "text": "1901. Un 24 mai, initiation maçonnique, à la loge Studholme de Londres, de Winston Churchi"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADEA9rG8xwSVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-24T04:05:58+00:00",
+      "velocity_hours": 16.8,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-24T04:05:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1871. Un 24 mai, le capitaine de Beaufort est arrêté et fusillé par les fédérés pendant la"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-24T20:54:17+00:00",
+          "delay_hours": 16.8,
+          "text": "1871. Un 24 mai, le capitaine de Beaufort est arrêté et fusillé par les fédérés pendant la"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADgRxrG3rD6FA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-06-02T04:03:58+00:00",
+      "velocity_hours": 18.4,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-06-02T04:03:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1849. Un 2 juin, le nouveau ministre des Affaires étrangères Alexis de Tocqueville prend c"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-06-02T22:30:54+00:00",
+          "delay_hours": 18.4,
+          "text": "1849. Un 2 juin, le nouveau ministre des Affaires étrangères Alexis de Tocqueville prend c"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADfxxrG3rD6FA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-06-02T03:59:58+00:00",
+      "velocity_hours": 18.5,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-06-02T03:59:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1559. Un 2 juin, Henri II promulgue l'édit d'Ecouen. Il stipule que les Protestants arrêté"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-06-02T22:30:39+00:00",
+          "delay_hours": 18.5,
+          "text": "1559. Un 2 juin, Henri II promulgue l'édit d'Ecouen. Il stipule que les Protestants arrêté"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADCxBrGyXfuFA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-29T04:08:01+00:00",
+      "velocity_hours": 20.1,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-29T04:08:01+00:00",
+          "delay_hours": 0.0,
+          "text": "1874. Un 29 mai, naissance de l'écrivain anglais Gilbert Keith Chesterton, d'un père négoc"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-30T00:11:09+00:00",
+          "delay_hours": 20.1,
+          "text": "1874. Un 29 mai, naissance de l'écrivain anglais Gilbert Keith Chesterton, d'un père négoc"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADwg1rG7yrqVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-26T05:11:53+00:00",
+      "velocity_hours": 20.5,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001213377875,
+          "username": "journaldeschouans",
+          "title": "JDC - Journal des Chouans",
+          "side": "FR",
+          "fr_score": 0.243,
+          "france_targeting": 0.434,
+          "ts": "2026-05-26T05:11:53+00:00",
+          "delay_hours": 0.0,
+          "text": "Guerre des croix : encore une fois. La croix du pic d’Aneto a été vandalisée La croix hiss"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-27T01:41:09+00:00",
+          "delay_hours": 20.5,
+          "text": "Guerre des croix : encore une fois. La croix du pic d’Aneto a été vandalisée La croix hiss"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADIA9rG8xwSVA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-05-26T04:05:58+00:00",
+      "velocity_hours": 21.6,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-05-26T04:05:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1925. Un 26 mai, Ernest Berger, trésorier de la ligue d'Action française, est abattu d'une"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-05-27T01:41:37+00:00",
+          "delay_hours": 21.6,
+          "text": "1925. Un 26 mai, Ernest Berger, trésorier de la ligue d'Action française, est abattu d'une"
+        }
+      ]
+    },
+    {
+      "media_hash": "AgADbRBrGww86VA",
+      "origin_side": "FR",
+      "ru_to_fr": false,
+      "first_ts": "2026-06-03T04:01:58+00:00",
+      "velocity_hours": 41.6,
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "fr_score": 0.377,
+          "france_targeting": 0.411,
+          "ts": "2026-06-03T04:01:58+00:00",
+          "delay_hours": 0.0,
+          "text": "1425. Un 3 juin, le pape Martin V impose par la bulle Sedes Apostolica aux Juifs de porter"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "fr_score": 0.11,
+          "france_targeting": 0.32,
+          "ts": "2026-06-04T21:37:45+00:00",
+          "delay_hours": 41.6,
+          "text": "1425. Un 3 juin, le pape Martin V impose par la bulle Sedes Apostolica aux Juifs de porter"
+        }
+      ]
+    }
+  ],
+  "domain_bridges": [
+    {
+      "domain": "givesendgo.com",
+      "fr_channels": [
+        "fdesoucheofficiel"
+      ],
+      "ru_channels": [
+        "BecFreedomMFA",
+        "FightForAustralia",
+        "KnightlyAustralian",
+        "TheAustralianVanguard",
+        "TheWesternChauvinist1",
+        "ccrband",
+        "hersantite"
+      ],
+      "n_fr": 1,
+      "n_ru": 7
+    },
+    {
+      "domain": "arktos.com",
+      "fr_channels": [
+        "InstitutILIADE"
+      ],
+      "ru_channels": [
+        "Dugin_Aleksandr",
+        "PRAVPublishing",
+        "PaideumaTVInternational",
+        "arktosmedia"
+      ],
+      "n_fr": 1,
+      "n_ru": 4
+    },
+    {
+      "domain": "france3-regions.franceinfo.fr",
+      "fr_channels": [
+        "RiposteCatholique",
+        "la_nouvelle_france",
+        "laconcordetv"
+      ],
+      "ru_channels": [
+        "Repaire_k",
+        "archiveskadosh"
+      ],
+      "n_fr": 3,
+      "n_ru": 2
+    },
+    {
+      "domain": "lemonde.fr",
+      "fr_channels": [
+        "journaldeschouans",
+        "la_nouvelle_france"
+      ],
+      "ru_channels": [
+        "Repaire_k",
+        "glenndiesen"
+      ],
+      "n_fr": 2,
+      "n_ru": 2
+    },
+    {
+      "domain": "lejdd.fr",
+      "fr_channels": [
+        "la_nouvelle_france",
+        "les_patriotes"
+      ],
+      "ru_channels": [
+        "Repaire_k"
+      ],
+      "n_fr": 2,
+      "n_ru": 1
+    },
+    {
+      "domain": "bvoltaire.fr",
+      "fr_channels": [
+        "boulevardvoltaire",
+        "journaldeschouans"
+      ],
+      "ru_channels": [
+        "Repaire_k"
+      ],
+      "n_fr": 2,
+      "n_ru": 1
+    },
+    {
+      "domain": "wyffest.com",
+      "fr_channels": [
+        "LeGrandReveil"
+      ],
+      "ru_channels": [
+        "AmbRussieRCongo",
+        "RusHouseOsh"
+      ],
+      "n_fr": 1,
+      "n_ru": 2
+    },
+    {
+      "domain": "nouvelle-librairie.com",
+      "fr_channels": [
+        "InstitutILIADE"
+      ],
+      "ru_channels": [
+        "dominiquevenner"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    },
+    {
+      "domain": "lactionfrancaise.fr",
+      "fr_channels": [
+        "SteGenevieve75"
+      ],
+      "ru_channels": [
+        "Repaire_k"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    },
+    {
+      "domain": "msn.com",
+      "fr_channels": [
+        "RondPoint20OutreMer"
+      ],
+      "ru_channels": [
+        "IVERMECTIN444"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    },
+    {
+      "domain": "euractiv.com",
+      "fr_channels": [
+        "la_nouvelle_france"
+      ],
+      "ru_channels": [
+        "LauraRuHK"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    },
+    {
+      "domain": "pmc.ncbi.nlm.nih.gov",
+      "fr_channels": [
+        "journaldeschouans"
+      ],
+      "ru_channels": [
+        "ArchaicAryanArchive"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    },
+    {
+      "domain": "egaliteetreconciliation.fr",
+      "fr_channels": [
+        "journaldeschouans"
+      ],
+      "ru_channels": [
+        "Repaire_k"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    },
+    {
+      "domain": "tribunechretienne.com",
+      "fr_channels": [
+        "lanouvellechevalerie"
+      ],
+      "ru_channels": [
+        "jackygoyy"
+      ],
+      "n_fr": 1,
+      "n_ru": 1
+    }
+  ]
+}

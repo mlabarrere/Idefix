@@ -1,0 +1,46 @@
+{
+  "experiment": "centrality_activity_null_baseline_ablation",
+  "snapshot": "rest-eval:russosphere",
+  "n_channels": 3699,
+  "nonzero_suspicion": 814,
+  "forward_graph": {
+    "nodes": 3680,
+    "edges": 6889
+  },
+  "falsify_thresholds": {
+    "spearman": 0.9,
+    "jaccard_top50": 0.8
+  },
+  "spearman": {
+    "in_degree_centrality": 0.6668,
+    "eigenvector_centrality": 0.5366,
+    "forward_influence_out_weight": 0.4244,
+    "activity_engagement": 0.3172,
+    "cascade_family_value_composite": 0.7919
+  },
+  "topk_jaccard": {
+    "20": {
+      "in_degree_centrality": 0.0,
+      "eigenvector_centrality": 0.0526,
+      "forward_influence_out_weight": 0.0811,
+      "activity_engagement": 0.0256,
+      "cascade_family_value_composite": 0.25
+    },
+    "50": {
+      "in_degree_centrality": 0.0204,
+      "eigenvector_centrality": 0.0526,
+      "forward_influence_out_weight": 0.0989,
+      "activity_engagement": 0.0101,
+      "cascade_family_value_composite": 0.1905
+    }
+  },
+  "head_spearman_top50": {
+    "in_degree_centrality": -0.1399,
+    "eigenvector_centrality": 0.0931,
+    "forward_influence_out_weight": -0.1316,
+    "activity_engagement": 0.0679,
+    "cascade_family_value_composite": 0.6768
+  },
+  "falsified": false,
+  "verdict": "PASS"
+}

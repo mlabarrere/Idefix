@@ -1,0 +1,374 @@
+{
+  "id": "dugin_cluster",
+  "tier": "T5",
+  "tc": "t5",
+  "theme": "Écosystème d'influence",
+  "title": "Réseau eurasianiste coordonné (Dugin/Geopolitika) — amplification multilingue",
+  "channels": 38,
+  "hours": 5006,
+  "scores": {
+    "a": {
+      "n": "Proximité revendication",
+      "v": 0.0,
+      "lo": 0.0,
+      "hi": 0.0,
+      "c": "#3B82F6",
+      "ev": [
+        [
+          "statut",
+          "N/A — pas de registre d'épisodes (v0)"
+        ]
+      ]
+    },
+    "b": {
+      "n": "Rôle en cascade",
+      "v": 1.0,
+      "lo": 0.85,
+      "hi": 1.0,
+      "c": "#F0B429",
+      "label": "reactivator",
+      "ev": [
+        [
+          "archétype",
+          "reactivator"
+        ],
+        [
+          "Bridge Score brut",
+          10.1421
+        ],
+        [
+          "origines relayées",
+          3
+        ],
+        [
+          "canaux relayeurs",
+          2
+        ],
+        [
+          "forwards gagnés",
+          18.0
+        ]
+      ]
+    },
+    "c": {
+      "n": "Coordination",
+      "v": 0.6,
+      "lo": 0.45,
+      "hi": 0.75,
+      "c": "#22c55e",
+      "ev": [
+        [
+          "Jaccard co-forward max",
+          0.5
+        ],
+        [
+          "pairs co-forwardants",
+          5
+        ],
+        [
+          "origines partagées",
+          1
+        ],
+        [
+          "paires co-forward (graphe)",
+          18
+        ]
+      ]
+    },
+    "d": {
+      "n": "Récidivisme inter-épisodes",
+      "v": 0.8348,
+      "lo": 0.6848,
+      "hi": 0.9848,
+      "c": "#ef4444",
+      "ev": [
+        [
+          "forward-influence",
+          50.0
+        ],
+        [
+          "relayeurs distincts",
+          4
+        ],
+        [
+          "forward-influence (norm.)",
+          0.7246
+        ]
+      ]
+    },
+    "e": {
+      "n": "Probabilité origine IA",
+      "v": 0.0,
+      "lo": 0.0,
+      "hi": 0.0,
+      "c": "#a78bfa",
+      "ev": [
+        [
+          "statut",
+          "N/A — détecteur GenAI non câblé (v0)"
+        ]
+      ]
+    }
+  },
+  "gateMet": true,
+  "gateDetail": "3 signaux · 3 familles",
+  "nextTier": "T4",
+  "attr": "T2",
+  "channels_detail": [
+    {
+      "id": "@occvltimperium",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@Geopolitika_tr",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.058
+    },
+    {
+      "id": "@wargonzo",
+      "arch": "reactivator",
+      "subs": 757687,
+      "fi": 0.1014
+    },
+    {
+      "id": "@peresidok",
+      "arch": "source",
+      "subs": 119950,
+      "fi": 0.087
+    },
+    {
+      "id": "@geopolitika_ar",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.029
+    },
+    {
+      "id": "@dugincn",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0435
+    },
+    {
+      "id": "@multipolarpress",
+      "arch": "reactivator",
+      "subs": 0,
+      "fi": 0.3043
+    },
+    {
+      "id": "@institut_tsargrada",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@arktosmedia",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.029
+    },
+    {
+      "id": "@lantratovaDOBRO",
+      "arch": "hub",
+      "subs": 127542,
+      "fi": 0.1739
+    },
+    {
+      "id": "@Geopolitika_pt",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.029
+    },
+    {
+      "id": "@newrulesgeo",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@valaam",
+      "arch": "source",
+      "subs": 34825,
+      "fi": 0.2899
+    },
+    {
+      "id": "@dugin_farsi",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@rainaldograziani",
+      "arch": "hub",
+      "subs": 592,
+      "fi": 0.1449
+    },
+    {
+      "id": "@Geopolitika_es",
+      "arch": "hub",
+      "subs": 2856,
+      "fi": 0.1014
+    },
+    {
+      "id": "@metapolitic",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.029
+    },
+    {
+      "id": "@editora_arsregia",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@PaideumaTVInternational",
+      "arch": "reactivator",
+      "subs": 0,
+      "fi": 0.2609
+    },
+    {
+      "id": "@AGDchanTRUE",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@Dugin_Aleksandr",
+      "arch": "reactivator",
+      "subs": 0,
+      "fi": 0.7246
+    },
+    {
+      "id": "@geopolitikagreek",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0725
+    },
+    {
+      "id": "@cantieremultipolare",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.029
+    },
+    {
+      "id": "@duginjp",
+      "arch": "reactivator",
+      "subs": 488,
+      "fi": 0.1594
+    },
+    {
+      "id": "@Geopolitika_de",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0435
+    },
+    {
+      "id": "@kvmalofeev",
+      "arch": "source",
+      "subs": 1371860,
+      "fi": 0.1014
+    },
+    {
+      "id": "@geopolitika_fr",
+      "arch": "reactivator",
+      "subs": 0,
+      "fi": 0.087
+    },
+    {
+      "id": "@Agdchan",
+      "arch": "reactivator",
+      "subs": 0,
+      "fi": 0.0435
+    },
+    {
+      "id": "@novaresistenciabrasil",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.029
+    },
+    {
+      "id": "@Geopolitika_it",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0725
+    },
+    {
+      "id": "@UnitedWorldInternational",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@nebesnyegory",
+      "arch": "hub",
+      "subs": 2913,
+      "fi": 0.1739
+    },
+    {
+      "id": "@imperiumtalk",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    },
+    {
+      "id": "@eurosiberia1",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0725
+    },
+    {
+      "id": "@Geopolitika_en",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.4058
+    },
+    {
+      "id": "@Geopolitika_nl",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0435
+    },
+    {
+      "id": "@Geopolitika_pl",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.058
+    },
+    {
+      "id": "@Duginpolski",
+      "arch": "source",
+      "subs": 0,
+      "fi": 0.0145
+    }
+  ],
+  "timeline": [
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    13,
+    1,
+    1,
+    12,
+    4,
+    0,
+    2,
+    0,
+    3,
+    2,
+    38,
+    16,
+    22,
+    13,
+    18,
+    125,
+    171
+  ],
+  "coverage_callout": "Ce dossier observe uniquement la couche d'ensemencement Telegram. Une opération atteignant la France principalement via d'autres plateformes sans étape Telegram ne sera PAS détectée."
+}

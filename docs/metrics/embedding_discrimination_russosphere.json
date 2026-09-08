@@ -1,0 +1,15 @@
+{
+  "experiment": "embedding_discrimination",
+  "mission": "russosphere",
+  "baseline_count": 96,
+  "scored_count": 3492,
+  "total": 3588,
+  "roc_auc": 0.5062,
+  "silhouette": 0.0027,
+  "baseline_mean_distance": 0.6486,
+  "scored_mean_distance": 0.6682,
+  "centroid_separation": 0.1707,
+  "tsne_plot": null,
+  "verdict": "FAIBLE (ROC-AUC < 0.7 ou silhouette < 0.3 — embedding ne sépare pas baseline/scored)",
+  "note": "Baseline organique FR (externe) vs scored channels. ROC-AUC cible > 0.7."
+}

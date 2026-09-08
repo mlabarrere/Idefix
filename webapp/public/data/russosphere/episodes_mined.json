@@ -1,0 +1,2592 @@
+{
+  "generated_at": "2026-06-10T15:29:24.191306+00:00",
+  "mission": "russosphere",
+  "n_episodes": 42,
+  "by_pivot": {
+    "media": 0,
+    "url": 0,
+    "forward": 42
+  },
+  "coverage_callout": "Épisodes RU→FR OBSERVABLES sur Telegram (porosité réelle mais sparse). Une campagne passant surtout hors Telegram n'apparaît pas. T1/T2 uniquement.",
+  "episodes": [
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 3,
+      "label": "@Repaire_k → @halterophilo : 3 reprise(s)",
+      "first_ts": "2026-05-27T06:32:56+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "Repaire_k",
+        "Sentinelle_Invisible"
+      ],
+      "fr_receivers": [
+        "halterophilo"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1001951785840,
+          "username": "Sentinelle_Invisible",
+          "title": "Sentinelle de l'Invisible",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-05-27T06:32:56+00:00",
+          "delay_hours": 0.0,
+          "text": "« L'homme est le prince de la famille et le chef de la femme. Celle-ci cependant est la chair de sa chair et l'os de ses"
+        },
+        {
+          "channel_id": -1001325230184,
+          "username": "halterophilo",
+          "title": "Haltérophilo",
+          "side": "FR",
+          "france_targeting": null,
+          "ts": "2026-05-27T11:37:22+00:00",
+          "delay_hours": 5.1,
+          "text": "« L'homme est le prince de la famille et le chef de la femme. Celle-ci cependant est la chair de sa chair et l'os de ses"
+        },
+        {
+          "channel_id": -1001726941438,
+          "username": "Repaire_k",
+          "title": "Repaire de M . K",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-05-27T19:16:53+00:00",
+          "delay_hours": 12.7,
+          "text": "« L'homme est le prince de la famille et le chef de la femme. Celle-ci cependant est la chair de sa chair et l'os de ses"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "chair",
+        "celle",
+        "celle cependant",
+        "cependant",
+        "cependant chair"
+      ],
+      "id": "ep_forward_000",
+      "tier": "T2",
+      "fr_targeting_max": null,
+      "channel_ids": [
+        -1001951785840,
+        -1001726941438,
+        -1001325230184
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 36,
+      "label": "@serviam_podcast → @francenatio : 36 reprise(s)",
+      "first_ts": "2026-01-16T08:29:01+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "serviam_podcast"
+      ],
+      "fr_receivers": [
+        "francenatio",
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1003394189265,
+          "username": "serviam_podcast",
+          "title": "Serviam Podcast",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-01-16T08:29:01+00:00",
+          "delay_hours": 0.0,
+          "text": "Janvier ouvre un cycle cohérent autour d’un même fil : la discipline des mots comme préalable à la discipline des esprit"
+        },
+        {
+          "channel_id": -1001404638819,
+          "username": "francenatio",
+          "title": "Intégralisme organique",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-01-16T08:29:01+00:00",
+          "delay_hours": 0.0,
+          "text": "Janvier ouvre un cycle cohérent autour d’un même fil : la discipline des mots comme préalable à la discipline des esprit"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-02T21:14:02+00:00",
+          "delay_hours": 4.2,
+          "text": "🎙Un Vatican plus ramadan que Carême ! (SERVIAM N°8) Belloc, Edmond, Theobald, Adock, Bobby https://youtu.be/JwkmnpRAbb8 "
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "discipline",
+        "autour",
+        "autour même",
+        "cohérent",
+        "cohérent autour"
+      ],
+      "id": "ep_forward_001",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003394189265,
+        -1001755442117,
+        -1001404638819
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 5,
+      "label": "@Sentinelle_Invisible → @JonathanSturel : 5 reprise(s)",
+      "first_ts": "2026-01-10T08:50:33+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "Sentinelle_Invisible"
+      ],
+      "fr_receivers": [
+        "JonathanSturel",
+        "maxime_leroy"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1001951785840,
+          "username": "Sentinelle_Invisible",
+          "title": "Sentinelle de l'Invisible",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-01-10T08:50:33+00:00",
+          "delay_hours": 0.0,
+          "text": "Connaissez-vous la série Hercule Poirot avec David Suchet dans le rôle du célèbre détective ? Je me suis pris d'intérêt "
+        },
+        {
+          "channel_id": -1001193809719,
+          "username": "JonathanSturel",
+          "title": "Jonathan Sturel",
+          "side": "FR",
+          "france_targeting": 0.157,
+          "ts": "2026-01-10T08:50:33+00:00",
+          "delay_hours": 0.0,
+          "text": "Connaissez-vous la série Hercule Poirot avec David Suchet dans le rôle du célèbre détective ? Je me suis pris d'intérêt "
+        },
+        {
+          "channel_id": -1001172350130,
+          "username": "maxime_leroy",
+          "title": "⚜️ Maxime Leroy ⚜️",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-05-31T15:09:22+00:00",
+          "delay_hours": 0.6,
+          "text": "« Pour le chrétien, il y a une règle qui lui permet de déterminer avec certitude la mesure des droits et des devoirs de "
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "connaissez",
+        "connaissez série",
+        "célèbre",
+        "célèbre détective",
+        "david"
+      ],
+      "id": "ep_forward_002",
+      "tier": "T2",
+      "fr_targeting_max": 0.157,
+      "channel_ids": [
+        -1001951785840,
+        -1001193809719,
+        -1001172350130
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 9,
+      "label": "@arktosmedia → @InstitutILIADE : 9 reprise(s)",
+      "first_ts": "2025-12-22T18:35:14+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "arktosmedia"
+      ],
+      "fr_receivers": [
+        "InstitutILIADE"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2025-12-22T18:35:14+00:00",
+          "delay_hours": 0.0,
+          "text": "🚨 L’Institut Iliade est aujourd’hui en danger APPEL EXCEPTIONNEL DES COFONDATEURS : En 2025, l’institut a subi des attaq"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-12-22T18:35:14+00:00",
+          "delay_hours": 0.0,
+          "text": "🚨 L’Institut Iliade est aujourd’hui en danger APPEL EXCEPTIONNEL DES COFONDATEURS : En 2025, l’institut a subi des attaq"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "institut",
+        "2025 institut",
+        "appel",
+        "appel exceptionnel",
+        "attaq"
+      ],
+      "id": "ep_forward_003",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001230958530,
+        -1001177375464
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 2,
+      "label": "@CercleJunger → @MemoriaNatio : 2 reprise(s)",
+      "first_ts": "2026-03-16T21:14:08+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "CercleJunger"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003700259855,
+          "username": "CercleJunger",
+          "title": "Cercle Ernst Jünger",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-16T21:14:08+00:00",
+          "delay_hours": 0.0,
+          "text": "« Dans la campagne électorale absurde de ces jours-ci, je suis frappé par la façon dont les partis deviennent si semblab"
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-16T21:15:17+00:00",
+          "delay_hours": 0.0,
+          "text": "« Dans la campagne électorale absurde de ces jours-ci, je suis frappé par la façon dont les partis deviennent si semblab"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "absurde",
+        "absurde jours",
+        "campagne",
+        "campagne électorale",
+        "deviennent"
+      ],
+      "id": "ep_forward_004",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003700259855,
+        -1001930632271
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 8,
+      "label": "@Sentinelle_Invisible → @halterophilo : 8 reprise(s)",
+      "first_ts": "2026-05-12T09:20:46+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "Sentinelle_Invisible"
+      ],
+      "fr_receivers": [
+        "halterophilo"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001951785840,
+          "username": "Sentinelle_Invisible",
+          "title": "Sentinelle de l'Invisible",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-05-12T09:20:46+00:00",
+          "delay_hours": 0.0,
+          "text": "« Tu n'as pas à te répandre, mais à t'approfondir. » Saint Ælred de Rievaulx La Vie de recluse 🖼️ So Far from home, Igna"
+        },
+        {
+          "channel_id": -1001325230184,
+          "username": "halterophilo",
+          "title": "Haltérophilo",
+          "side": "FR",
+          "france_targeting": null,
+          "ts": "2026-05-12T09:21:34+00:00",
+          "delay_hours": 0.0,
+          "text": "« Tu n'as pas à te répandre, mais à t'approfondir. » Saint Ælred de Rievaulx La Vie de recluse 🖼️ So Far from home, Igna"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "approfondir",
+        "approfondir saint",
+        "home",
+        "home igna",
+        "igna"
+      ],
+      "id": "ep_forward_005",
+      "tier": "T2",
+      "fr_targeting_max": null,
+      "channel_ids": [
+        -1001951785840,
+        -1001325230184
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 3,
+      "label": "@Sentinelle_Invisible → @maxime_leroy : 3 reprise(s)",
+      "first_ts": "2026-02-27T17:59:21+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "Sentinelle_Invisible"
+      ],
+      "fr_receivers": [
+        "maxime_leroy"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001951785840,
+          "username": "Sentinelle_Invisible",
+          "title": "Sentinelle de l'Invisible",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-02-27T17:59:21+00:00",
+          "delay_hours": 0.0,
+          "text": "Prière du soir. Avoir des enfants est vraiment la meilleure chose qui puisse arriver."
+        },
+        {
+          "channel_id": -1001172350130,
+          "username": "maxime_leroy",
+          "title": "⚜️ Maxime Leroy ⚜️",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-02-27T17:59:21+00:00",
+          "delay_hours": 0.0,
+          "text": "Prière du soir. Avoir des enfants est vraiment la meilleure chose qui puisse arriver."
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "arriver",
+        "avoir",
+        "avoir enfants",
+        "chose",
+        "chose puisse"
+      ],
+      "id": "ep_forward_006",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001951785840,
+        -1001172350130
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 2,
+      "label": "@VivreEuropeen → @InstitutILIADE : 2 reprise(s)",
+      "first_ts": "2026-06-05T15:22:28+00:00",
+      "velocity_hours": 0.1,
+      "ru_seeders": [
+        "VivreEuropeen"
+      ],
+      "fr_receivers": [
+        "InstitutILIADE",
+        "LesBraves"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1001503069807,
+          "username": "VivreEuropeen",
+          "title": "Vivre Européen | Laurent",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2026-06-05T15:22:28+00:00",
+          "delay_hours": 0.0,
+          "text": "🌞 Aujourd’hui, direction le SUD de la FRANCE en compagnie de Raphaël AYMA. Pendant quelques jours, il m’a fait découvrir"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-06-05T15:30:59+00:00",
+          "delay_hours": 0.1,
+          "text": "🌞 Aujourd’hui, direction le SUD de la FRANCE en compagnie de Raphaël AYMA. Pendant quelques jours, il m’a fait découvrir"
+        },
+        {
+          "channel_id": -1001388763748,
+          "username": "LesBraves",
+          "title": "Les Braves",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-06-05T15:32:17+00:00",
+          "delay_hours": 0.2,
+          "text": "🌞 Aujourd’hui, direction le SUD de la FRANCE en compagnie de Raphaël AYMA. Pendant quelques jours, il m’a fait découvrir"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "aujourd direction",
+        "ayma",
+        "ayma pendant",
+        "compagnie",
+        "compagnie raphaël"
+      ],
+      "id": "ep_forward_007",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001503069807,
+        -1001388763748,
+        -1001230958530
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 4,
+      "label": "@lesfeuxdenormandie → @InstitutILIADE : 4 reprise(s)",
+      "first_ts": "2026-03-03T17:00:23+00:00",
+      "velocity_hours": 0.1,
+      "ru_seeders": [
+        "lesfeuxdenormandie"
+      ],
+      "fr_receivers": [
+        "InstitutILIADE"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1002866980689,
+          "username": "lesfeuxdenormandie",
+          "title": "Les Feux de Normandie",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-03T17:00:23+00:00",
+          "delay_hours": 0.0,
+          "text": "📜 Le Feu de l’Esprit I Rappelons nous qui nous sommes et d’où nous venons 🔥 Ces mots de Dominique Venner, issus de l’ouv"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-03T18:50:43+00:00",
+          "delay_hours": 1.8,
+          "text": "📜 Le Feu de l’Esprit I Rappelons nous qui nous sommes et d’où nous venons 🔥 Ces mots de Dominique Venner, issus de l’ouv"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "esprit rappelons",
+        "issus",
+        "mots dominique",
+        "rappelons",
+        "rappelons sommes"
+      ],
+      "id": "ep_forward_008",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1002866980689,
+        -1001230958530
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 2,
+      "label": "@UkraineRadical → @MemoriaNatio : 2 reprise(s)",
+      "first_ts": "2026-06-04T20:20:14+00:00",
+      "velocity_hours": 0.2,
+      "ru_seeders": [
+        "UkraineRadical"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003755860089,
+          "username": "UkraineRadical",
+          "title": "Ukraine Radical ꑭ 🇺🇦",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-04T20:20:14+00:00",
+          "delay_hours": 0.0,
+          "text": "🇫🇷 🇺🇦 French comrades from Lyon who joined our fight"
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-06-04T20:33:38+00:00",
+          "delay_hours": 0.2,
+          "text": "🇫🇷 🇺🇦 French comrades from Lyon who joined our fight"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "comrades",
+        "comrades lyon",
+        "french comrades",
+        "joined",
+        "joined fight"
+      ],
+      "id": "ep_forward_009",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003755860089,
+        -1001930632271
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 2,
+      "label": "@archiveskadosh → @subversionprotestante : 2 reprise(s)",
+      "first_ts": "2025-12-14T16:28:56+00:00",
+      "velocity_hours": 0.3,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "subversionprotestante"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-12-14T16:28:56+00:00",
+          "delay_hours": 0.0,
+          "text": "« Un pet si horrible et si grand que le cul papal a lâché ici ! Il a certainement poussé de toutes ses forces pour produ"
+        },
+        {
+          "channel_id": -1002369538428,
+          "username": "subversionprotestante",
+          "title": "Lumières sur le protestantisme",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-12-14T16:46:31+00:00",
+          "delay_hours": 0.3,
+          "text": "« Un pet si horrible et si grand que le cul papal a lâché ici ! Il a certainement poussé de toutes ses forces pour produ"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "certainement",
+        "certainement poussé",
+        "forces",
+        "forces produ",
+        "grand"
+      ],
+      "id": "ep_forward_010",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1002369538428,
+        -1001508684631
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 4,
+      "label": "@archiveskadosh → @brunohirout : 4 reprise(s)",
+      "first_ts": "2025-12-14T09:45:22+00:00",
+      "velocity_hours": 1.4,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "brunohirout"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-12-14T09:45:22+00:00",
+          "delay_hours": 0.0,
+          "text": "« Notre adversaire est l'Église romano-catholique, papale, infaillible, avec son organisation compacte et universelle. C"
+        },
+        {
+          "channel_id": -1001458631191,
+          "username": "brunohirout",
+          "title": "🇲🇫 Bruno Hirout",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-12-14T13:21:19+00:00",
+          "delay_hours": 3.6,
+          "text": "« Notre adversaire est l'Église romano-catholique, papale, infaillible, avec son organisation compacte et universelle. C"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "adversaire",
+        "adversaire église",
+        "catholique papale",
+        "compacte",
+        "compacte universelle"
+      ],
+      "id": "ep_forward_011",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001508684631,
+        -1001458631191
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 2,
+      "label": "@dominiquevenner → @InstitutILIADE : 2 reprise(s)",
+      "first_ts": "2026-05-21T06:52:02+00:00",
+      "velocity_hours": 2.5,
+      "ru_seeders": [
+        "dominiquevenner"
+      ],
+      "fr_receivers": [
+        "InstitutILIADE"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003833298970,
+          "username": "dominiquevenner",
+          "title": "Dominique Venner officiel",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-05-21T06:52:02+00:00",
+          "delay_hours": 0.0,
+          "text": "Les Éditions de la Nouvelle Librairie viennent de rééditer Le Cœur rebelle, un des plus beaux livres de Dominique Venner"
+        },
+        {
+          "channel_id": -1001230958530,
+          "username": "InstitutILIADE",
+          "title": "Institut ILIADE",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-05-21T09:20:44+00:00",
+          "delay_hours": 2.5,
+          "text": "Les Éditions de la Nouvelle Librairie viennent de rééditer Le Cœur rebelle, un des plus beaux livres de Dominique Venner"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "beaux",
+        "beaux livres",
+        "cœur",
+        "cœur rebelle",
+        "librairie"
+      ],
+      "id": "ep_forward_012",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003833298970,
+        -1001230958530
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 4,
+      "label": "@NoPewGroup13 → @Deep_Operations_Group : 4 reprise(s)",
+      "first_ts": "2026-03-15T12:46:04+00:00",
+      "velocity_hours": 6.1,
+      "ru_seeders": [
+        "NoPewGroup13",
+        "yaremshooter"
+      ],
+      "fr_receivers": [
+        "Deep_Operations_Group"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1002218426885,
+          "username": "NoPewGroup13",
+          "title": "No Pew Group 🏴‍☠️",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-15T12:46:04+00:00",
+          "delay_hours": 0.0,
+          "text": "В одной из запрещенных соцсетей можно наблюдать следующую картину. Форварды на своих страницах возгорают пятой точкой на"
+        },
+        {
+          "channel_id": -1001647790706,
+          "username": "yaremshooter",
+          "title": "Военкор Ярем",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-15T14:27:01+00:00",
+          "delay_hours": 1.7,
+          "text": "В одной из запрещенных соцсетей можно наблюдать следующую картину. Форварды на своих страницах возгорают пятой точкой на"
+        },
+        {
+          "channel_id": -1002966216403,
+          "username": "Deep_Operations_Group",
+          "title": "Deep Operations Group",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-15T18:54:46+00:00",
+          "delay_hours": 6.1,
+          "text": "В одной из запрещенных соцсетей можно наблюдать следующую картину. Форварды на своих страницах возгорают пятой точкой на"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "возгорают",
+        "возгорают пятой",
+        "запрещенных",
+        "запрещенных соцсетей",
+        "картину"
+      ],
+      "id": "ep_forward_013",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1002966216403,
+        -1002218426885,
+        -1001647790706
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward",
+        "media"
+      ],
+      "n_pivots": 2,
+      "label": "@Casdorff → @MemoriaNatio : 2 reprise(s)",
+      "first_ts": "2026-03-20T08:30:31+00:00",
+      "velocity_hours": 12.1,
+      "ru_seeders": [
+        "Casdorff",
+        "hersantite"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1003576018541,
+          "username": "Casdorff",
+          "title": "Will Casdorff",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-20T08:30:31+00:00",
+          "delay_hours": 0.0,
+          "text": "Since the passing of Quentin Deranque five weeks ago, nationalist groups from around the world have shown respect and pa"
+        },
+        {
+          "channel_id": -1003323540418,
+          "username": "hersantite",
+          "title": "Hersantite",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-20T09:37:01+00:00",
+          "delay_hours": 1.1,
+          "text": "Since the passing of Quentin Deranque five weeks ago, nationalist groups from around the world have shown respect and pa"
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-20T20:36:17+00:00",
+          "delay_hours": 12.1,
+          "text": "Since the passing of Quentin Deranque five weeks ago, nationalist groups from around the world have shown respect and pa"
+        }
+      ],
+      "corroboration": 2,
+      "corroborating_signals": [
+        "forward",
+        "media"
+      ],
+      "subject": [
+        "around",
+        "around world",
+        "deranque",
+        "deranque five",
+        "five"
+      ],
+      "id": "ep_forward_014",
+      "tier": "T2",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003576018541,
+        -1003323540418,
+        -1001930632271
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@AmalekInternationalV10 → @MemoriaNatio : 1 reprise(s)",
+      "first_ts": "2026-06-03T21:03:01+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "AmalekInternationalV10",
+        "AmalekInternationalV11",
+        "Himawarikai",
+        "RedIceGiant",
+        "rediceuncensored",
+        "whiteyouthinrevolt"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 7,
+      "appearances": [
+        {
+          "channel_id": -1003825303666,
+          "username": "RedIceGiant",
+          "title": "Ice Giant",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-03T21:03:01+00:00",
+          "delay_hours": 0.0,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-06-03T21:03:01+00:00",
+          "delay_hours": 0.0,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        },
+        {
+          "channel_id": -1002184229265,
+          "username": "rediceuncensored",
+          "title": "Red Ice Uncensored ⨁",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-03T21:03:03+00:00",
+          "delay_hours": 0.0,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        },
+        {
+          "channel_id": -1003516196312,
+          "username": "whiteyouthinrevolt",
+          "title": "White Youth in Revolt",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-03T21:20:20+00:00",
+          "delay_hours": 0.3,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        },
+        {
+          "channel_id": -1003878959128,
+          "username": "Himawarikai",
+          "title": "Sunflower Society ひまわり会",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-03T21:42:17+00:00",
+          "delay_hours": 0.7,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        },
+        {
+          "channel_id": -1002441665310,
+          "username": "AmalekInternationalV10",
+          "title": "Amalek International V10",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-04T04:30:53+00:00",
+          "delay_hours": 7.5,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        },
+        {
+          "channel_id": -1002657079483,
+          "username": "AmalekInternationalV11",
+          "title": "Amalek International V11",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-04T04:30:53+00:00",
+          "delay_hours": 7.5,
+          "text": "🇫🇷 Macron’s terror regime: 1312 raided a nationalist event in Paris tonight to arrest the American writer Jared Taylor. "
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "1312",
+        "1312 raided",
+        "american",
+        "american writer",
+        "arrest"
+      ],
+      "id": "ep_forward_015",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003878959128,
+        -1003825303666,
+        -1003516196312,
+        -1002657079483,
+        -1002441665310,
+        -1002184229265,
+        -1001930632271
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 37,
+      "label": "@peinturecatholique → @lanouvellechevalerie : 37 reprise(s)",
+      "first_ts": "2026-02-22T07:30:10+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "peinturecatholique"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003682857180,
+          "username": "peinturecatholique",
+          "title": "Peinture catholique",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-02-22T07:30:10+00:00",
+          "delay_hours": 0.0,
+          "text": "Francisco de Zurbarán - L'Exposition du corps de saint Bonaventure (1629)"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-03T09:09:44+00:00",
+          "delay_hours": 217.7,
+          "text": "Francisco de Zurbarán - L'Exposition du corps de saint Bonaventure (1629)"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "1629",
+        "bonaventure",
+        "bonaventure 1629",
+        "corps",
+        "corps saint"
+      ],
+      "id": "ep_forward_016",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003682857180,
+        -1001755442117
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 2,
+      "label": "@AbbeGuyPages → @lanouvellechevalerie : 2 reprise(s)",
+      "first_ts": "2026-03-10T18:36:10+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "AbbeGuyPages"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001552609228,
+          "username": "AbbeGuyPages",
+          "title": "Abbé Guy Pagès",
+          "side": "RU",
+          "france_targeting": null,
+          "ts": "2026-03-10T18:36:10+00:00",
+          "delay_hours": 0.0,
+          "text": "La deuxième étape du jihad -865 Le jihad se poursuit au niveau juridique par des procès, pour islamophobie par exemple, "
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-12T09:23:02+00:00",
+          "delay_hours": 38.8,
+          "text": "La deuxième étape du jihad -865 Le jihad se poursuit au niveau juridique par des procès, pour islamophobie par exemple, "
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "jihad",
+        "deuxième",
+        "deuxième étape",
+        "exemple",
+        "islamophobie"
+      ],
+      "id": "ep_forward_017",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001755442117,
+        -1001552609228
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 4,
+      "label": "@archiveskadosh → @lanouvellechevalerie : 4 reprise(s)",
+      "first_ts": "2025-11-24T21:38:58+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-11-24T21:38:58+00:00",
+          "delay_hours": 0.0,
+          "text": "Sois la stabilité dans un monde d’instables. Sois la droiture dans un monde de corrompus. Sois le feu dans un monde de t"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-11-24T21:38:58+00:00",
+          "delay_hours": 0.0,
+          "text": "Sois la stabilité dans un monde d’instables. Sois la droiture dans un monde de corrompus. Sois le feu dans un monde de t"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "monde",
+        "sois",
+        "corrompus",
+        "corrompus sois",
+        "droiture"
+      ],
+      "id": "ep_forward_018",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001755442117,
+        -1001508684631
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 9,
+      "label": "@archiveskadosh → @maxime_leroy : 9 reprise(s)",
+      "first_ts": "2025-11-26T09:51:54+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "maxime_leroy"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-11-26T09:51:54+00:00",
+          "delay_hours": 0.0,
+          "text": "Les sales boomers."
+        },
+        {
+          "channel_id": -1001172350130,
+          "username": "maxime_leroy",
+          "title": "⚜️ Maxime Leroy ⚜️",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-11-26T09:51:54+00:00",
+          "delay_hours": 0.0,
+          "text": "Les sales boomers."
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "boomers",
+        "sales",
+        "sales boomers",
+        "boomers sales"
+      ],
+      "id": "ep_forward_019",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001508684631,
+        -1001172350130
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@archiveskadosh → @journaldeschouans : 1 reprise(s)",
+      "first_ts": "2026-04-03T12:03:59+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "journaldeschouans"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2026-04-03T12:03:59+00:00",
+          "delay_hours": 0.0,
+          "text": "Alexandre Lebreton: Rappel à Dieu de Jean-Claude Lozac'hmeur, catholique universitaire érudit ayant largement participé "
+        },
+        {
+          "channel_id": -1001213377875,
+          "username": "journaldeschouans",
+          "title": "JDC - Journal des Chouans",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-04-03T12:03:59+00:00",
+          "delay_hours": 0.0,
+          "text": "Alexandre Lebreton: Rappel à Dieu de Jean-Claude Lozac'hmeur, catholique universitaire érudit ayant largement participé "
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "alexandre",
+        "alexandre lebreton",
+        "ayant",
+        "ayant largement",
+        "catholique universitaire"
+      ],
+      "id": "ep_forward_020",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001508684631,
+        -1001213377875
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 3,
+      "label": "@archiveskadosh → @ephemerides_nationalistes : 3 reprise(s)",
+      "first_ts": "2025-11-28T14:12:14+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "ephemerides_nationalistes"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-11-28T14:12:14+00:00",
+          "delay_hours": 0.0,
+          "text": "1095. Un 27 novembre, à Clermont-Ferrand, le pape Urbain II appelle la foule immense à la formation de la première crois"
+        },
+        {
+          "channel_id": -1002137142039,
+          "username": "ephemerides_nationalistes",
+          "title": "Ephémérides Nationalistes",
+          "side": "FR",
+          "france_targeting": 0.157,
+          "ts": "2025-11-28T14:12:14+00:00",
+          "delay_hours": 0.0,
+          "text": "1095. Un 27 novembre, à Clermont-Ferrand, le pape Urbain II appelle la foule immense à la formation de la première crois"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "1095",
+        "1095 novembre",
+        "appelle",
+        "appelle foule",
+        "clermont"
+      ],
+      "id": "ep_forward_021",
+      "tier": "T1",
+      "fr_targeting_max": 0.157,
+      "channel_ids": [
+        -1002137142039,
+        -1001508684631
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@archiveskadosh → @MemoriaNatio : 1 reprise(s)",
+      "first_ts": "2026-01-24T11:40:52+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2026-01-24T11:40:52+00:00",
+          "delay_hours": 0.0,
+          "text": "Statue Charlemagne, Liège 🇧🇪"
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-01-24T11:40:52+00:00",
+          "delay_hours": 0.0,
+          "text": "Statue Charlemagne, Liège 🇧🇪"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "charlemagne liège",
+        "liège",
+        "statue",
+        "statue charlemagne",
+        "charlemagne"
+      ],
+      "id": "ep_forward_022",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001930632271,
+        -1001508684631
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 2,
+      "label": "@archiveskadosh → @la_nouvelle_france : 2 reprise(s)",
+      "first_ts": "2025-11-29T09:07:54+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "la_nouvelle_france"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-11-29T09:07:54+00:00",
+          "delay_hours": 0.0,
+          "text": "Quand il faut aller mourir y a plus de diversité, plus de France black blanc beur ... @la_nouvelle_france"
+        },
+        {
+          "channel_id": -1001671405375,
+          "username": "la_nouvelle_france",
+          "title": "La Nouvelle France 🇫🇷",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-11-29T09:07:54+00:00",
+          "delay_hours": 0.0,
+          "text": "Quand il faut aller mourir y a plus de diversité, plus de France black blanc beur ... @la_nouvelle_france"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "aller",
+        "aller mourir",
+        "beur",
+        "beur la_nouvelle_france",
+        "black"
+      ],
+      "id": "ep_forward_023",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001671405375,
+        -1001508684631
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@archiveskadosh → @RiposteCatholique : 1 reprise(s)",
+      "first_ts": "2025-12-23T14:45:10+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "archiveskadosh"
+      ],
+      "fr_receivers": [
+        "RiposteCatholique"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001508684631,
+          "username": "archiveskadosh",
+          "title": "Kadosh",
+          "side": "RU",
+          "france_targeting": 0.157,
+          "ts": "2025-12-23T14:45:10+00:00",
+          "delay_hours": 0.0,
+          "text": "Carte des messes de Noël en rite traditionnel (2025) https://riposte-catholique.fr/archives/212344 @RiposteCatholique"
+        },
+        {
+          "channel_id": -1001161335828,
+          "username": "RiposteCatholique",
+          "title": "Riposte Catholique",
+          "side": "FR",
+          "france_targeting": 0.292,
+          "ts": "2025-12-23T14:45:10+00:00",
+          "delay_hours": 0.0,
+          "text": "Carte des messes de Noël en rite traditionnel (2025) https://riposte-catholique.fr/archives/212344 @RiposteCatholique"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "2025 riposte",
+        "212344",
+        "212344 ripostecatholique",
+        "archives",
+        "archives 212344"
+      ],
+      "id": "ep_forward_024",
+      "tier": "T1",
+      "fr_targeting_max": 0.292,
+      "channel_ids": [
+        -1001508684631,
+        -1001161335828
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@arktosmedia → @MemoriaNatio : 1 reprise(s)",
+      "first_ts": "2026-02-16T12:21:17+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "arktosmedia"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001177375464,
+          "username": "arktosmedia",
+          "title": "Arktos",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-02-16T12:21:17+00:00",
+          "delay_hours": 0.0,
+          "text": "🇫🇷 Angry French nationalists took to the streets of Paris this afternoon, scanding \"Raphaël Arnault: assassins!\" Raphaël"
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-02-16T12:21:17+00:00",
+          "delay_hours": 0.0,
+          "text": "🇫🇷 Angry French nationalists took to the streets of Paris this afternoon, scanding \"Raphaël Arnault: assassins!\" Raphaël"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "raphaël",
+        "afternoon",
+        "afternoon scanding",
+        "angry",
+        "angry french"
+      ],
+      "id": "ep_forward_025",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001930632271,
+        -1001177375464
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@Sentinelle_Invisible → @MediasPresseInfo : 1 reprise(s)",
+      "first_ts": "2026-02-23T19:22:29+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "Sentinelle_Invisible"
+      ],
+      "fr_receivers": [
+        "MediasPresseInfo"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001951785840,
+          "username": "Sentinelle_Invisible",
+          "title": "Sentinelle de l'Invisible",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-02-23T19:22:29+00:00",
+          "delay_hours": 0.0,
+          "text": "Pour une littérature catholique, par Le Petit Béraldien « L’art est soumis à la loi morale, à laquelle n’échappe aucune "
+        },
+        {
+          "channel_id": -1001423737820,
+          "username": "MediasPresseInfo",
+          "title": "Médias Presse Info",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-02-23T19:22:29+00:00",
+          "delay_hours": 0.0,
+          "text": "Pour une littérature catholique, par Le Petit Béraldien « L’art est soumis à la loi morale, à laquelle n’échappe aucune "
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "aucune",
+        "béraldien",
+        "béraldien soumis",
+        "catholique petit",
+        "laquelle"
+      ],
+      "id": "ep_forward_026",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001951785840,
+        -1001423737820
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@VivreEuropeen → @LesBraves : 1 reprise(s)",
+      "first_ts": "2025-06-26T15:53:30+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "VivreEuropeen"
+      ],
+      "fr_receivers": [
+        "LesBraves"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001503069807,
+          "username": "VivreEuropeen",
+          "title": "Vivre Européen | Laurent",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2025-06-26T15:53:30+00:00",
+          "delay_hours": 0.0,
+          "text": "🎙 CE SOIR 21H : LA TERRASSE | Tier list des médias de DROITE ! 👉 https://www.youtube.com/live/bK8kuvP3uXI 📺 Valeurs Actu"
+        },
+        {
+          "channel_id": -1001388763748,
+          "username": "LesBraves",
+          "title": "Les Braves",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2025-06-26T15:53:30+00:00",
+          "delay_hours": 0.0,
+          "text": "🎙 CE SOIR 21H : LA TERRASSE | Tier list des médias de DROITE ! 👉 https://www.youtube.com/live/bK8kuvP3uXI 📺 Valeurs Actu"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "actu",
+        "bk8kuvp3uxi",
+        "bk8kuvp3uxi valeurs",
+        "droite",
+        "droite youtube"
+      ],
+      "id": "ep_forward_027",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001503069807,
+        -1001388763748
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 2,
+      "label": "@VivreEuropeen → @bonnedroite : 2 reprise(s)",
+      "first_ts": "2024-11-17T17:04:24+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "VivreEuropeen"
+      ],
+      "fr_receivers": [
+        "bonnedroite"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001503069807,
+          "username": "VivreEuropeen",
+          "title": "Vivre Européen | Laurent",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2024-11-17T17:04:24+00:00",
+          "delay_hours": 0.0,
+          "text": "📣🔎 Découverte : la chaîne Vivre Européen Vous rêvez d'explorer l'Europe sans bouger de chez vous ? De passer un bon mome"
+        },
+        {
+          "channel_id": -1001487459223,
+          "username": "bonnedroite",
+          "title": "Une Bonne Droite (UBD)",
+          "side": "FR",
+          "france_targeting": 0.157,
+          "ts": "2024-11-17T17:04:24+00:00",
+          "delay_hours": 0.0,
+          "text": "📣🔎 Découverte : la chaîne Vivre Européen Vous rêvez d'explorer l'Europe sans bouger de chez vous ? De passer un bon mome"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "bouger",
+        "bouger chez",
+        "chaîne",
+        "chaîne vivre",
+        "chez"
+      ],
+      "id": "ep_forward_028",
+      "tier": "T1",
+      "fr_targeting_max": 0.157,
+      "channel_ids": [
+        -1001503069807,
+        -1001487459223
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 2,
+      "label": "@CIG_telegram → @MemoriaNatio : 2 reprise(s)",
+      "first_ts": "2026-06-07T15:20:21+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "CIG_telegram"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001458480018,
+          "username": "CIG_telegram",
+          "title": "/CIG/ Telegram | Counter Intelligence Global",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-07T15:20:21+00:00",
+          "delay_hours": 0.0,
+          "text": ""
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-06-07T15:20:21+00:00",
+          "delay_hours": 0.0,
+          "text": ""
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [],
+      "id": "ep_forward_029",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001930632271,
+        -1001458480018
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 3,
+      "label": "@whiteyouthinrevolt → @MemoriaNatio : 3 reprise(s)",
+      "first_ts": "2026-06-08T15:13:18+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "whiteyouthinrevolt"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003516196312,
+          "username": "whiteyouthinrevolt",
+          "title": "White Youth in Revolt",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-06-08T15:13:18+00:00",
+          "delay_hours": 0.0,
+          "text": ""
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-06-08T15:13:18+00:00",
+          "delay_hours": 0.0,
+          "text": ""
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [],
+      "id": "ep_forward_030",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003516196312,
+        -1001930632271
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@UltrasCroatia → @MemoriaNatio : 1 reprise(s)",
+      "first_ts": "2026-02-13T16:22:01+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "UltrasCroatia"
+      ],
+      "fr_receivers": [
+        "MemoriaNatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001791986979,
+          "username": "UltrasCroatia",
+          "title": "ULTRAS CROATIA",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-02-13T16:22:01+00:00",
+          "delay_hours": 0.0,
+          "text": "RIP QUENTIN ✝ White man, fight back !"
+        },
+        {
+          "channel_id": -1001930632271,
+          "username": "MemoriaNatio",
+          "title": "MEMORIA NATIO",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-02-13T16:22:01+00:00",
+          "delay_hours": 0.0,
+          "text": "RIP QUENTIN ✝ White man, fight back !"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "back",
+        "fight back",
+        "quentin white",
+        "white",
+        "white fight"
+      ],
+      "id": "ep_forward_031",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001930632271,
+        -1001791986979
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 2,
+      "label": "@LaPorteLatine → @brunohirout : 2 reprise(s)",
+      "first_ts": "2026-05-11T07:31:47+00:00",
+      "velocity_hours": 0.0,
+      "ru_seeders": [
+        "LaPorteLatine"
+      ],
+      "fr_receivers": [
+        "brunohirout"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001555067937,
+          "username": "LaPorteLatine",
+          "title": "La Porte Latine",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2026-05-11T07:31:47+00:00",
+          "delay_hours": 0.0,
+          "text": "Membres priants du pèlerinage https://laportelatine.org/activite/pelerinages/membres-priants-du-pelerinage?feed_id=6369"
+        },
+        {
+          "channel_id": -1001458631191,
+          "username": "brunohirout",
+          "title": "🇲🇫 Bruno Hirout",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-05-11T07:33:53+00:00",
+          "delay_hours": 0.0,
+          "text": "Membres priants du pèlerinage https://laportelatine.org/activite/pelerinages/membres-priants-du-pelerinage?feed_id=6369"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "membres",
+        "membres priants",
+        "priants",
+        "6369",
+        "activite"
+      ],
+      "id": "ep_forward_032",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001555067937,
+        -1001458631191
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 49,
+      "label": "@veritasliberabitvos3 → @lanouvellechevalerie : 49 reprise(s)",
+      "first_ts": "2026-03-01T08:02:17+00:00",
+      "velocity_hours": 0.1,
+      "ru_seeders": [
+        "veritasliberabitvos3"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie",
+        "subversionprotestante"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1001948335226,
+          "username": "veritasliberabitvos3",
+          "title": "Veritas liberabit vos",
+          "side": "RU",
+          "france_targeting": null,
+          "ts": "2026-03-01T08:02:17+00:00",
+          "delay_hours": 0.0,
+          "text": "C'est l'état d'enfants de Dieu qui nous constitue chrétiens, spirituels, vivant de la propre vie de notre Père céleste q"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-01T18:04:51+00:00",
+          "delay_hours": 10.0,
+          "text": "C'est l'état d'enfants de Dieu qui nous constitue chrétiens, spirituels, vivant de la propre vie de notre Père céleste q"
+        },
+        {
+          "channel_id": -1002369538428,
+          "username": "subversionprotestante",
+          "title": "Lumières sur le protestantisme",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-04-09T13:07:28+00:00",
+          "delay_hours": 0.1,
+          "text": "On voit dans toute l’histoire de la Réforme un changement perpétuel. Les réformateurs ont commencé par attaquer l’autori"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "chrétiens",
+        "chrétiens spirituels",
+        "constitue",
+        "constitue chrétiens",
+        "céleste"
+      ],
+      "id": "ep_forward_033",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1002369538428,
+        -1001948335226,
+        -1001755442117
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 2,
+      "label": "@LaPorteLatine → @halterophilo : 2 reprise(s)",
+      "first_ts": "2026-05-19T08:12:16+00:00",
+      "velocity_hours": 0.1,
+      "ru_seeders": [
+        "LaPorteLatine"
+      ],
+      "fr_receivers": [
+        "halterophilo"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001555067937,
+          "username": "LaPorteLatine",
+          "title": "La Porte Latine",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2026-05-19T08:12:16+00:00",
+          "delay_hours": 0.0,
+          "text": "Pour la défense du Sacerdoce [vidéo] • Abbé Bernard de Lacoste https://laportelatine.org/medias/videotheque/pour-la-defe"
+        },
+        {
+          "channel_id": -1001325230184,
+          "username": "halterophilo",
+          "title": "Haltérophilo",
+          "side": "FR",
+          "france_targeting": null,
+          "ts": "2026-05-19T09:02:01+00:00",
+          "delay_hours": 0.8,
+          "text": "Pour la défense du Sacerdoce [vidéo] • Abbé Bernard de Lacoste https://laportelatine.org/medias/videotheque/pour-la-defe"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "abbé",
+        "abbé bernard",
+        "bernard",
+        "bernard lacoste",
+        "defe"
+      ],
+      "id": "ep_forward_034",
+      "tier": "T1",
+      "fr_targeting_max": null,
+      "channel_ids": [
+        -1001555067937,
+        -1001325230184
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@AbbeGuyPages → @SteGenevieve75 : 1 reprise(s)",
+      "first_ts": "2026-05-18T07:23:18+00:00",
+      "velocity_hours": 0.2,
+      "ru_seeders": [
+        "AbbeGuyPages"
+      ],
+      "fr_receivers": [
+        "SteGenevieve75"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001552609228,
+          "username": "AbbeGuyPages",
+          "title": "Abbé Guy Pagès",
+          "side": "RU",
+          "france_targeting": null,
+          "ts": "2026-05-18T07:23:18+00:00",
+          "delay_hours": 0.0,
+          "text": "République et islam : liaisons dangereuses ? Une de mes conférences, donnée à l'association sainte Geneviève, dont la vi"
+        },
+        {
+          "channel_id": -1002075683170,
+          "username": "SteGenevieve75",
+          "title": "Association Sainte Geneviève Paris",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-05-18T07:36:08+00:00",
+          "delay_hours": 0.2,
+          "text": "République et islam : liaisons dangereuses ? Une de mes conférences, donnée à l'association sainte Geneviève, dont la vi"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "association",
+        "association sainte",
+        "conférences",
+        "conférences donnée",
+        "dangereuses"
+      ],
+      "id": "ep_forward_035",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1002075683170,
+        -1001552609228
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@Sentinelle_Invisible → @francenatio : 1 reprise(s)",
+      "first_ts": "2026-02-13T12:41:52+00:00",
+      "velocity_hours": 2.0,
+      "ru_seeders": [
+        "Sentinelle_Invisible"
+      ],
+      "fr_receivers": [
+        "francenatio",
+        "varnationaliste"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1001951785840,
+          "username": "Sentinelle_Invisible",
+          "title": "Sentinelle de l'Invisible",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-02-13T12:41:52+00:00",
+          "delay_hours": 0.0,
+          "text": "Lyon, jeudi 12 février 2026 Drame en trois actes : 1. Rima Hassan organise une conférence à l'IEP. 2. Le collectif Némés"
+        },
+        {
+          "channel_id": -1001404638819,
+          "username": "francenatio",
+          "title": "Intégralisme organique",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-02-13T14:41:12+00:00",
+          "delay_hours": 2.0,
+          "text": "Lyon, jeudi 12 février 2026 Drame en trois actes : 1. Rima Hassan organise une conférence à l'IEP. 2. Le collectif Némés"
+        },
+        {
+          "channel_id": -1002348356241,
+          "username": "varnationaliste",
+          "title": "VAR NATIONALISTE",
+          "side": "FR",
+          "france_targeting": null,
+          "ts": "2026-02-13T20:27:33+00:00",
+          "delay_hours": 7.8,
+          "text": "Lyon, jeudi 12 février 2026 Drame en trois actes : 1. Rima Hassan organise une conférence à l'IEP. 2. Le collectif Némés"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "2026",
+        "2026 drame",
+        "actes",
+        "actes rima",
+        "collectif"
+      ],
+      "id": "ep_forward_036",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1002348356241,
+        -1001951785840,
+        -1001404638819
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@veritasliberabitvos3 → @lactionfrancaise : 1 reprise(s)",
+      "first_ts": "2026-05-28T08:52:22+00:00",
+      "velocity_hours": 5.2,
+      "ru_seeders": [
+        "veritasliberabitvos3"
+      ],
+      "fr_receivers": [
+        "lactionfrancaise",
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 3,
+      "appearances": [
+        {
+          "channel_id": -1001948335226,
+          "username": "veritasliberabitvos3",
+          "title": "Veritas liberabit vos",
+          "side": "RU",
+          "france_targeting": null,
+          "ts": "2026-05-28T08:52:22+00:00",
+          "delay_hours": 0.0,
+          "text": "Pourquoi tardes-tu ? Pourquoi crains-tu ? Crois, parle, reçois. Que l’humilité prenne confiance, que la pudeur devienne "
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-05-28T14:04:12+00:00",
+          "delay_hours": 5.2,
+          "text": "Pourquoi tardes-tu ? Pourquoi crains-tu ? Crois, parle, reçois. Que l’humilité prenne confiance, que la pudeur devienne "
+        },
+        {
+          "channel_id": -1001341460709,
+          "username": "lactionfrancaise",
+          "title": "L'Action Française 🇫🇷⚜️🇫🇷",
+          "side": "FR",
+          "france_targeting": null,
+          "ts": "2026-05-29T11:10:27+00:00",
+          "delay_hours": 26.3,
+          "text": "Pourquoi tardes-tu ? Pourquoi crains-tu ? Crois, parle, reçois. Que l’humilité prenne confiance, que la pudeur devienne "
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "pourquoi",
+        "confiance",
+        "confiance pudeur",
+        "crains",
+        "crains crois"
+      ],
+      "id": "ep_forward_037",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001948335226,
+        -1001755442117,
+        -1001341460709
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@serviam_podcast → @lanouvellechevalerie : 1 reprise(s)",
+      "first_ts": "2026-03-09T17:03:45+00:00",
+      "velocity_hours": 21.1,
+      "ru_seeders": [
+        "serviam_podcast"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1003394189265,
+          "username": "serviam_podcast",
+          "title": "Serviam Podcast",
+          "side": "RU",
+          "france_targeting": 0.0,
+          "ts": "2026-03-09T17:03:45+00:00",
+          "delay_hours": 0.0,
+          "text": "1:55 – 📰 Actualité : Iran en ruine, ingérences occidentales et désordre libéral 25:21 – ❓ Question d’auditeur (Augustin)"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-10T14:08:02+00:00",
+          "delay_hours": 21.1,
+          "text": "1:55 – 📰 Actualité : Iran en ruine, ingérences occidentales et désordre libéral 25:21 – ❓ Question d’auditeur (Augustin)"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "actualité",
+        "actualité iran",
+        "auditeur",
+        "auditeur augustin",
+        "augustin"
+      ],
+      "id": "ep_forward_038",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1003394189265,
+        -1001755442117
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@Catholicarena → @lanouvellechevalerie : 1 reprise(s)",
+      "first_ts": "2026-03-10T17:30:06+00:00",
+      "velocity_hours": 25.0,
+      "ru_seeders": [
+        "Catholicarena"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001213283525,
+          "username": "Catholicarena",
+          "title": "Catholic Arena",
+          "side": "RU",
+          "france_targeting": 0.4,
+          "ts": "2026-03-10T17:30:06+00:00",
+          "delay_hours": 0.0,
+          "text": "MEXICO 🇲🇽 Catholic women in Guadalajara protected their church from feminist terrorists who wanted to burn it down on Ma"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-03-11T18:29:02+00:00",
+          "delay_hours": 25.0,
+          "text": "MEXICO 🇲🇽 Catholic women in Guadalajara protected their church from feminist terrorists who wanted to burn it down on Ma"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "burn",
+        "burn down",
+        "catholic",
+        "catholic women",
+        "church"
+      ],
+      "id": "ep_forward_039",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001755442117,
+        -1001213283525
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@LaPorteLatine → @lanouvellechevalerie : 1 reprise(s)",
+      "first_ts": "2026-05-28T09:12:26+00:00",
+      "velocity_hours": 34.6,
+      "ru_seeders": [
+        "LaPorteLatine"
+      ],
+      "fr_receivers": [
+        "lanouvellechevalerie"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001555067937,
+          "username": "LaPorteLatine",
+          "title": "La Porte Latine",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2026-05-28T09:12:26+00:00",
+          "delay_hours": 0.0,
+          "text": "Le couronnement impérial de Charlemagne [Vidéo] https://laportelatine.org/formation/le-couronnement-imperial-de-charlema"
+        },
+        {
+          "channel_id": -1001755442117,
+          "username": "lanouvellechevalerie",
+          "title": "La Nouvelle Chevalerie",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-05-29T19:50:45+00:00",
+          "delay_hours": 34.6,
+          "text": "Le couronnement impérial de Charlemagne [Vidéo] https://laportelatine.org/formation/le-couronnement-imperial-de-charlema"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "couronnement",
+        "charlema",
+        "charlemagne vidéo",
+        "couronnement imperial",
+        "couronnement impérial"
+      ],
+      "id": "ep_forward_040",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001755442117,
+        -1001555067937
+      ]
+    },
+    {
+      "pivot_type": "forward",
+      "pivot_types": [
+        "forward"
+      ],
+      "n_pivots": 1,
+      "label": "@LaPorteLatine → @francenatio : 1 reprise(s)",
+      "first_ts": "2026-03-31T13:16:21+00:00",
+      "velocity_hours": 110.8,
+      "ru_seeders": [
+        "LaPorteLatine"
+      ],
+      "fr_receivers": [
+        "francenatio"
+      ],
+      "n_channels": 2,
+      "appearances": [
+        {
+          "channel_id": -1001555067937,
+          "username": "LaPorteLatine",
+          "title": "La Porte Latine",
+          "side": "RU",
+          "france_targeting": 0.21,
+          "ts": "2026-03-31T13:16:21+00:00",
+          "delay_hours": 0.0,
+          "text": "Je ne connais pas cet homme ! https://laportelatine.org/spiritualite/je-ne-connais-pas-cet-homme?feed_id=6258"
+        },
+        {
+          "channel_id": -1001404638819,
+          "username": "francenatio",
+          "title": "Intégralisme organique",
+          "side": "FR",
+          "france_targeting": 0.0,
+          "ts": "2026-04-05T04:03:37+00:00",
+          "delay_hours": 110.8,
+          "text": "Je ne connais pas cet homme ! https://laportelatine.org/spiritualite/je-ne-connais-pas-cet-homme?feed_id=6258"
+        }
+      ],
+      "corroboration": 1,
+      "corroborating_signals": [
+        "forward"
+      ],
+      "subject": [
+        "connais",
+        "connais homme",
+        "homme",
+        "6258",
+        "feed_id 6258"
+      ],
+      "id": "ep_forward_041",
+      "tier": "T1",
+      "fr_targeting_max": 0.0,
+      "channel_ids": [
+        -1001555067937,
+        -1001404638819
+      ]
+    }
+  ]
+}

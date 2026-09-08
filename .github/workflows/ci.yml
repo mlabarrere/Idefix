@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install ${{ matrix.python }}
+      - run: uv sync --extra dev --extra llm --extra embed
+      - name: Lint (ruff)
+        run: uv run ruff check src/ tests/
+      - name: Type check (mypy)
+        # non-bloquant : dette pré-existante (src-layout multi-package sans base explicite).
+        # Voir docs/audits/ponytail-2026-06.md pour le suivi.
+        continue-on-error: true
+        run: uv run mypy src/ --ignore-missing-imports
+      - name: Tests + coverage
+        run: uv run pytest tests/ --cov=src --cov-report=term-missing

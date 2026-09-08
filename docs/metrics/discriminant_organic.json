@@ -1,0 +1,183 @@
+{
+  "experiment": "discriminant_hostile_vs_organic",
+  "n_coordination_triggered": 446,
+  "n_T2": 48,
+  "what_drives_suspicion_among_coordinated": {
+    "spearman_suspicion_vs_coordination_value": 0.2529,
+    "spearman_suspicion_vs_adversary_linkage": 0.7647,
+    "spearman_suspicion_vs_base": 0.4879,
+    "lecture": "Si linkage >> coordination_value, la discrimination vient des boosts d'ancrage adverse, PAS de la structure de coordination."
+  },
+  "organic_candidates_count": 0,
+  "organic_candidates_in_suspicion_top50": 0,
+  "top15_coordination": [
+    {
+      "username": "@MID_Russia",
+      "title": "МИД России 🇷🇺",
+      "coord_value": 1.0,
+      "suspicion": 0.816,
+      "rang_suspicion": 2,
+      "adversary_linkage": 0.809,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@balkanar",
+      "title": "БАЛКАНАРЬ",
+      "coord_value": 1.0,
+      "suspicion": 0.67,
+      "rang_suspicion": 4,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@WarAxis",
+      "title": "WarAxis | Breaking News and Updates",
+      "coord_value": 1.0,
+      "suspicion": 0.648,
+      "rang_suspicion": 7,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@rybar_latam",
+      "title": "ЛАТИНАРЬ",
+      "coord_value": 1.0,
+      "suspicion": 0.648,
+      "rang_suspicion": 8,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@SCF_Portuguese",
+      "title": "Fundação Cultura Estratégica",
+      "coord_value": 1.0,
+      "suspicion": 0.646,
+      "rang_suspicion": 10,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@rybar_mena",
+      "title": "ОРИЕНТАРЬ",
+      "coord_value": 1.0,
+      "suspicion": 0.616,
+      "rang_suspicion": 12,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@MKhamenei_en",
+      "title": "Ayatollah Mojtaba Khamenei",
+      "coord_value": 1.0,
+      "suspicion": 0.615,
+      "rang_suspicion": 14,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@historyreviewedtv",
+      "title": "HistoryreviewedTV",
+      "coord_value": 1.0,
+      "suspicion": 0.615,
+      "rang_suspicion": 15,
+      "adversary_linkage": 1.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@PoliticsGR",
+      "title": "PoliticsGR - Geopolitics 🇬🇷🇨🇾🇪🇺",
+      "coord_value": 1.0,
+      "suspicion": 0.554,
+      "rang_suspicion": 17,
+      "adversary_linkage": 0.889,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@rybar",
+      "title": "Рыбарь",
+      "coord_value": 1.0,
+      "suspicion": 0.547,
+      "rang_suspicion": 18,
+      "adversary_linkage": 0.973,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@MFARussia",
+      "title": "Russian MFA 🇷🇺",
+      "coord_value": 1.0,
+      "suspicion": 0.545,
+      "rang_suspicion": 19,
+      "adversary_linkage": 0.355,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@editionsmeystre",
+      "title": "Les Éditions Meystre",
+      "coord_value": 1.0,
+      "suspicion": 0.542,
+      "rang_suspicion": 23,
+      "adversary_linkage": 0.0,
+      "credibility_prior": "other",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@CIG_telegram",
+      "title": "/CIG/ Telegram | Counter Intelligence Global",
+      "coord_value": 1.0,
+      "suspicion": 0.526,
+      "rang_suspicion": 27,
+      "adversary_linkage": 0.731,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@basedblondieebroadcast",
+      "title": "BasedBlondiee Broadcast 💗",
+      "coord_value": 1.0,
+      "suspicion": 0.52,
+      "rang_suspicion": 29,
+      "adversary_linkage": 0.909,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    },
+    {
+      "username": "@africancrisistv",
+      "title": "AfricanCrisisTV",
+      "coord_value": 1.0,
+      "suspicion": 0.513,
+      "rang_suspicion": 30,
+      "adversary_linkage": 0.0,
+      "credibility_prior": "suspect",
+      "tier": "T2",
+      "verdict_humain": "?? (organique / adverse / inconnu)"
+    }
+  ],
+  "organic_candidates_to_label": [],
+  "falsify_rule": "FALSIFIÉ si ≥3 des organic_candidates confirmés organiques sont dans le top-50 suspicion (contamination de la file opérationnelle).",
+  "human_step_required": true
+}

@@ -1,0 +1,15 @@
+{
+  "generated": "bench",
+  "corpus": {
+    "channels": 3788,
+    "edges": 16275,
+    "messages": 168768,
+    "channel_scores": 7313
+  },
+  "rest_count_seconds": 2.28,
+  "embed_cache_files": 13175,
+  "encode_32_miss_s": 9.423,
+  "encode_32_hit_s": 0.061,
+  "encode_throughput_texts_per_s_miss": 3.4,
+  "cache_speedup_x": 155.1
+}

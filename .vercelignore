@@ -1,0 +1,43 @@
+# Déploiement CLI Vercel — limite le téléversement au strict nécessaire (build
+# statique de webapp/). Le déploiement Git respecte .gitignore ; le déploiement
+# CLI respecte CE fichier. Sans lui, la CLI téléverse node_modules, .venv et —
+# surtout — backups/ (dumps PostgreSQL) et data/ (texte de messages crawlés).
+#
+# IMPORTANT : les chemins racine-seulement sont ancrés par un « / » initial pour
+# NE PAS exclure leurs homonymes sous webapp/ (webapp/scripts = pull-*.mjs du
+# build ; webapp/public/data = bundle committé servi par le site).
+
+# Dépendances / artefacts (réinstallés/régénérés côté Vercel)
+node_modules/
+/webapp/dist/
+
+# Python & pipeline hors-ligne — inutile au build statique
+/.venv/
+/venv/
+/.uv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+/src/
+/tests/
+/scripts/
+/alembic/
+/supabase/
+
+# Données sensibles / volumineuses — NE JAMAIS téléverser
+/data/
+/backups/
+*.dump
+/logs/
+
+# Artefacts BMAD & docs (le site n'en dépend pas au build)
+/_bmad/
+/_bmad-output/
+/docs/
+
+# Secrets / local
+.env
+.env.local
+*.session
+*.session-journal

@@ -1,0 +1,33 @@
+{
+  "experiment": "known_episode_topk_recovery",
+  "n_channels": 3699,
+  "episodes": [
+    {
+      "episode": "Dugin Eurasianist Network (External Gold) (EXTERNE — non circulaire)",
+      "cluster_size": 12,
+      "matched_in_corpus": 3,
+      "recall@20": 0.0,
+      "precision@20": 0.0,
+      "random_control_recall@20": 0.065,
+      "recall@50": 0.1667,
+      "precision@50": 0.04,
+      "random_control_recall@50": 0.162,
+      "recall@100": 0.1667,
+      "precision@100": 0.02,
+      "random_control_recall@100": 0.324,
+      "rank_median": 50,
+      "rank_min": 49,
+      "rank_max": 440,
+      "beats_random_x": 12.35,
+      "indicative_verdict": "RÉCUPÈRE (au-dessus du hasard)",
+      "gold_schema": "schema:v1",
+      "external_seeds": {
+        "count": 3,
+        "rank_median": 50,
+        "in_top50": 2
+      }
+    }
+  ],
+  "note": "Le test PROBANT nécessite data/eval/gold_episode_<nom>.json (liste de graines définie par un HUMAIN externe). Sans lui, seul le cluster Dugin (indicatif, circularité partielle) est mesuré.",
+  "has_external_gold": true
+}

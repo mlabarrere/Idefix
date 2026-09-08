@@ -1,0 +1,104 @@
+# Secrets — NEVER commit
+.env
+.env.*
+!.env.example
+*.session
+*.session-journal
+
+# Data — gitignored sauf .gitkeep
+data/annotations/*
+data/catalogue/*
+data/claims/
+data/dossiers/*
+data/exports/*
+data/graphs/*
+data/models/*
+data/raw/*
+data/russosphere/
+!data/**/.gitkeep
+
+# LLM offline cache (Mistral parallel track) — régénérable, peut contenir du texte
+# de messages dans les requêtes ; jamais committé. Re-runs gratuits depuis ce cache.
+data/llm_cache/
+
+# Cache d'embeddings (sentence-transformers) — régénérable, peut contenir du texte
+# de messages ; jamais committé.
+data/embed_cache/
+
+# DB locale
+*.db
+*.db-journal
+
+# Backups DB (pg_dump) — redondance via OneDrive, hors git (volumineux)
+backups/
+*.dump
+
+# Bundle statique généré (scripts/export_static.py) — contient le dataset complet
+data/*.json
+data/*.js
+data/episodes/
+
+# Mode Vercel-only : le bundle servi par la webapp statique est committé et
+# déployé avec le repo (auto-deploy git-push). Régénérable via analyze_*.py.
+# Build & deps Vite
+webapp/dist/
+webapp/node_modules/
+webapp/.vercel/
+
+# Rapports de validation/falsification (régénérables ; contiennent du texte de messages)
+data/eval/
+
+# Session web Streamlit
+disinfo_auth.session
+test_*.session
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.uv/
+*.egg-info/
+dist/
+build/
+
+# Keep annotations (small, valuable)
+!data/annotations/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NB: uv.lock is intentionally version-controlled (NOT ignored) for reproducible installs.
+
+# BMAD framework local
+_bmad/
+_bmad-output/
+# Claude Code local state — not tracked in OSS repo
+.claude
+.claude/
+.agents/
+
+# Docs stale
+docs/onboarding-report.html
+docs/operational-plan.html
+
+# CLI Vercel installée localement à la racine (junk)
+/node_modules/
+/package.json
+/package-lock.json
+
+# Bundle per-canal volumineux (regénérable via scripts/export_via_rest_api.py depuis Supabase)
+webapp/public/data/*/channels/
+.vercel
+.env*

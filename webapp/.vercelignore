@@ -1,0 +1,5 @@
+# Vercel CLI : ce fichier REMPLACE .gitignore pour l'upload de déploiement.
+# Crucial : public/data/ (gitignoré car régénérable) DOIT partir dans le déploiement.
+node_modules
+dist
+.vercel

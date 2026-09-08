@@ -1,0 +1,281 @@
+{
+  "generated": "rest-eval russosphere (channel_scores 3699, graphe 3788n/6889 FORWARD)",
+  "exp1_ablation": {
+    "verdict": "PASS",
+    "spearman": {
+      "in_degree_centrality": 0.6668,
+      "eigenvector_centrality": 0.5366,
+      "forward_influence_out_weight": 0.4244,
+      "activity_engagement": 0.3172,
+      "cascade_family_value_composite": 0.7919
+    },
+    "jaccard50": {
+      "in_degree_centrality": 0.0204,
+      "eigenvector_centrality": 0.0526,
+      "forward_influence_out_weight": 0.0989,
+      "activity_engagement": 0.0101,
+      "cascade_family_value_composite": 0.1905
+    },
+    "falsify": {
+      "spearman": 0.9,
+      "jaccard_top50": 0.8
+    }
+  },
+  "exp2_episode_recovery_external": {
+    "episode": "Dugin Eurasianist Network (External Gold) (EXTERNE — non circulaire)",
+    "cluster_size": 12,
+    "matched_in_corpus": 3,
+    "recall@20": 0.0,
+    "precision@20": 0.0,
+    "random_control_recall@20": 0.065,
+    "recall@50": 0.1667,
+    "precision@50": 0.04,
+    "random_control_recall@50": 0.162,
+    "recall@100": 0.1667,
+    "precision@100": 0.02,
+    "random_control_recall@100": 0.324,
+    "rank_median": 50,
+    "rank_min": 49,
+    "rank_max": 440,
+    "beats_random_x": 12.35,
+    "indicative_verdict": "RÉCUPÈRE (au-dessus du hasard)",
+    "gold_schema": "schema:v1",
+    "external_seeds": {
+      "count": 3,
+      "rank_median": 50,
+      "in_top50": 2
+    }
+  },
+  "exp3_discriminant": {
+    "experiment": "discriminant_hostile_vs_organic",
+    "n_coordination_triggered": 446,
+    "n_T2": 48,
+    "what_drives_suspicion_among_coordinated": {
+      "spearman_suspicion_vs_coordination_value": 0.2529,
+      "spearman_suspicion_vs_adversary_linkage": 0.7647,
+      "spearman_suspicion_vs_base": 0.4879,
+      "lecture": "Si linkage >> coordination_value, la discrimination vient des boosts d'ancrage adverse, PAS de la structure de coordination."
+    },
+    "organic_candidates_count": 0,
+    "organic_candidates_in_suspicion_top50": 0,
+    "top15_coordination": [
+      {
+        "username": "@MID_Russia",
+        "title": "МИД России 🇷🇺",
+        "coord_value": 1.0,
+        "suspicion": 0.816,
+        "rang_suspicion": 2,
+        "adversary_linkage": 0.809,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@balkanar",
+        "title": "БАЛКАНАРЬ",
+        "coord_value": 1.0,
+        "suspicion": 0.67,
+        "rang_suspicion": 4,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@WarAxis",
+        "title": "WarAxis | Breaking News and Updates",
+        "coord_value": 1.0,
+        "suspicion": 0.648,
+        "rang_suspicion": 7,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@rybar_latam",
+        "title": "ЛАТИНАРЬ",
+        "coord_value": 1.0,
+        "suspicion": 0.648,
+        "rang_suspicion": 8,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@SCF_Portuguese",
+        "title": "Fundação Cultura Estratégica",
+        "coord_value": 1.0,
+        "suspicion": 0.646,
+        "rang_suspicion": 10,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@rybar_mena",
+        "title": "ОРИЕНТАРЬ",
+        "coord_value": 1.0,
+        "suspicion": 0.616,
+        "rang_suspicion": 12,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@MKhamenei_en",
+        "title": "Ayatollah Mojtaba Khamenei",
+        "coord_value": 1.0,
+        "suspicion": 0.615,
+        "rang_suspicion": 14,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@historyreviewedtv",
+        "title": "HistoryreviewedTV",
+        "coord_value": 1.0,
+        "suspicion": 0.615,
+        "rang_suspicion": 15,
+        "adversary_linkage": 1.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@PoliticsGR",
+        "title": "PoliticsGR - Geopolitics 🇬🇷🇨🇾🇪🇺",
+        "coord_value": 1.0,
+        "suspicion": 0.554,
+        "rang_suspicion": 17,
+        "adversary_linkage": 0.889,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@rybar",
+        "title": "Рыбарь",
+        "coord_value": 1.0,
+        "suspicion": 0.547,
+        "rang_suspicion": 18,
+        "adversary_linkage": 0.973,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@MFARussia",
+        "title": "Russian MFA 🇷🇺",
+        "coord_value": 1.0,
+        "suspicion": 0.545,
+        "rang_suspicion": 19,
+        "adversary_linkage": 0.355,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@editionsmeystre",
+        "title": "Les Éditions Meystre",
+        "coord_value": 1.0,
+        "suspicion": 0.542,
+        "rang_suspicion": 23,
+        "adversary_linkage": 0.0,
+        "credibility_prior": "other",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@CIG_telegram",
+        "title": "/CIG/ Telegram | Counter Intelligence Global",
+        "coord_value": 1.0,
+        "suspicion": 0.526,
+        "rang_suspicion": 27,
+        "adversary_linkage": 0.731,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@basedblondieebroadcast",
+        "title": "BasedBlondiee Broadcast 💗",
+        "coord_value": 1.0,
+        "suspicion": 0.52,
+        "rang_suspicion": 29,
+        "adversary_linkage": 0.909,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      },
+      {
+        "username": "@africancrisistv",
+        "title": "AfricanCrisisTV",
+        "coord_value": 1.0,
+        "suspicion": 0.513,
+        "rang_suspicion": 30,
+        "adversary_linkage": 0.0,
+        "credibility_prior": "suspect",
+        "tier": "T2",
+        "verdict_humain": "?? (organique / adverse / inconnu)"
+      }
+    ],
+    "organic_candidates_to_label": [],
+    "falsify_rule": "FALSIFIÉ si ≥3 des organic_candidates confirmés organiques sont dans le top-50 suspicion (contamination de la file opérationnelle).",
+    "human_step_required": true
+  },
+  "exp_f_embedding_discrimination": {
+    "experiment": "embedding_discrimination",
+    "mission": "russosphere",
+    "baseline_count": 96,
+    "scored_count": 3492,
+    "total": 3588,
+    "roc_auc": 0.5062,
+    "silhouette": 0.0027,
+    "baseline_mean_distance": 0.6486,
+    "scored_mean_distance": 0.6682,
+    "centroid_separation": 0.1707,
+    "tsne_plot": null,
+    "verdict": "FAIBLE (ROC-AUC < 0.7 ou silhouette < 0.3 — embedding ne sépare pas baseline/scored)",
+    "note": "Baseline organique FR (externe) vs scored channels. ROC-AUC cible > 0.7."
+  },
+  "scoring_significance": {
+    "status": "BLOQUÉ",
+    "reason": "channel_gold = 12 positifs / 0 négatifs (corpus organique absent) → ROC-AUC indéfini"
+  },
+  "analytics_vs_embedding": {
+    "intra_cohesion": {
+      "analytics": 0.6709,
+      "embedding": 0.7049,
+      "gain_pct": 5.1
+    },
+    "silhouette": {
+      "analytics": -0.2738,
+      "embedding": 0.0214
+    },
+    "modularity": {
+      "analytics": 0.7547,
+      "embedding": 0.6301
+    },
+    "n_communities": {
+      "analytics": 27,
+      "embedding": 17
+    },
+    "n_communities_raw": {
+      "analytics": 512,
+      "embedding": 464
+    },
+    "partition_agreement": {
+      "nmi": 0.8873,
+      "ari": 0.5276,
+      "n_common": 1170
+    },
+    "n_bridges": 40,
+    "metric_note": "intra_cohesion = cosinus moyen intra-communauté (embeddings locaux), plus haut = groupes plus cohérents. silhouette (Rousseeuw 1987) = cohésion/séparation. modularité (Newman 2006) sur le graphe de LIENS. n_communities = communautés conservées (≥2 canaux). TRADE-OFF : l'embedding monte la cohésion sémantique mais baisse la modularité (les arêtes sémantiques traversent les communautés structurelles) — deux objectifs distincts, pas une régression."
+  }
+}

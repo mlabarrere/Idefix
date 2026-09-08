@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Si vous utilisez ce logiciel ou sa méthodologie, merci de le citer comme suit."
+title: "Idéfix — moteur d'analyse de propagation et de coordination sur Telegram"
+abstract: >-
+  Démonstrateur (PoC) de cartographie de la diffusion coordonnée sur canaux Telegram publics.
+  Décrit des structures observables de diffusion et restitue une file d'examen priorisée,
+  explicable et auditable — jamais un verdict de véracité.
+type: software
+authors:
+  - family-names: Labarrère
+    given-names: Mickaël
+    alias: mlabarrere
+repository-code: "https://github.com/mlabarrere/Idefix"
+url: "https://github.com/mlabarrere/Idefix"
+license: Apache-2.0
+version: 0.3.0-poc
+date-released: 2026-06-29
+keywords:
+  - disinformation
+  - telegram
+  - coordinated-behavior
+  - graph-analysis
+  - influence-operations

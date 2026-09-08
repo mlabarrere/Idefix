@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.local
+.vite/
+# Mode Vercel-only : le bundle de données est committé et déployé avec le repo
+# (auto-deploy git-push). Régénérable via scripts/analyze_communities.py + export_static.
+
+.vercel
+.env*
+
+# Playwright (harnais E2E smoke/inspection) — artefacts de run non versionnés.
+test-results/
+playwright-report/
+playwright/.cache/

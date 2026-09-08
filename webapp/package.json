@@ -1,0 +1,52 @@
+{
+  "name": "idefix-webapp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Idéfix — interface analyste multi-mission (React + Vite + Tailwind + shadcn/ui + Radix, sans backend, build statique).",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "ui:contract": "tsx scripts/check-ui-contract.ts",
+    "i18n:parity": "tsx scripts/check-i18n-parity.ts",
+    "check:galaxy-guard": "node scripts/check-galaxy-guard.mjs",
+    "test:e2e": "playwright test",
+    "build": "node scripts/pull-snapshots.mjs && node scripts/pull-bundle.mjs && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/plus-jakarta-sans": "^5.2.8",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cytoscape": "^3.34.0",
+    "cytoscape-fcose": "^2.2.0",
+    "i18next": "^26.3.4",
+    "lucide-react": "^1.23.0",
+    "radix-ui": "^1.6.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^17.0.8",
+    "react-router-dom": "^6.28.0",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^6.0.2",
+    "eslint": "^10.6.0",
+    "eslint-plugin-better-tailwindcss": "^4.6.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.7.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.0",
+    "tw-animate-css": "^1.4.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.62.1",
+    "vite": "^8.0.16"
+  }
+}

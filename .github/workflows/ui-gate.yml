@@ -1,0 +1,124 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UI gate — Idéfix web app (webapp/) design-system CI.
+#
+# ADVISORY UNTIL PHASE 2. The components still predate tokenization, so `lint`
+# and `ui-contract` currently report a large, EXPECTED baseline of violations.
+# Those two jobs run with `continue-on-error: true` so they SURFACE findings
+# without blocking merges. Once Phase 2 tokenizes the components (baseline → 0)
+# and branch protection is enabled on this repo, remove `continue-on-error` from
+# the `lint` and `ui-contract` jobs to make the gate blocking.
+#
+# Scope: this workflow is intentionally isolated from the repo's Python/pytest/
+# ruff tooling — it only builds/checks the front-end under webapp/.
+# ─────────────────────────────────────────────────────────────────────────────
+name: ui-gate
+
+on:
+  pull_request:
+    paths: ['webapp/**']
+  push:
+    paths: ['webapp/**']
+
+# Least privilege: these jobs only need to read the repo.
+permissions:
+  contents: read
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: ui-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: webapp
+
+jobs:
+  typecheck:
+    name: typecheck (tsc --noEmit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+
+  i18n-parity:
+    name: i18n-parity (6 locales · blocking)
+    runs-on: ubuntu-latest
+    # Blocking: key parity is also compiler-enforced (Messages type), and this
+    # gate adds empty/__MISSING__/placeholder-drift detection. It passes clean.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run i18n:parity
+
+  lint:
+    name: lint (eslint · advisory)
+    runs-on: ubuntu-latest
+    # Advisory until Phase 2 tokenization + branch protection — see header.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+
+  ui-contract:
+    name: ui-contract (design-system audit · advisory)
+    runs-on: ubuntu-latest
+    # Advisory until Phase 2 tokenization + branch protection — see header.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run ui:contract
+
+  e2e:
+    name: e2e (playwright smoke · chromium · advisory)
+    runs-on: ubuntu-latest
+    # Advisory : harnais smoke/inspection (assertions, PAS de visual-regression).
+    # Chromium local uniquement, aucun Docker. Le webServer démarre `npm run dev`
+    # (données statiques committées sous public/data/). N'échoue pas le gate.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: webapp/playwright-report/
+          retention-days: 7
+
+  visual:
+    name: visual regression (stubbed — Phase 3)
+    runs-on: ubuntu-latest
+    steps:
+      # Placeholder only. Phase 3 will enable Dockerized Playwright visual
+      # regression here (deterministic browser, mobile viewports, snapshot diff).
+      - run: echo "visual regression is stubbed — enabled in Phase 3 (Dockerized Playwright)."

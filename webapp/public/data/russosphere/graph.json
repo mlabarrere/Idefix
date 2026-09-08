@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-06-26T17:05:14.951932",
+  "nodes": [
+    {
+      "id": 1,
+      "username": "ProRussiaFR",
+      "title": "Pro-Russia France"
+    },
+    {
+      "id": 2,
+      "username": "ProRussiaEN",
+      "title": "Pro-Russia English"
+    },
+    {
+      "id": 3,
+      "username": "ProRussiaRU",
+      "title": "Про-Россия"
+    },
+    {
+      "id": 4,
+      "username": "InfoAlternative",
+      "title": "Info Alternative FR"
+    },
+    {
+      "id": 5,
+      "username": "VéritésFR",
+      "title": "Vérités Françaises"
+    },
+    {
+      "id": 6,
+      "username": "ActuParis",
+      "title": "Actualités Paris"
+    },
+    {
+      "id": 7,
+      "username": "TechNews",
+      "title": "Tech News FR"
+    }
+  ],
+  "edges": [
+    {
+      "family": "forward",
+      "source": 1,
+      "target": 4,
+      "count": 2
+    },
+    {
+      "family": "coordination",
+      "type": "CO_FORWARD",
+      "a": 1,
+      "b": 4,
+      "count": 1,
+      "dt_seconds": 7200
+    },
+    {
+      "family": "coordination",
+      "type": "TRANSLATION",
+      "a": 1,
+      "b": 2,
+      "count": 1,
+      "dt_seconds": 3600
+    },
+    {
+      "family": "coordination",
+      "type": "TRANSLATION",
+      "a": 1,
+      "b": 3,
+      "count": 1,
+      "dt_seconds": 7200
+    },
+    {
+      "family": "coordination",
+      "type": "TRANSLATION",
+      "a": 2,
+      "b": 3,
+      "count": 1,
+      "dt_seconds": 3600
+    },
+    {
+      "family": "coordination",
+      "type": "TEXT_SIM",
+      "a": 1,
+      "b": 4,
+      "count": 1,
+      "dt_seconds": 14400
+    },
+    {
+      "family": "coordination",
+      "type": "TEXT_SIM",
+      "a": 4,
+      "b": 5,
+      "count": 1,
+      "dt_seconds": 7200
+    }
+  ]
+}
