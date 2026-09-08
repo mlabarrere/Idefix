@@ -39,7 +39,7 @@ dependencies = [
 session = [
     # One-shot Telegram session-string generation UI (scripts/session_web.py).
     # Install on demand: uv sync --extra session
-    "pillow>=11.1.0",      # transitive dep of streamlit — pins safe version (10 CVE HIGH fixed)
+    "pillow>=12.3.0",      # transitive dep of streamlit — pins safe version (CVE HIGH fixed)
     "streamlit>=1.35",
 ]
 ml = [
@@ -66,6 +66,7 @@ llm = [
 ]
 dev = [
     "gitpython>=3.1.58",   # transitive dep of pre-commit — pins safe version (8 CVE RCE/injection fixed)
+    "setuptools>=83.0.0",  # transitive dep — pins safe version (CVE MANIFEST.in bypass fixed)
     "pytest>=8.2",
     "pytest-asyncio>=0.23",
     "pytest-cov>=5",
