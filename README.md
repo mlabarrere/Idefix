@@ -11,6 +11,8 @@
 
 La spécification scientifique complète est dans [`METHODOLOGY.md`](./METHODOLOGY.md) (document versionné, publié *avant* toute sortie de détection — exigence de résistance EIP). Ce README est le guide d'ingénierie : architecture, installation, exécution du pipeline.
 
+**→ Nouveau sur le projet ? Commencer par [`docs/PRODUCT.md`](./docs/PRODUCT.md) (vue fonctionnelle) puis [`docs/QUICKSTART.md`](./docs/QUICKSTART.md).**
+
 ---
 
 ## 1. Principe
@@ -36,19 +38,16 @@ Le système se scinde en **deux moitiés strictement disjointes** : un pipeline 
 ┌─────────────────────────── PIPELINE HORS-LIGNE (Python) ───────────────────────────┐
 │                                                                                      │
 │  crawl ──▶ build_edges ──▶ build_scores ──▶ analyze_communities ──▶ export_static    │
-│  (MTProto)   (graphe)      (suspicion +     (Leiden : TF-IDF        (bundles JSON)    │
-│                             famille f)        + embeddings)                           │
-│                                                     │                                 │
-│                                                     ▼                                 │
-│                                          Supabase · community_snapshots               │
-└─────────────────────────────────────────────────────│────────────────────────────-─┘
-                                                        │  (REST, service-role)
-┌───────────────────────── DIFFUSION (Vercel) ─────────│──────────────────────────────┐
-│  pull-snapshots.mjs (prebuild) ◀─────────────────────┘                               │
-│        │  fige les snapshots dans le bundle                                          │
+│  (MTProto)   (graphe)      (suspicion +     (Leiden : TF-IDF        (bundles JSON)   │
+│                             famille f)        + embeddings)              │            │
+└─────────────────────────────────────────────────────────────────────────│───────────┘
+                                                                          │
+┌───────────────────── INTERFACE ANALYSTE (React, statique) ──────────── │ ──────────┐
+│  webapp/public/data/<mission>/  ◀──────────────────────────────────────┘            │
+│        │  bundles JSON pré-calculés, figés au déploiement                           │
 │        ▼                                                                             │
-│  vite build ──▶ webapp statique ──▶ navigateur (fetch JSON local, zéro backend)      │
-└──────────────────────────────────────────────────────────────────────────────────-─┘
+│  vite build ──▶ webapp statique ──▶ navigateur (fetch JSON local, zéro backend)     │
+└──────────────────────────────────────────────────────────────────────────────────── ┘
 ```
 
 ### Arborescence
@@ -81,13 +80,13 @@ Idefix/
 | Couche | Technologie | Notes |
 |--------|-------------|-------|
 | Ingestion | MTProto (client Telegram) | Canaux **publics** uniquement, un compte dédié en lecture, discipline `FLOOD_WAIT`. |
-| Stockage | PostgreSQL (Supabase managé) | Messages, arêtes, scores. Accès wire-protocol pour le pipeline ; REST (HTTPS) pour la passerelle snapshots. |
+| Stockage | PostgreSQL 17 | Messages, arêtes, scores. Docker en développement, Supabase ou toute instance PostgreSQL en production. |
 | Graphe | NetworkX `MultiDiGraph` (+ igraph/Leiden) | Reconstruit **en mémoire, à la demande**. Pas de base graphe serveur. |
 | Scoring | Familles explicables (Python pur) | Somme pondérée bornée + gate multi-source. Aucun appel réseau. |
 | Embeddings | `sentence-transformers` (local) | `paraphrase-multilingual-MiniLM-L12-v2` (384-dim, FR/RU/EN). Cache offline déterministe, coût 0 en relance. |
 | Communautés | Leiden (deux pistes) | **analytics** (lexical/TF-IDF) et **embeddings** (arêtes de similarité sémantique). |
 | Frontend | React 18 + Vite + TypeScript | Strict mode. Cytoscape (galaxie), Headless UI, Tailwind v4. **Build 100 % statique.** |
-| Diffusion | Vercel | `pull-snapshots.mjs` fige les snapshots Supabase au build ; site statique sans backend. |
+| Diffusion | Vercel / tout hébergeur statique | Build statique (`vite build`) — le navigateur ne lit que des JSON locaux, zéro backend. |
 
 ---
 
@@ -109,19 +108,28 @@ Le score combine des familles de signaux **indépendantes**, chacune affichée a
 
 ## 5. Installation
 
-Prérequis : Python 3.11+, [`uv`](https://docs.astral.sh/uv/), Node 20+ (pour la webapp).
+Prérequis : Python 3.11+, [`uv`](https://docs.astral.sh/uv/), Node 20+ (webapp), Docker (PostgreSQL).
 
 ```bash
 # Dépendances Python (extra `embed` pour les familles sémantiques)
 uv sync --extra embed
 
+# Base de données PostgreSQL (Docker)
+docker run -d --name idefix-db --restart unless-stopped \
+  -p 5432:5432 \
+  -e POSTGRES_USER=disinfo -e POSTGRES_PASSWORD=<mot-de-passe> \
+  -e POSTGRES_DB=disinfo_trace postgres:17-alpine
+
 # Variables d'environnement
-cp .env.example .env
-# Renseigner : DATABASE_URL (PostgreSQL), SUPABASE_URL + SUPABASE_KEY (passerelle snapshots),
-# et, pour l'ingestion, les identifiants MTProto + la session string.
+cp .env.example .env   # puis éditer DATABASE_URL + credentials Telegram
+
+# Migrations
+uv run alembic upgrade head
 ```
 
-> **Génération de la session Telegram :** `scripts/session_web.py` est un utilitaire ponctuel (Streamlit) lancé une seule fois pour obtenir la session string — ce n'est **pas** le frontend de l'application.
+**Guide complet (Telegram API, session string, webapp) :** [`docs/INSTALL.md`](./docs/INSTALL.md)
+
+**Démarrage rapide sans collecte (webapp sur données d'exemple) :** [`docs/QUICKSTART.md`](./docs/QUICKSTART.md)
 
 ---
 
@@ -169,12 +177,12 @@ uv run python scripts/compare_snapshots.py            --mission russosphere   # 
 ```bash
 cd webapp
 npm install
-npm run dev        # serveur de dev Vite
-npm run build      # pull-snapshots.mjs (Supabase) + vite build → dist/ statique
+npm run dev        # serveur de dev Vite → http://localhost:5173
+npm run build      # vite build → dist/ statique (déployable partout)
 npm run preview    # prévisualisation du build de prod
 ```
 
-Le build récupère les snapshots de communautés depuis Supabase (`pull-snapshots.mjs`) et les fige dans le bundle. **En production, le navigateur ne lit que des JSON locaux** ; il ne touche jamais la base.
+La webapp lit les bundles JSON dans `webapp/public/data/<mission>/` (produits par `export_static.py`). **Le navigateur ne touche jamais la base de données** — consultation 100 % statique.
 
 ---
 
