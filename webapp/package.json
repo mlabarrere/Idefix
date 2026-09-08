@@ -15,6 +15,11 @@
     "build": "node scripts/pull-snapshots.mjs && node scripts/pull-bundle.mjs && vite build",
     "preview": "vite preview"
   },
+  "overrides": {
+    "postcss": ">=8.5.28",
+    "browserslist": ">=4.28.9",
+    "brace-expansion": ">=5.0.9"
+  },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/plus-jakarta-sans": "^5.2.8",
