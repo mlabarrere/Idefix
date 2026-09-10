@@ -3,7 +3,7 @@
 //
 // ⚠ HUMAN-REVIEW ERFUERDERLECH (§16.7). Lëtzebuergesch huet eng dënn
 // CLDR/MT-Ofdeckung; dës Wäerter sinn e Best-effort a mussen vun engem
-// Mënsch iwwerpréift ginn ier se als definitiv gëllen. Kuck docs/i18n.md.
+// Mënsch iwwerpréift ginn ier se als definitiv gëllen. Kuck docs/product/i18n.md.
 import type { Messages } from './fr'
 
 export const lb: Messages = {
@@ -36,8 +36,6 @@ export const lb: Messages = {
   'nav.channels': 'Kanäl',
   'nav.methodologie': 'Methodologie',
   'nav.mission': 'Missioun',
-  'nav.resources': 'Ressourcen',
-  'nav.science': 'Wëssenschaft',
   'nav.settings': 'Astellungen',
   'nav.statusSoon': 'geschwënn',
   'nav.statusPlanned': 'geplangt',

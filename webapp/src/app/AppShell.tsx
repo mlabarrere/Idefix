@@ -4,7 +4,7 @@
 // La mission vient de l'URL (/m/:missionId). Plus de portfolio : l'accueil EST la
 // galaxie ; le changement de mission passe uniquement par le switcher.
 import { Select as SelectPrimitive } from 'radix-ui'
-import { Orbit, LayoutDashboard, FlaskConical, Settings as SettingsIcon } from 'lucide-react'
+import { Orbit, LayoutDashboard, Settings as SettingsIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink, Navigate, Outlet, useNavigate, useParams } from 'react-router-dom'
 import { Select, SelectContent, SelectTrigger } from '@/components/ui/select'
@@ -87,11 +87,6 @@ export function AppShell() {
                   </SidebarItem>
                 </SidebarSection>
               )}
-              <SidebarSection heading={t('nav.resources')}>
-                <SidebarItem to="/science" icon={FlaskConical}>
-                  {t('nav.science')}
-                </SidebarItem>
-              </SidebarSection>
             </nav>
 
             {/* Bas de sidebar : paramètres, contrôles, signature. */}

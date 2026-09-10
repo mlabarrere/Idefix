@@ -32,8 +32,6 @@ export const es: Messages = {
   'nav.channels': 'Canales',
   'nav.methodologie': 'Metodología',
   'nav.mission': 'Misión',
-  'nav.resources': 'Recursos',
-  'nav.science': 'Ciencia',
   'nav.settings': 'Ajustes',
   'nav.statusSoon': 'próximamente',
   'nav.statusPlanned': 'planificada',

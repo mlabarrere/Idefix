@@ -38,8 +38,6 @@ export const fr = {
   'nav.channels': 'Canaux',
   'nav.methodologie': 'Méthodologie',
   'nav.mission': 'Mission',
-  'nav.resources': 'Ressources',
-  'nav.science': 'Science',
   'nav.settings': 'Paramètres',
   'nav.statusSoon': 'à venir',
   'nav.statusPlanned': 'planifiée',

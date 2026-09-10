@@ -98,7 +98,10 @@ docs/operational-plan.html
 /package.json
 /package-lock.json
 
-# Bundle per-canal volumineux (regénérable via scripts/export_via_rest_api.py depuis Supabase)
-webapp/public/data/*/channels/
+# Static analyst bundles are NOT published in this repository.
+# They are produced locally by scripts/export_static.py and are, by construction,
+# specific to a corpus and a scoring run. Publishing them would ship numbers that
+# no third party can regenerate. Keep them on disk, out of git.
+webapp/public/data/
 .vercel
 .env*

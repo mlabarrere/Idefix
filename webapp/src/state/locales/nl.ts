@@ -32,8 +32,6 @@ export const nl: Messages = {
   'nav.channels': 'Kanalen',
   'nav.methodologie': 'Methodologie',
   'nav.mission': 'Missie',
-  'nav.resources': 'Bronnen',
-  'nav.science': 'Wetenschap',
   'nav.settings': 'Instellingen',
   'nav.statusSoon': 'binnenkort',
   'nav.statusPlanned': 'gepland',
