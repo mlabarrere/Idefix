@@ -24,7 +24,7 @@
  *      GraphView/GalaxyCanvas are allowlisted.
  *   6. every data view branches loading / empty / error.
  */
-import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync, existsSync, writeFileSync } from 'node:fs'
 import { join, dirname, relative, sep, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -302,4 +302,58 @@ console.log(`  ${'TOTAL'.padEnd(26)} ${String(total).padStart(4)}`)
 console.log(`  ${'TOTAL excl. GalaxyCanvas'.padEnd(26)} ${String(total - galTotal).padStart(4)}`)
 console.log('══════════════════════════════════════════════════════════════════\n')
 
-process.exit(total > 0 ? 1 : 0)
+// ── Ratchet ────────────────────────────────────────────────────────────────
+// The components predate design tokenization, so a clean run is a Phase 2
+// deliverable, not a merge criterion. Failing unconditionally produced a job
+// that was red on every single commit — which protects nothing, because a
+// check that is always red is a check nobody reads.
+//
+// Instead we ratchet: the accepted baseline is recorded per check in
+// `ui-contract-baseline.json`, and the run fails only when a count goes UP, or
+// when a new check appears. Progress is enforced in one direction, and the job
+// is green today. Lower the numbers as components get tokenized; regenerate
+// with `npm run ui:contract -- --update-baseline`.
+const BASELINE = join(ROOT, 'ui-contract-baseline.json')
+const counts: Record<string, number> = {}
+for (const check of [...groups.keys()].sort()) counts[check] = groups.get(check)!.length
+
+if (process.argv.includes('--update-baseline')) {
+  writeFileSync(BASELINE, JSON.stringify({ total, checks: counts }, null, 2) + '\n')
+  console.log(`baseline written -> ${rel(BASELINE)} (total ${total})`)
+  process.exit(0)
+}
+
+let baseline: { total: number; checks: Record<string, number> }
+try {
+  baseline = JSON.parse(readFileSync(BASELINE, 'utf8'))
+} catch {
+  console.error(
+    `no baseline at ${rel(BASELINE)} — create it with: npm run ui:contract -- --update-baseline`,
+  )
+  process.exit(1)
+}
+
+const regressions: string[] = []
+for (const [check, n] of Object.entries(counts)) {
+  const allowed = baseline.checks[check]
+  if (allowed === undefined) regressions.push(`${check}: new check, ${n} finding(s)`)
+  else if (n > allowed) regressions.push(`${check}: ${n} > ${allowed} allowed`)
+}
+
+if (regressions.length > 0) {
+  console.error('x design-system regressions (counts may only go DOWN):')
+  for (const r of regressions) console.error(`    ${r}`)
+  console.error(
+    '\nFix the new findings, or - if a count legitimately rises - say so explicitly\n' +
+      'by regenerating the baseline.\n',
+  )
+  process.exit(1)
+}
+
+const improved = Object.entries(counts).filter(([c, n]) => n < (baseline.checks[c] ?? 0))
+if (improved.length > 0) {
+  console.log('improvements since baseline (regenerate to lock them in):')
+  for (const [c, n] of improved) console.log(`    ${c}: ${n} < ${baseline.checks[c]}`)
+}
+console.log(`ok - no design-system regression (total ${total}, baseline ${baseline.total})\n`)
+process.exit(0)

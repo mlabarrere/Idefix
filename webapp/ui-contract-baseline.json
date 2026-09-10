@@ -1,0 +1,12 @@
+{
+  "total": 101,
+  "checks": {
+    "1·raw-color-literal": 37,
+    "2·inline-style-color": 9,
+    "3·arbitrary-px": 32,
+    "5·page-shell": 2,
+    "6·data-empty": 6,
+    "6·data-error": 10,
+    "6·data-loading": 5
+  }
+}

@@ -20,8 +20,11 @@ jobs:
       - name: Lint (ruff)
         run: uv run ruff check src/ tests/
       - name: Type check (mypy)
-        # Non-blocking: pre-existing debt (multi-package src layout, no explicit base).
-        continue-on-error: true
+        # Blocking since 2026-09. It used to be advisory for "src-layout debt",
+        # but the real situation was worse: mypy aborted on a duplicate-module
+        # error before checking anything, so the job was green vacuously.
+        # `explicit_package_bases` (pyproject) fixed that and surfaced 6 real
+        # type errors, all now fixed.
         run: uv run mypy src/ --ignore-missing-imports
       - name: Tests + coverage
         run: uv run pytest tests/ --cov=src --cov-report=term-missing

@@ -1,14 +1,14 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # UI gate — Idéfix web app (webapp/) design-system CI.
 #
-# `ui-contract` is ADVISORY UNTIL PHASE 2: the components still predate
-# tokenization, so it reports a large, EXPECTED baseline of violations. It runs
-# with `continue-on-error: true` to SURFACE findings without blocking merges.
-# Once Phase 2 tokenizes the components (baseline → 0), remove the flag.
+# Every job here is BLOCKING as of 2026-09. Nothing runs with
+# `continue-on-error`, because a check that is permanently red is a check
+# nobody reads.
 #
-# `lint` and `e2e` became blocking in 2026-09: eslint is at zero problems, and
-# e2e now generates its own synthetic bundle instead of relying on committed
-# data.
+# `ui-contract` is a RATCHET, not a clean-run gate: the components predate
+# design tokenization, so the accepted violation counts are recorded in
+# webapp/ui-contract-baseline.json and may only go DOWN. Driving them to zero
+# remains a Phase 2 deliverable; regressions fail the build today.
 #
 # Scope: this workflow is intentionally isolated from the repo's Python/pytest/
 # ruff tooling — it only builds/checks the front-end under webapp/.
@@ -78,10 +78,12 @@ jobs:
       - run: npm run lint
 
   ui-contract:
-    name: ui-contract (design-system audit · advisory)
+    name: ui-contract (design-system ratchet · blocking)
     runs-on: ubuntu-latest
-    # Advisory until Phase 2 tokenization + branch protection — see header.
-    continue-on-error: true
+    # Blocking since 2026-09, as a RATCHET rather than a clean-run gate: the
+    # accepted counts live in webapp/ui-contract-baseline.json and may only go
+    # down. A clean run is still a Phase 2 deliverable, but regressions are
+    # caught today instead of hiding behind a permanently-red advisory job.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
