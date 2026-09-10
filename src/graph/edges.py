@@ -82,7 +82,7 @@ from src.normalizer.handlers import (
 log = structlog.get_logger(__name__)
 
 # Default coordination window: multi-day (Telegram forward delays are heavy-tailed
-# over days — CLAUDE.md §3 hyp. 2). 72h is a sane configurable default.
+# over days — docs/method/02-graph-model.md §2.2). 72h is a sane configurable default.
 DEFAULT_WINDOW_SECONDS = 72 * 3600
 
 EDGE_TYPES_DIRECTED = ("FORWARD", "MENTIONS", "CITES_DOMAIN")
@@ -491,7 +491,7 @@ def derive_text_sim_edges(
         items.append((cid, ts, _get(row, "language"), text))
 
     # Bound the O(N^2) scan; keep the most substantial messages. Log the drop —
-    # never silently cap coverage (CLAUDE.md: no silent caps).
+    # never silently cap coverage (no silent caps).
     if len(items) > max_messages:
         items.sort(key=lambda it: len(it[3]), reverse=True)
         log.info(

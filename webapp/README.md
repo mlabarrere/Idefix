@@ -1,14 +1,18 @@
 # Idéfix — interface analyste multi-mission (webapp)
 
-Interface analyste **React + Vite + TypeScript + TailwindCSS v4 + Headless UI**
-(composants libres, MIT — pas de dépendance commerciale). **Build statique,
-sans backend** : l'app consomme les bundles JSON produits hors-ligne par
-`scripts/export_static.py`. Périmètre **Telegram-only** affiché en permanence.
+Analyst interface: **React + Vite + TypeScript + TailwindCSS v4 + Radix UI**
+(free, MIT — no commercial dependency). **Static build, no backend**: the app
+consumes JSON bundles produced offline by `scripts/export_static.py`. The
+**Telegram-only** scope caveat is permanently displayed.
 
-> Choix de stack (2026-06-09) : Catalyst (Tailwind Plus, commercial) n'est PAS
-> requis ; l'UX équivalente (sidebar, navbar, switcher de mission, tables denses,
-> dialogs, badges) est bâtie sur Headless UI + Tailwind. Migrable vers Catalyst
-> ultérieurement si une licence est acquise.
+> Those bundles are **not tracked in this repository** — they are corpus- and
+> run-specific, so publishing them would ship numbers nobody can regenerate.
+> Generate one before running the app. See
+> [`../docs/limitations.md`](../docs/limitations.md) Part III.
+
+> Stack note: Catalyst (Tailwind Plus, commercial) is not required. The
+> equivalent UX — sidebar, navbar, mission switcher, dense tables, dialogs,
+> badges — is built on Radix primitives plus Tailwind.
 
 ## Lancer
 

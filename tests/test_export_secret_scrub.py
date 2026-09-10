@@ -1,6 +1,6 @@
 """Scrub des secrets à l'export — le bundle ne contient JAMAIS numéro/session.
 
-Critère d'acceptation (CLAUDE.md bandeau 2026-06-09) : le numéro/la session sont
+Critère d'acceptation (docs/method/07-tiers-and-governance.md) : le numéro/la session sont
 une dépendance d'EXÉCUTION, jamais une donnée métier ; ils ne doivent apparaître
 dans aucun fichier exporté. On charge scripts/export_static.py via importlib et on
 exerce ``_write_json`` / ``_write_twin`` (point d'écriture unique scrubé).

@@ -5,7 +5,7 @@ channels together before Leiden, and (b) quantify HOW MUCH more coherent the
 resulting groups are — the factual numbers shown by the galaxy's
 Analytics↔Embedding toggle (no hand-wavy "it's better").
 
-References (cf. docs/references.md):
+References (cf. docs/reference/references.md):
   - Leiden community detection: Traag, Waltman & van Eck (2019), Sci. Rep. 9:5233.
   - Modularity (community quality on the link graph): Newman & Girvan (2004);
     Newman (2006), PNAS 103(23).
@@ -149,7 +149,7 @@ def comparison_block(
 ) -> dict:
     """Deltas factuels Analytics vs LLM-Embedding pour le callout galaxie.
 
-    Métriques (cf. docs/references.md) :
+    Métriques (cf. docs/reference/references.md) :
       - intra_cohesion : cosinus moyen intra-communauté (cohésion sémantique).
       - silhouette : Rousseeuw (1987), cohésion/séparation des clusters.
       - modularity : Newman (2006), qualité de partition sur le GRAPHE DE LIENS.

@@ -23,7 +23,7 @@ Library-first : igraph (Leiden), networkx (betweenness), asyncpg (I/O DB).
 Usage (Windows) :
     .venv\\Scripts\\python.exe scripts\\analyze_communities.py
 
-References (cf. docs/references.md):
+References (cf. docs/reference/references.md):
   - Leiden (détection de communautés) : Traag, Waltman & van Eck (2019), Sci. Rep. 9:5233.
   - Modularité (qualité de partition) : Newman (2006), PNAS 103(23).
   - TF-IDF (labels thématiques auto) : Spärck Jones (1972), J. Documentation 28(1).
@@ -546,7 +546,7 @@ def build_snapshot(
         "meta_graph": {"nodes": meta_nodes, "edges": meta_edges},
         "coverage_callout": (
             "Couverture Telegram uniquement : la couche d'amplification de masse "
-            "(X / autres plateformes) n'est pas observée (CLAUDE.md §10). "
+            "(X / autres plateformes) n'est pas observée (docs/limitations.md L1). "
             "L'extrême droite française est désormais dans le graphe "
             "(nationalisme identitaire, catho-trad, E&R, Arktos/Iliade) ; le "
             "RN-parti officiel n'y est PAS (peu présent/traçable sur Telegram)."

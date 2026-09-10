@@ -1,6 +1,6 @@
 """Tests for the multilingual France-targeting thematic signal (pure, NO DB).
 
-The load-bearing case (CLAUDE.md §2.1): a purely-Russian (or English) text that
+The load-bearing case (docs/method/01-problem-and-scope.md): a purely-Russian (or English) text that
 attacks the image / integrity / sovereignty of France must score HIGH despite
 ZERO French-language density — precisely because the adversary apparatus
 (Dugin / Geopolitika / Pravda) attacks France in RU/EN, where the old

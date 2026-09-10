@@ -50,7 +50,7 @@ pipeline) ; se reporter à la table ci-dessus pour le rattachement à un groupe.
 - **Configuration** : toutes les variables sensibles sont lues depuis `.env`
   (chargé automatiquement via `python-dotenv`). Variables attendues :
   - `TG_API_ID`, `TG_API_HASH`, `TG_SESSION_STRING` — accès MTProto en lecture
-    seule (compte FR +33 du PoC — voir `CLAUDE.md` §8) ;
+    seule (compte FR +33 du PoC — see `docs/method/07-tiers-and-governance.md` §7.3) ;
   - `DATABASE_URL` — chaîne de connexion PostgreSQL (le suffixe `+asyncpg`
     est retiré à la volée pour `asyncpg.connect`).
 

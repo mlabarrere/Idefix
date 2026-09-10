@@ -1,6 +1,6 @@
 """Abstraction « mission » d'Idéfix — types des profils (PUR, stdlib only).
 
-Idéfix est repositionné en **moteur Telegram, N missions analytiques** (CLAUDE.md
+Idéfix est repositionné en **moteur Telegram, N missions analytiques** (docs/README.md
 bandeau 2026-06-09 ; architecture-multi-mission-2026-06-09.md). Une **mission est
 une CONFIGURATION**, jamais une fourche de code : elle compose six profils
 + un scorer de pertinence que le moteur (pipeline + scoring + export) consomme.

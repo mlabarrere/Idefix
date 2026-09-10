@@ -14,7 +14,7 @@ from __future__ import annotations
 from src.ingestor.session import secret_values
 
 # Clés dont le NOM est secret (jamais exportées). Le numéro/la session sont une
-# dépendance d'exécution, pas une donnée métier (CLAUDE.md bandeau 2026-06-09).
+# dépendance d'exécution, pas une donnée métier (docs/method/07-tiers-and-governance.md).
 SECRET_KEYS = frozenset(
     {
         "phone", "session", "session_string", "session_name", "api_hash", "api_id",

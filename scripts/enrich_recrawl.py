@@ -11,16 +11,16 @@ RGPD SCOPE DECISION (validated by Micky, 2026-06-05) — load-bearing:
   fetch_comments collects INDIVIDUAL commenters (id + username + text + timestamp)
   of PUBLIC linked discussion groups. This is personal data of natural persons,
   not just channel-admin publishers. Legal basis: public-interest mission
-  (CLAUDE.md §8, RGPD Art. 6.1.e, loi 2024-850); purpose: derive co-commenter
+  (docs/method/07-tiers-and-governance.md §7.3, RGPD Art. 6.1.e, loi 2024-850); purpose: derive co-commenter
   coordination edges downstream. Minimization, retention bounds (13/36 months),
-  access journal and deletion propagation per CLAUDE.md §8 apply to the comments
+  access journal and deletion propagation per docs/method/07-tiers-and-governance.md §7.3 apply to the comments
   table. Public groups ONLY — no private content, no member scraping.
 
 OPERATIONAL RULE (account hygiene) — NEVER run in parallel:
   A SINGLE serialized session on the ONE FR (+33) account. Do not launch two
   copies, do not parallelize across accounts. Channels are processed one at a
   time, re-backfill then comments, FLOOD_WAIT handled by the client. Running this
-  concurrently with any other crawl risks a ban (CLAUDE.md §8 account hygiene).
+  concurrently with any other crawl risks a ban (docs/method/07-tiers-and-governance.md §7.3 account hygiene).
 
 USAGE (a human launches this — it is NOT run by the agent that wrote it):
     # default seed set (same anchors as backfill_seeds.py):

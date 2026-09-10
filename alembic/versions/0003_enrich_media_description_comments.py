@@ -27,13 +27,13 @@ new data points WITHOUT any schema rewrite:
        We deliberately collect INDIVIDUAL commenters (commenter_id +
        commenter_username) of PUBLIC linked discussion groups. This is a
        collection of personal data of natural persons, NOT only channel-admin
-       publishers. Legal basis: public-interest mission (CLAUDE.md §8, RGPD
+       publishers. Legal basis: public-interest mission (docs/method/07-tiers-and-governance.md §7.3, RGPD
        Art. 6.1.e, loi 2024-850). It is justified by the downstream need to
        derive co-commenter coordination edges (the same accounts commenting in
        lockstep across channels is a coordination signal). Constraints that
        still apply and MUST be honoured by any consumer of this table:
          * public groups only (no private content, no DM, no member scraping);
-         * retention bounds and access journal per CLAUDE.md §8 (13/36 months);
+         * retention bounds and access journal per docs/method/07-tiers-and-governance.md §7.3 (13/36 months);
          * minimization — store id + username + comment text + timestamp, NOTHING
            that links the account to a real person without a separate legal basis;
          * deletion propagation (a deleted comment must be deletable here too).

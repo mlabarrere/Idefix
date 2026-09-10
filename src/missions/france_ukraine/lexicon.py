@@ -3,7 +3,8 @@
 DONNÉES uniquement : pilote le moteur générique ``src/normalizer/targeting.py``
 (même discipline ancres/contextuels que ``FRANCE_LEXICON`` / ``GAN_LEXICON``).
 
-Périmètre thématique (CLAUDE.md §2.1 + ``data/claims/claims_fr.jsonl``) : narratifs
+Périmètre thématique (docs/method/01-problem-and-scope.md +
+``data/claims/claims_fr.jsonl``) : narratifs
 visant l'image / l'intégrité / la souveraineté de la France DANS le conflit ukrainien
 — implication militaire alléguée (soldats/cercueils/mercenaires français), financement
 et livraisons d'armes au détriment des Français, positionnement OTAN/escalade.

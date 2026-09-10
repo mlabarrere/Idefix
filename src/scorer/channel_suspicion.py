@@ -1,6 +1,7 @@
 """Score de suspicion PAR CANAL — cœur du livrable Idéfix (explicable).
 
-Ce module assemble les familles de scores (a–e, CLAUDE.md §4ter) en UN score de
+Ce module assemble les familles de scores (a–e, cf.
+docs/method/03-suspicion-score.md §3.1) en UN score de
 suspicion par canal, **transparent et justifiable** (NFR-8), et produit le bloc
 ``queue`` consommé par scripts/export_static.py (matérialisé dans
 ``data/channels.json``) puis par la console opérateur (contrat :
@@ -12,7 +13,7 @@ on classe des CANAUX, pas des messages ; et tant que les données ne passent pas
 à l'échelle, on livre un SCORE explicable (pas un GNN). Ce module EST ce score.
 
 ──────────────────────────────────────────────────────────────────────────────
-LOAD-BEARING — MÉTA-CONTRAINTE 1 (CLAUDE.md §4bis) :
+LOAD-BEARING — MÉTA-CONTRAINTE 1 (docs/method/03-suspicion-score.md §3.8) :
     Le score ne FILTRE JAMAIS, et ne se GATE JAMAIS, par ``fr_score``.
     ``fr_score`` = densité de mots-clés français ≠ ciblage thématique France.
     L'adversaire RU/EN a un ``fr_score`` BAS : un canal adverse à fr_score bas
@@ -119,7 +120,8 @@ MIN_FAMILIES_FOR_GATE = 2
 # réseau Douguine/Geopolitika, Multipolar) + ancres réseau Pravda.             #
 # --------------------------------------------------------------------------- #
 # TODO(externaliser) : déplacer cette graine vers data/catalogue/adversary_domains.txt
-# alimentée par le DFRLab Pravda Dashboard + TGStat (CLAUDE.md §P2). Conservée
+# alimentée par le DFRLab Pravda Dashboard + TGStat
+# (docs/method/03-suspicion-score.md §3.8). Conservée
 # ici comme constante de module pour rester pure/testable sans I/O fichier.
 ADVERSARY_DOMAINS: frozenset[str] = frozenset(
     {
@@ -870,7 +872,7 @@ def compute_channel_queue(
 
         gate = _gate(families, profile=p)
         # Tier : T2 si verrou franchi (récurrence comportementale), sinon T1.
-        # JAMAIS T3 (hors périmètre — CLAUDE.md §4).
+        # JAMAIS T3 (hors périmètre — docs/method/07-tiers-and-governance.md §7.1).
         tier = "T2" if gate["met"] else "T1"
 
         archetype = cas.evidence.get("archetype") if cas else None

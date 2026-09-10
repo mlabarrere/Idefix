@@ -1,7 +1,7 @@
 """
 Score family (c) — coordination (co-forwarding structurel).
 
-CLAUDE.md §6 score (c) : la détection de coordination de référence est VIGINUM
+docs/method/03-suspicion-score.md §3.3 : la détection de coordination de référence est VIGINUM
 D3lta (similarité textuelle copypasta / reformulation / traduction). D3lta est
 DIFFÉRÉ pour le PoC ; en attendant, cette implémentation s'appuie sur le signal
 de coordination STRUCTUREL réellement présent dans le graphe de forward :
@@ -33,7 +33,7 @@ largeur du voisinage co-forwardant (partners normalisés).
 Library-first : voisinages et agrégations via networkx ; pas de dépendance
 externe au-delà de celles déjà utilisées par les autres scorers.
 
-References (cf. docs/references.md):
+References (cf. docs/reference/references.md):
   - Coordinated Inauthentic Behavior : Pacheco et al. (2021), ICWSM ;
     Giglietto et al. (2020), Information, Communication & Society.
   - Cible texte (différée) : VIGINUM D3lta (similarité copypasta/reformulation).
@@ -176,7 +176,8 @@ def score_coordination(graph: nx.DiGraph) -> dict[int, ScoreResult]:
                 "coforward_pair_count_graph": coforward_pairs,
                 "method": (
                     "Co-forwarding structurel (Jaccard des canaux-origine "
-                    "partagés). D3lta texte différé en PoC (CLAUDE.md §6 c)."
+                    "partagés). D3lta texte différé en PoC "
+                    "(docs/method/03-suspicion-score.md §3.3)."
                 ),
             },
         )

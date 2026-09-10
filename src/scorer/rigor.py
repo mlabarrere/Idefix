@@ -18,7 +18,7 @@ sont appliquées par ``channel_suspicion`` à partir des p renvoyées ici.
 
 Déterminisme : un seul ``rng`` (seedé) ⇒ sortie reproductible.
 
-References (cf. docs/references.md):
+References (cf. docs/reference/references.md):
   - Modèle nul + IC bootstrap : Efron (1979), Ann. Statist. 7(1).
   - Significativité (p empirique, FDR, Stouffer) : voir src/scorer/significance.py.
 """

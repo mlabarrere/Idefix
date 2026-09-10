@@ -2,7 +2,7 @@
 
 Cible les narratifs visant l'image / l'intégrité / la souveraineté de la France
 DANS le conflit ukrainien (soldats/cercueils/mercenaires français, financement et
-livraisons d'armes, positionnement OTAN/escalade) — CLAUDE.md §2.1 +
+livraisons d'armes, positionnement OTAN/escalade) — docs/method/01-problem-and-scope.md +
 ``data/claims/claims_fr.jsonl``.
 
 Réutilise INTÉGRALEMENT le moteur générique : le ciblage est un ``LexiconProfile``

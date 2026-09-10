@@ -3,7 +3,7 @@ Score family (d) — cross-episode recidivism.
 
 PRD : épine dorsale = forward-influence + récurrence de canal-source
 (analogue Telegram du « low-credibility h-index » / Foreign Information
-Manipulation, cf. CLAUDE.md §3 hyp. 3 et §6 score (d)).
+Manipulation, cf. docs/method/03-suspicion-score.md §3.4 et §6 score (d)).
 
 Composantes (calculées sur le graphe de forward EXISTANT, sans appel Telegram) :
 
@@ -27,7 +27,7 @@ approximée par la récurrence structurelle dans le graphe de forward agrégé.
 La métrique est portable vers une vraie agrégation multi-épisode sans changer
 la signature publique.
 
-Reference (cf. docs/references.md): approximation structurelle, sans référence
+Reference (cf. docs/reference/references.md): approximation structurelle, sans référence
 externe forte ; inspirée de la notion de « low-credibility h-index » (récurrence
 d'une source à travers les épisodes).
 """

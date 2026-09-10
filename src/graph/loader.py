@@ -7,7 +7,7 @@ centré-canal défini dans
 igraph/NetworkX à la demande). La source de vérité persistante est la table
 ``edges`` (alembic 0002) ; les attributs de nœud viennent de ``channels``.
 
-Conception (CLAUDE.md §12 — library-first, pas de Neo4j/Kùzu) :
+Conception (docs/method/02-graph-model.md — library-first, pas de Neo4j/Kùzu) :
 
   * **I/O DB séparée des transformations.** ``fetch_edge_rows`` /
     ``fetch_channel_rows`` font le seul accès PostgreSQL (asyncpg, lecture

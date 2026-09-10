@@ -1,6 +1,6 @@
 """Telegram account/session dependency — explicit, fail-fast, secret-safe.
 
-LOAD-BEARING (CLAUDE.md bandeau 2026-06-09, scope-change-multi-mission §3) :
+LOAD-BEARING (docs/method/07-tiers-and-governance.md, scope-change-multi-mission §3) :
 l'ingestion repose TOUJOURS sur le compte/numéro de l'utilisateur via une session
 MTProto. Le numéro/la session sont une **dépendance d'exécution, pas une donnée
 métier** : jamais hardcodés, jamais journalisés, **jamais exportés** dans le

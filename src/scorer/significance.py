@@ -19,7 +19,7 @@ qu'heuristique :
 DÉTERMINISME / EIP : toute fonction stochastique prend un ``numpy.random.Generator``
 explicite (jamais le RNG global) ⇒ sortie reproductible pour un ``rng_seed`` donné.
 
-References (cf. docs/references.md):
+References (cf. docs/reference/references.md):
   - Bootstrap (IC par ré-échantillonnage) : Efron (1979), Ann. Statist. 7(1).
   - Tests de permutation / nul empirique : Good (2000), Permutation Tests.
   - Combinaison de p-values : Stouffer et al. (1949), The American Soldier.

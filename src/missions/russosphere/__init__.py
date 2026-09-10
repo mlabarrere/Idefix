@@ -66,7 +66,7 @@ MISSION = MissionDefinition(
     title="Russosphère → extrême droite FR",
     description=(
         "Désinformation coordonnée visant l'image / l'intégrité / la souveraineté "
-        "de la France (CLAUDE.md §2.1). Mission historique, par défaut."
+        "de la France (docs/method/01-problem-and-scope.md). Mission historique, par défaut."
     ),
     source_universe=SourceUniverse(
         default_seeds=_DEFAULT_SEEDS,

@@ -1,7 +1,7 @@
 """Benchmark runtime minimal — chiffres de performance reproductibles.
 
 Mesure ce qui est local et déterministe : taille du corpus (REST Supabase), taux
-de cache embeddings, débit d'encodage (cache hit vs miss). Écrit docs/metrics/perf.json.
+de cache embeddings, débit d'encodage (cache hit vs miss). Écrit docs/experiments/results/perf.json.
 
 ponytail : volontairement minimal — pas de profiling fin, juste les ordres de grandeur
 cités dans l'audit. Étendre si un goulot précis doit être tracé.

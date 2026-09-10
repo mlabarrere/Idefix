@@ -30,7 +30,7 @@ from src.normalizer.targeting import (
 )
 
 # --------------------------------------------------------------------------- #
-# Lexique France multilingue — organisé par catégories CLAUDE.md §2.1.
+# Lexique France multilingue — organisé par catégories docs/method/01-problem-and-scope.md.
 # DONNÉES (le moteur vit dans targeting.py). Deux tiers par catégorie : ANCRES
 # (toujours comptées) + CONTEXTUELS (comptés seulement avec une ancre présente).
 # TODO(analyst): graine PoC à curer/étendre (VIGINUM/Arcom) — termes FR/EN/RU +

@@ -17,7 +17,7 @@ Usage:
 
 ponytail: baseline=100 canaux, étendre à 500 si recall < 0.5 (Phase 3 validation).
 
-References (cf. docs/references.md):
+References (cf. docs/reference/references.md):
   - Sentence embeddings (SBERT) : Reimers & Gurevych (2019), arXiv:1908.10084.
   - Modèle d'encodeur (MiniLM) : Wang et al. (2020), arXiv:2002.10957.
 """

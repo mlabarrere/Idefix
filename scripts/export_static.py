@@ -66,7 +66,7 @@ TASKING_STUB: dict = {
 # Caveat cécité mono-plateforme — chaîne exacte de neighborhood_to_dict (loader.py:434).
 COVERAGE_CALLOUT = (
     "Couverture Telegram uniquement : la couche d'amplification de masse "
-    "(X / autres plateformes) n'est pas observée (CLAUDE.md §10)."
+    "(X / autres plateformes) n'est pas observée (docs/limitations.md L1)."
 )
 
 EXPORT_VERSION = "static-bundle/v1"
