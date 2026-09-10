@@ -11,8 +11,8 @@ const count = (v: number | unknown[] | undefined): number | undefined =>
 function Chip({ label, value }: { label: string; value?: number }) {
   if (value == null) return null
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-3 py-2">
-      <div className="text-[10px] uppercase tracking-wide text-gray-500 dark:text-gray-400">{label}</div>
+    <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900">
+      <div className="text-[10px] tracking-wide text-gray-500 uppercase dark:text-gray-400">{label}</div>
       <div className="epi-computed text-lg font-semibold text-gray-900 dark:text-gray-100">{value}</div>
     </div>
   )
@@ -25,10 +25,10 @@ export function SnapshotDiff({ missionId }: { missionId: string }) {
   const cmp = diff.compared_snapshots
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+      <h2 className="text-sm font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
         Évolution{cmp && cmp.length === 2 ? ` · ${cmp[0]} → ${cmp[1]}` : ''}
       </h2>
-      <div className="grid gap-3 grid-cols-2 sm:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         <Chip label="Apparus" value={diff.channels_appeared} />
         <Chip label="Disparus" value={diff.channels_disappeared} />
         <Chip label="Dérivés" value={count(diff.channels_drifted)} />

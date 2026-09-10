@@ -71,7 +71,7 @@ export function StoryBar({ onPhase, onStoryActive }: { onPhase: (p: StoryPhase |
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{t('story.heading')}</div>
+      <div className="px-1 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">{t('story.heading')}</div>
       {/* Rangée 1 : le sélecteur d'histoires */}
       <div className="relative">
         <button
@@ -85,7 +85,7 @@ export function StoryBar({ onPhase, onStoryActive }: { onPhase: (p: StoryPhase |
           {story ? t('story.selectedPrefix', { title: story.title }) : t('story.pickerButton')}
         </button>
         {menuOpen && (
-          <div className="absolute left-0 right-0 z-30 mt-1 rounded-xl border border-white/10 bg-[#0a162e] p-1.5 shadow-2xl">
+          <div className="absolute right-0 left-0 z-30 mt-1 rounded-xl border border-white/10 bg-[#0a162e] p-1.5 shadow-2xl">
             {stories.map((s) => (
               <button
                 key={s.id}

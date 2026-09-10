@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 
 import structlog
 
@@ -30,6 +30,17 @@ from src.shared.dossier import (
 )
 
 log = structlog.get_logger(__name__)
+
+# Alias des Literal du schéma : les gardes de ``_internal_role`` et l'échelle
+# produite par ``overall_severity`` donnent exactement ces valeurs, donc les
+# signatures doivent le dire plutôt que de renvoyer ``str``.
+CascadeRoleLiteral = Literal[
+    "seeding-source", "forward-hub", "cross-channel-bridge", "reactivator"
+]
+SeverityTierLiteral = Literal["T1", "T2", "T3", "T4", "T5"]
+_VALID_CASCADE_ROLES: frozenset[str] = frozenset(
+    {"seeding-source", "forward-hub", "cross-channel-bridge", "reactivator"}
+)
 
 DOSSIERS_DIR = Path(__file__).parent.parent.parent / "data" / "dossiers"
 
@@ -120,7 +131,9 @@ def build_dossier(
         dossier_id=dossier_id,
         episode_id=episode_id,
         attribution_tier=attribution_tier,
-        severity_tier=scores.overall_severity,
+        # ``overall_severity`` renvoie ``str`` ; l'échelle T1..T5 qu'il produit est
+        # exactement le Literal du schéma (src/scorer/base.py::overall_severity).
+        severity_tier=cast("SeverityTierLiteral", scores.overall_severity),
         methodology_version_hash=get_methodology_version_hash(),
         created_at=now_utc(),
         multi_source_rule_met=scores.multi_source_rule_met,
@@ -409,11 +422,15 @@ def build_episode_dossier(
     }
 
 
-def _internal_role(score) -> str | None:
-    """Archétype interne valide pour EvidenceChannel (ou None)."""
+def _internal_role(score) -> CascadeRoleLiteral | None:
+    """Archétype interne valide pour EvidenceChannel (ou None).
+
+    Le type de retour est le Literal attendu par ``EvidenceChannel`` : la garde
+    ci-dessous EST la validation, il faut donc que la signature le dise.
+    """
     if score is None:
         return None
     arch = score.evidence.get("archetype")
-    if arch in {"seeding-source", "forward-hub", "cross-channel-bridge", "reactivator"}:
-        return arch
+    if arch in _VALID_CASCADE_ROLES:
+        return cast("CascadeRoleLiteral", arch)
     return None

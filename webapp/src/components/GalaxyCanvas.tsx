@@ -337,7 +337,7 @@ export function GalaxyCanvas({
           rendered++
         })
       }
-      // eslint-disable-next-line no-console
+       
       console.info(
         `[galaxie/compound] ${missionId} : ${rendered} canaux dans ${comms.length} boîtes` +
           (capped ? ` — ${hiddenTot} masqué(s) (budget ${BUDGET}, top-engagement par boîte)` : ' — aucun masquage'),
@@ -1403,7 +1403,10 @@ export function GalaxyCanvas({
       cyRef.current = null
       apiRef.current = null
     }
-  }, [ix, snap, model, select, viewMode])
+    // missionId n'est lu que par le log de diagnostic ci-dessus ; `snap` est déjà
+    // mémoïsé sur [missionId, mode], donc l'effet re-tourne de toute façon au
+    // changement de mission. On le déclare pour que la dépendance soit exacte.
+  }, [ix, snap, model, select, viewMode, missionId])
 
   /* ré-applique les filtres quand l'UI change */
   useEffect(() => {
@@ -1456,7 +1459,8 @@ export function GalaxyCanvas({
     setFilters((f) => {
       const next: Filters = { ...f, cred: new Set(f.cred), arch: new Set(f.arch), comm: new Set(f.comm), domCat: new Set(f.domCat) }
       const set = next[fam] as Set<string | number>
-      set.has(val) ? set.delete(val) : set.add(val)
+      if (set.has(val)) set.delete(val)
+      else set.add(val)
       return next
     })
   const toggleType = (k: 'channels' | 'domains') => setFilters((f) => ({ ...f, [k]: !f[k] }))
@@ -1482,15 +1486,15 @@ export function GalaxyCanvas({
         {/* Mode de vue : Galaxie (défaut) vs Compound (boîtes-communautés) */}
         <div>
           <div className={sectionTitle + ' mb-1'}>{t('graph.view.label')}</div>
-          <div className="flex gap-1 rounded-lg bg-[#0a162e] p-0.5 ring-1 ring-inset ring-white/10">
+          <div className="flex gap-1 rounded-lg bg-[#0a162e] p-0.5 ring-1 ring-white/10 ring-inset">
             {(['galaxy', 'compound'] as const).map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => setViewMode(m)}
                 aria-pressed={viewMode === m}
-                className={`flex-1 rounded-md px-2 py-1 text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
-                  viewMode === m ? 'bg-white/10 text-white ring-1 ring-inset ring-white/20' : 'text-slate-400 hover:text-slate-200'
+                className={`flex-1 rounded-md px-2 py-1 text-xs transition focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none ${
+                  viewMode === m ? 'bg-white/10 text-white ring-1 ring-white/20 ring-inset' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 {m === 'galaxy' ? t('graph.view.galaxy') : t('graph.view.compound')}
@@ -1510,7 +1514,7 @@ export function GalaxyCanvas({
               className="w-full rounded-lg border border-white/10 bg-[#0a162e] px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
             />
             {hits.length > 0 && (
-              <div className="absolute left-0 right-0 z-30 mt-1 max-h-72 overflow-auto rounded-lg border border-white/10 bg-[#0a162e] p-1 shadow-2xl">
+              <div className="absolute right-0 left-0 z-30 mt-1 max-h-72 overflow-auto rounded-lg border border-white/10 bg-[#0a162e] p-1 shadow-2xl">
                 {hits.map((h) => (
                   <button
                     key={h.id}
@@ -1532,22 +1536,22 @@ export function GalaxyCanvas({
           <summary className={sectionTitle + ' cursor-pointer list-none py-1'}>
             <span>{t('graph.filter.heading')}{nFilters ? ` · ${nFilters}` : ''}</span>
             {nFilters > 0 && (
-              <button type="button" onClick={(e) => { e.preventDefault(); reset() }} className="text-amber-300 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">{t('graph.filter.reset')}</button>
+              <button type="button" onClick={(e) => { e.preventDefault(); reset() }} className="text-amber-300 hover:underline focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none">{t('graph.filter.reset')}</button>
             )}
           </summary>
           <div className="mt-1 space-y-2">
             <div>
               <div className="mb-1 text-[10px] text-slate-500">{t('graph.filter.nodeType')}</div>
               <div className="flex flex-wrap gap-1.5">
-                <button type="button" aria-pressed={filters.channels} onClick={() => toggleType('channels')} className={`${chip(filters.channels)} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}>{t('graph.filter.channels')}</button>
-                <button type="button" aria-pressed={filters.domains} onClick={() => toggleType('domains')} className={`${chip(filters.domains)} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}>{t('graph.filter.domains')}</button>
+                <button type="button" aria-pressed={filters.channels} onClick={() => toggleType('channels')} className={`${chip(filters.channels)} focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none`}>{t('graph.filter.channels')}</button>
+                <button type="button" aria-pressed={filters.domains} onClick={() => toggleType('domains')} className={`${chip(filters.domains)} focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none`}>{t('graph.filter.domains')}</button>
               </div>
             </div>
             <div>
               <div className="mb-1 text-[10px] text-slate-500">{t('graph.filter.credibility')}</div>
               <div className="flex flex-wrap gap-1.5">
                 {CRED_VALS.map(([v, col]) => (
-                  <button type="button" key={v} aria-pressed={filters.cred.has(v)} onClick={() => toggle('cred', v)} className={`${chip(filters.cred.has(v))} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}>
+                  <button type="button" key={v} aria-pressed={filters.cred.has(v)} onClick={() => toggle('cred', v)} className={`${chip(filters.cred.has(v))} focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none`}>
                     <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: col }} />
                     {t('graph.cred.' + v)}
                   </button>
@@ -1558,7 +1562,7 @@ export function GalaxyCanvas({
               <div className="mb-1 text-[10px] text-slate-500">{t('graph.filter.archetype')}</div>
               <div className="flex flex-wrap gap-1.5">
                 {Object.keys(ARCH).map((k) => (
-                  <button type="button" key={k} aria-pressed={filters.arch.has(k)} onClick={() => toggle('arch', k)} className={`${chip(filters.arch.has(k))} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}>{t('graph.arch.label.' + k)}</button>
+                  <button type="button" key={k} aria-pressed={filters.arch.has(k)} onClick={() => toggle('arch', k)} className={`${chip(filters.arch.has(k))} focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none`}>{t('graph.arch.label.' + k)}</button>
                 ))}
               </div>
             </div>
@@ -1566,7 +1570,7 @@ export function GalaxyCanvas({
               <div className="mb-1 text-[10px] text-slate-500">{t('graph.filter.domCategory')}</div>
               <div className="flex flex-wrap gap-1.5">
                 {DOM_CATS.map((c) => (
-                  <button type="button" key={c.key} aria-pressed={filters.domCat.has(c.key)} onClick={() => toggle('domCat', c.key)} className={`${chip(filters.domCat.has(c.key))} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}>
+                  <button type="button" key={c.key} aria-pressed={filters.domCat.has(c.key)} onClick={() => toggle('domCat', c.key)} className={`${chip(filters.domCat.has(c.key))} focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none`}>
                     <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: c.color }} />
                     {t('graph.filter.dom.' + c.key)}
                   </button>
@@ -1610,14 +1614,14 @@ export function GalaxyCanvas({
         <div ref={cyHostRef} className="relative z-10 h-full w-full" />
         <button
           onClick={() => apiRef.current?.recenter()}
-          className="absolute right-3 top-3 z-20 rounded-full border border-white/10 bg-[#0a162e]/80 px-3 py-1.5 text-xs text-slate-300 backdrop-blur hover:border-white/25"
+          className="absolute top-3 right-3 z-20 rounded-full border border-white/10 bg-[#0a162e]/80 px-3 py-1.5 text-xs text-slate-300 backdrop-blur hover:border-white/25"
           title={t('graph.recenterTitle')}
         >
           {t('graph.recenter')}
         </button>
         <div
           ref={tipRef}
-          className="pointer-events-none absolute z-30 hidden max-w-xs overflow-hidden break-words rounded-lg border border-amber-500/30 bg-[#06122699] px-3 py-2 text-[11px] leading-snug text-slate-100 backdrop-blur"
+          className="pointer-events-none absolute z-30 hidden max-w-xs overflow-hidden rounded-lg border border-amber-500/30 bg-[#06122699] px-3 py-2 text-[11px] leading-snug break-words text-slate-100 backdrop-blur"
           style={{ display: 'none' }}
         />
       </div>

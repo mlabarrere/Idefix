@@ -24,6 +24,7 @@ References (cf. docs/reference/references.md):
 """
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 import networkx as nx
@@ -56,7 +57,7 @@ def _out_strength_all(graph: nx.DiGraph) -> dict:
     return {n: float(w) for n, w in graph.out_degree(weight="count")}
 
 
-def _digraph_from_edges(edges: list[tuple]) -> nx.DiGraph:
+def _digraph_from_edges(edges: Sequence[tuple]) -> nx.DiGraph:
     g = nx.DiGraph()
     for u, v, w in edges:
         if g.has_edge(u, v):

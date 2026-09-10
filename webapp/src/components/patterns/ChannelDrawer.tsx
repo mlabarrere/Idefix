@@ -45,7 +45,7 @@ function FamilyCard({ k, s }: { k: string; s: ScoreFamily }) {
         <span className="flex-1">
           <span className="text-sm text-foreground" title={help}>
             {s.n}
-            {s.na ? <span className="ml-1 text-xs epi-limit">{t('drawer.naV0')}</span> : ''}
+            {s.na ? <span className="epi-limit ml-1 text-xs">{t('drawer.naV0')}</span> : ''}
           </span>
           <span className="mt-1 block h-1.5 w-full overflow-hidden rounded bg-foreground/10">
             <span className="block h-full rounded" style={{ width: `${s.na ? 0 : Math.round((s.v || 0) * 100)}%`, background: s.c }} />
@@ -100,19 +100,19 @@ function CalcDetail({ c }: { c: ChannelDetail }) {
             )
           })}
         </div>
-        <div className="flex justify-between border-t border-border pt-1 epi-evidence">
+        <div className="epi-evidence flex justify-between border-t border-border pt-1">
           <span className="text-muted-foreground">{t('drawer.calcBase')}</span>
           <span className="text-foreground">{fmt(comp._base)}</span>
         </div>
         {sev && (
-          <div className="space-y-0.5 epi-evidence">
+          <div className="epi-evidence space-y-0.5">
             <div className="flex justify-between"><span className="text-muted-foreground">{t('drawer.boostReforward')}</span><span className="text-foreground">+{fmt(sev.reforward_boost)}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">{t('drawer.boostAdversary', { n: sev.adversary_domain_citations ?? 0 })}</span><span className="text-foreground">+{fmt(sev.adversary_boost)}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">{t('drawer.boostTargeting')}</span><span className="text-foreground">+{fmt(sev.france_boost)}</span></div>
             <div className="flex justify-between font-semibold"><span className="text-primary/80">{t('drawer.severityFactor')}</span><span className="text-primary">× {fmt(comp._severity_factor ?? sev.factor)}</span></div>
           </div>
         )}
-        <div className="flex justify-between border-t border-border pt-1 font-semibold epi-evidence">
+        <div className="epi-evidence flex justify-between border-t border-border pt-1 font-semibold">
           <span className="text-muted-foreground">{t('drawer.combinedSuspicion')}</span>
           <span className="text-foreground">{fmt(comp._combined)}</span>
         </div>
@@ -131,7 +131,7 @@ function Interactions({ model, cid }: { model: GraphModel; cid: number }) {
   const Group = ({ title, items }: { title: string; items: { cid: number; count?: number; meta?: string }[] }) =>
     items.length === 0 ? null : (
       <div className="mb-2">
-        <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        <div className="mb-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
           {title} <span className="text-muted-foreground">{items.length}</span>
         </div>
         {items.slice(0, 8).map((x, i) => (
@@ -148,13 +148,13 @@ function Interactions({ model, cid }: { model: GraphModel; cid: number }) {
     )
   return (
     <div>
-      <div className="mb-2 mt-4 text-sm font-medium text-muted-foreground">{t('drawer.interactions')}</div>
+      <div className="mt-4 mb-2 text-sm font-medium text-muted-foreground">{t('drawer.interactions')}</div>
       <Group title={t('drawer.relaysFrom')} items={a.fwdFrom.map((x) => ({ cid: x.cid, meta: `${x.count || 0}× · ${fmtDur(x.delay)}` }))} />
       <Group title={t('drawer.relayedBy')} items={a.fwdTo.map((x) => ({ cid: x.cid, count: x.count }))} />
       <Group title={t('drawer.coordinatedWith')} items={a.coord.map((x) => ({ cid: x.cid, meta: `${x.type} · ${x.count || 0}` }))} />
       {a.domains.length > 0 && (
         <div className="mb-2">
-          <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{t('drawer.citesDomains')} {a.domains.length}</div>
+          <div className="mb-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">{t('drawer.citesDomains')} {a.domains.length}</div>
           {a.domains.slice(0, 8).map((x, i) => (
             <div key={i} className="flex justify-between px-2 py-1 text-xs text-muted-foreground">
               <span>{x.domain}</span>
@@ -224,7 +224,7 @@ export function ChannelDrawer({ model }: { model: GraphModel }) {
   // restent cliquables (on peut sélectionner un autre nœud sans fermer le drawer).
   if (!open) return null
   return (
-    <aside className="fixed bottom-0 right-0 top-14 z-30 w-full max-w-md overflow-y-auto border-l border-border bg-card p-5 shadow-2xl">
+    <aside className="fixed top-14 right-0 bottom-0 z-30 w-full max-w-md overflow-y-auto border-l border-border bg-card p-5 shadow-2xl">
       {loading || !c ? (
             <div className="text-sm text-muted-foreground">{loading ? t('common.loading') : t('drawer.notInIndex')}</div>
           ) : (
@@ -306,7 +306,7 @@ export function ChannelDrawer({ model }: { model: GraphModel }) {
                           <span className="epi-evidence text-foreground">
                             {fmt(Number(c.scores.f.ev.find(([k]) => k === 'baseline_distance')?.[1] ?? 0))}
                           </span>
-                          <span className="flex-1 overflow-hidden rounded bg-foreground/10 h-2">
+                          <span className="h-2 flex-1 overflow-hidden rounded bg-foreground/10">
                             <span
                               className="block h-full rounded"
                               style={{
@@ -330,7 +330,7 @@ export function ChannelDrawer({ model }: { model: GraphModel }) {
                           <div key={i} className="flex justify-between gap-3 py-0.5">
                             <button
                               onClick={() => select(sim.channel_id)}
-                              className="text-telegram hover:underline text-left"
+                              className="text-left text-telegram hover:underline"
                             >
                               {at(sim.handle)}
                             </button>

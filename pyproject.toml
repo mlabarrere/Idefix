@@ -96,6 +96,13 @@ quote-style = "double"
 python_version = "3.11"
 strict = false
 ignore_missing_imports = true
+# `src/` has no __init__.py, so mypy inferred two module names for the same
+# file ("dossier.builder" and "src.dossier.builder") and aborted before
+# checking anything. Anchoring the package base at the repo root makes
+# `src.<pkg>` the single canonical name -- the import form the code actually
+# uses. This is the "src-layout debt" the CI job used to tolerate.
+explicit_package_bases = true
+mypy_path = "."
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

@@ -36,7 +36,7 @@ export function ThemeLens({
 
   return (
     <div>
-      <div className="mb-1 px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{tr('graph.themeLens.heading')}</div>
+      <div className="mb-1 px-1 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">{tr('graph.themeLens.heading')}</div>
       <div className="flex flex-wrap gap-1.5">
       {themes.map((t) => {
         const on = activeId === t.id
@@ -44,7 +44,7 @@ export function ThemeLens({
           <button
             key={t.id}
             onClick={() => onPick(on ? null : t.id)}
-            className={`rounded-full px-2.5 py-1 text-xs ring-1 ring-inset backdrop-blur transition ${
+            className={`rounded-full px-2.5 py-1 text-xs ring-1 backdrop-blur transition ring-inset ${
               on ? 'text-white' : 'text-slate-300 ring-white/10 hover:ring-white/30'
             }`}
             style={on ? { background: t.color + '22', borderColor: t.color, color: t.color } : undefined}

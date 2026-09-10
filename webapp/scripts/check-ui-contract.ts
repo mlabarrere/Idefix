@@ -206,7 +206,7 @@ for (const abs of walk(SCREENS)) {
   const base = basename(abs)
   if (!base.endsWith('.tsx') || NOT_A_PAGE.has(base) || FULL_BLEED_PAGES.has(base)) continue
   const file = rel(abs)
-  let src = ''
+  let src: string
   try {
     src = readFileSync(abs, 'utf8')
   } catch {
@@ -222,7 +222,7 @@ for (const abs of walk(SCREENS)) {
 for (const abs of files) {
   if (!abs.endsWith('.tsx')) continue
   const file = rel(abs)
-  let src = ''
+  let src: string
   try {
     src = readFileSync(abs, 'utf8')
   } catch {

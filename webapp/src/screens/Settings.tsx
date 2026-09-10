@@ -61,7 +61,7 @@ export function Settings() {
   const { t } = useTranslation()
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-2xl px-6 py-8 space-y-6">
+      <div className="mx-auto max-w-2xl space-y-6 px-6 py-8">
         <PageHeader
           title={t('settings.title')}
           subtitle={t('settings.subtitle')}

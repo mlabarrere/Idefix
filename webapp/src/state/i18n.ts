@@ -44,7 +44,7 @@ function initialLang(): Lang {
   return nav ? normalize(nav) : 'fr'
 }
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
+ 
 i18n.use(initReactI18next).init({
   resources: {
     fr: { translation: fr },

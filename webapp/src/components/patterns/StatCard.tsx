@@ -16,8 +16,8 @@ export interface StatCardProps {
 export function StatCard({ label, value, hint, className }: StatCardProps) {
   return (
     <div className={cn('rounded-lg border border-border bg-card p-4', className)}>
-      <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
-      <div className="mt-1 epi-computed text-2xl font-semibold text-foreground">{value}</div>
+      <div className="text-xs tracking-wide text-muted-foreground uppercase">{label}</div>
+      <div className="epi-computed mt-1 text-2xl font-semibold text-foreground">{value}</div>
       {hint ? <div className="text-xs text-muted-foreground">{hint}</div> : null}
     </div>
   )

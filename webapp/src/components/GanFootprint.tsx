@@ -61,11 +61,11 @@ export function GanFootprint() {
 
       <div className="mt-2 grid grid-cols-2 gap-2">
         <div>
-          <div className="mb-0.5 text-[10px] uppercase tracking-wide text-emerald-400/80">{t('gan.origHead')}</div>
+          <div className="mb-0.5 text-[10px] tracking-wide text-emerald-400/80 uppercase">{t('gan.origHead')}</div>
           {f.origination.slice(0, 6).map((c) => <ChanRow key={c.channel_id} c={c} color="#4ade80" />)}
         </div>
         <div>
-          <div className="mb-0.5 text-[10px] uppercase tracking-wide text-rose-400/80">{t('gan.advHead')}</div>
+          <div className="mb-0.5 text-[10px] tracking-wide text-rose-400/80 uppercase">{t('gan.advHead')}</div>
           {f.adverse.slice(0, 6).map((c) => <ChanRow key={c.channel_id} c={c} color="#f87171" />)}
         </div>
       </div>

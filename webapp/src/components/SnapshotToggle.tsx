@@ -23,7 +23,7 @@ export function SnapshotToggle() {
 
   return (
     <div>
-      <div className="mb-1 px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+      <div className="mb-1 px-1 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">
         Vue communautés
       </div>
       <div className="flex gap-1.5">

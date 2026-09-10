@@ -125,9 +125,14 @@ class TelegramClient:
         Fetch up to `limit` messages from a channel.
         Returns list of Hydrogram Message objects.
         """
-        messages = []
+        messages: list = []
+        history = self._client.get_chat_history(
+            channel, limit=limit, offset_id=offset_id
+        )
+        if history is None:  # pragma: no cover - defensive, client contract
+            return messages
         # get_chat_history is an async generator — iterate directly, handle FloodWait per-item
-        async for msg in self._client.get_chat_history(channel, limit=limit, offset_id=offset_id):
+        async for msg in history:
             messages.append(msg)
         log.info(
             "history_fetched",
@@ -165,7 +170,10 @@ class TelegramClient:
         # Hydrogram raises FloodWait at the iterator level between API pages.
         while True:
             try:
-                async for msg in self._client.get_chat_history(channel, limit=limit):
+                history = self._client.get_chat_history(channel, limit=limit)
+                if history is None:  # pragma: no cover - defensive
+                    break
+                async for msg in history:
                     yield msg
                     count += 1
                 break  # completed without flood

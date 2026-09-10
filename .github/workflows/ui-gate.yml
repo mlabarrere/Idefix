@@ -1,12 +1,14 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # UI gate — Idéfix web app (webapp/) design-system CI.
 #
-# ADVISORY UNTIL PHASE 2. The components still predate tokenization, so `lint`
-# and `ui-contract` currently report a large, EXPECTED baseline of violations.
-# Those two jobs run with `continue-on-error: true` so they SURFACE findings
-# without blocking merges. Once Phase 2 tokenizes the components (baseline → 0)
-# and branch protection is enabled on this repo, remove `continue-on-error` from
-# the `lint` and `ui-contract` jobs to make the gate blocking.
+# `ui-contract` is ADVISORY UNTIL PHASE 2: the components still predate
+# tokenization, so it reports a large, EXPECTED baseline of violations. It runs
+# with `continue-on-error: true` to SURFACE findings without blocking merges.
+# Once Phase 2 tokenizes the components (baseline → 0), remove the flag.
+#
+# `lint` and `e2e` became blocking in 2026-09: eslint is at zero problems, and
+# e2e now generates its own synthetic bundle instead of relying on committed
+# data.
 #
 # Scope: this workflow is intentionally isolated from the repo's Python/pytest/
 # ruff tooling — it only builds/checks the front-end under webapp/.
@@ -62,10 +64,9 @@ jobs:
       - run: npm run i18n:parity
 
   lint:
-    name: lint (eslint · advisory)
+    name: lint (eslint · blocking)
     runs-on: ubuntu-latest
-    # Advisory until Phase 2 tokenization + branch protection — see header.
-    continue-on-error: true
+    # Blocking since 2026-09: the baseline is zero errors and zero warnings.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -92,12 +93,16 @@ jobs:
       - run: npm run ui:contract
 
   e2e:
-    name: e2e (playwright smoke · chromium · advisory)
+    name: e2e (playwright smoke · chromium)
     runs-on: ubuntu-latest
-    # Advisory : harnais smoke/inspection (assertions, PAS de visual-regression).
-    # Chromium local uniquement, aucun Docker. Le webServer démarre `npm run dev`
-    # (données statiques committées sous public/data/). N'échoue pas le gate.
-    continue-on-error: true
+    # Smoke/inspection harness (assertions, NOT visual regression). Chromium
+    # only, no Docker.
+    #
+    # Analyst bundles are no longer committed (they are corpus-specific, so
+    # publishing them would ship unreproducible numbers -- docs/limitations.md
+    # Part III). The suite therefore generates a SYNTHETIC bundle first:
+    # deterministic, obviously fake, and sufficient to drive the galaxy and the
+    # channel table. Nothing it contains may be cited.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -105,6 +110,10 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: webapp/package-lock.json
+      - uses: astral-sh/setup-uv@v3
+      - name: Generate synthetic bundle
+        working-directory: .
+        run: uv run --no-project python scripts/make_fixture_bundle.py
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

@@ -1,5 +1,4 @@
 // ponytail: standalone component pour embedding proximity — réutilise pattern ChannelDrawer
-import { useState } from 'react'
 import { loadChannel } from '../data/loaders'
 import { at, fmt } from '../graph/grammar'
 import { useSelection } from '../state/SelectionContext'
@@ -22,7 +21,7 @@ export function SemanticSimilarity({ channelId, missionId }: Props) {
   if (!c.embedding_proximity || c.embedding_proximity.length === 0) return null
 
   return (
-    <div className="rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/40 p-3">
+    <div className="rounded-md border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800/40">
       <div className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
         Canaux sémantiquement similaires
       </div>
