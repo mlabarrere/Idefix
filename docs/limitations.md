@@ -66,13 +66,12 @@ kappas `None`. There is no measured agreement, and none may be claimed.
 
 Ordered by severity. Each is a concrete, fixable problem.
 
-### D1. `credibility_prior` is a language partition — **critical**
+### D1. `credibility_prior` was a language partition — **FIXED 2026-09**
 
-`src/graph/loader.py:66,128` sets `credibility_prior = "suspect"` **iff
-`fr_score < 0.15`**, where `fr_score` (`scripts/tag_france.py:35`) is simply the
-fraction of a channel's messages matching a French-keyword regex.
-
-"Suspect" therefore means **"writes in few French keywords"**.
+`src/graph/loader.py` used to set `credibility_prior = "suspect"` **iff
+`fr_score < 0.15`**, where `fr_score` is simply the fraction of a channel's
+messages matching a French-keyword regex. "Suspect" therefore meant **"writes
+in few French keywords"**.
 
 That prior then drives `suspect_reforward_fraction`, the largest of the three
 severity modulators (`03-suspicion-score.md` §3.8). On the June 2026 run the
@@ -88,9 +87,20 @@ and including 0.3.0 asserted the opposite in so many words — *"`fr_score` is a
 display field only and is never used as a filter or anchor"* — which was false.
 That sentence has been removed.
 
-*Fix:* replace the language-derived prior with an explicit prior sourced from the
-documented adversary catalogue, or remove the prior. The ranking will change;
-that is the point. Measuring the delta is a publishable result in itself.
+**Fixed.** The prior is now evidence-based: a channel is `suspect` when it cites
+documented adversary infrastructure (`CITES_DOMAIN` edges into the catalogue) or
+is itself catalogued. Language is no longer an input, which finally makes the old
+claim about `fr_score` true rather than false. Missions keep the ability to
+disable the prior entirely (`credibility_prior_enabled`, used by `gan`).
+
+Locked by `tests/graph/test_prior_policy.py::test_prior_follows_evidence_not_language`,
+which asserts the exact inversion: a French-writing channel citing adversary
+infrastructure is `suspect`, a non-French-writing channel with no documented link
+is not.
+
+**The ranking changes as a result, and the size of that change is unmeasured**
+because no corpus is available. The protocol is
+`docs/experiments/exp-language-prior-ablation.md`.
 
 ### D2. Family (c) has no null model — **critical**
 
@@ -113,12 +123,17 @@ Families (b) and (d) are computed on the **same forward graph**, against the
 (`:142-149`). Stouffer assumes independence; correlated inputs make the combined
 p anticonservative — it overstates significance.
 
-### D4. Discontinuity at zero in the combiner
+### D4. Discontinuity at zero in the combiner — **FIXED 2026-09**
 
-`channel_suspicion.py:568-576` drops families with `p >= 1.0`. Given family (c)'s
-pseudo-p of `1 - value`, a channel with `coord_value = 0.0` is dropped, while
-`coord_value = 0.0001` gives `p = 0.9999`, `z ~ -3.7`, crushing the combined
-score. An arbitrarily small input change produces a large rank change.
+The combiner dropped families on the exact equality `p >= 1.0`. Given family
+(c)'s pseudo-p of `1 - value`, a channel with `coord_value = 0.0` was dropped,
+while `coord_value = 0.0001` gave `p = 0.9999`, `z ~ -3.7`, crushing the combined
+score. An arbitrarily small input change produced a large rank change.
+
+**Fixed** by replacing the exact threshold with a band, `NO_SIGNAL_PVALUE = 0.99`:
+a p-value indistinguishable from "no signal" is excluded, so the frontier is
+continuous. Locked by
+`tests/scorer/test_combination_significance.py::test_combination_is_continuous_near_zero_signal`.
 
 ### D5. `CO_HASHTAG` manufactures coordination
 
@@ -144,10 +159,10 @@ point because it has no null model.
 A published interval on any family other than (b) or (d) is a formatting
 convention, not an uncertainty estimate.
 
-### D7. `n_bootstrap = 100` is too low
+### D7. `n_bootstrap = 100` is too low — **FIXED 2026-09**
 
-`src/missions/spec.py:127`. Bootstrap intervals at n = 100 are unstable; 1000 or
-more is standard. Cheap to fix.
+Raised to 1000 in `src/missions/spec.py`. Cost is linear and it does not touch
+the p-values (which come from `n_null`), so it cannot shift the ranking.
 
 ### D8. Scores are max-normalized and so not comparable across runs
 
@@ -156,13 +171,37 @@ Families (b) and (d) divide by the corpus maximum
 other channel in the run; one new hub rescales everyone. Values are comparable
 within a single export and **not** across exports, corpora or time.
 
-### D9. Bridge Score sums incompatible scales
+### D9. Bridge Score sums terms that scale differently with corpus size
 
-`cascade_role.py:93-97` adds `in_degree_centrality` (normalized by `n-1`, in
-[0,1]), `eigenvector_centrality_numpy` (L2-normalized, entries of order
-`1/sqrt(n)`) and `clustering` (in [0,1]). At corpus scale the eigenvector term is
-numerically negligible, so the published "three-component composite" is in
-practice two components.
+`cascade_role.py:93-97` adds three quantities with different asymptotics:
+`in_degree_centrality` is normalized by `n-1`, so it decays as `1/n`;
+`eigenvector_centrality_numpy` returns an L2-normalized vector, which does not
+decay the same way; `clustering` is scale-free in `[0,1]`.
+
+Measured on a synthetic core-plus-tail graph, holding the topology fixed and
+growing only the corpus (median contribution per node):
+
+| nodes | `10 * in_degree` | `7 * eigenvector` |
+|---|---|---|
+| 110 | 0.092 | 0.049 |
+| 510 | 0.020 | 0.049 |
+| 2010 | 0.005 | 0.047 |
+| 8010 | 0.001 | 0.042 |
+
+The two terms **cross over** at a few hundred nodes. On a small corpus the score
+is driven by in-degree; on a large one, by eigenvector centrality — by a factor
+of ~33 at 8 000 nodes.
+
+The consequence is worse than an arbitrary weighting. The published weights
+`10 / 7 / 7` do not express the relative importance of the three signals at any
+particular scale, and **the composite silently changes character as the corpus
+grows**. Two runs on differently-sized corpora are not measuring the same thing,
+which compounds D8.
+
+*Fix:* standardize the three components (z-score or rank) before combining, so
+that the weights mean what they appear to mean.
+
+Reproduced by `tests/scorer/test_cascade_role.py::test_term_scaling_crossover`.
 
 ### D10. Family (f) fails silently
 
@@ -175,7 +214,7 @@ Its two terms are also strongly anti-correlated cosines in the same space, so th
 weighted sum largely reduces to "cosine to the adversary centroid" — it is one
 signal presented as two.
 
-### D11. Two evaluation scripts are mis-specified
+### D11. Two evaluation scripts are mis-specified — **FIXED 2026-09**
 
 `eval_episode_recovery.py:49` computes `len(members)*k/n` and labels it
 `random_control_recall@k`. That is an **expected hit count**, not a recall, yet
@@ -183,11 +222,18 @@ it is printed beside a genuine `recall@k`. Depending on which pair a reader
 compares, the same output file supports both "at chance" and "an order of
 magnitude above chance" — and the verdict logic uses the count comparison.
 
-`eval_embedding_discrimination.py:77` builds its texts as
-`[f"@{u}" for u in usernames]` — it embeds **channel handles**, not message
-content. It therefore does not test the deployed semantic family at all, and its
-ROC-AUC of 0.506 measures the inseparability of handle strings, which is expected
-and uninformative.
+`eval_embedding_discrimination.py:77` built its texts as
+`[f"@{u}" for u in usernames]` — it embedded **channel handles**, not message
+content. It therefore did not test the deployed semantic family at all, and its
+near-chance ROC-AUC measured only the inseparability of handle strings.
+
+**Both fixed.** The recovery control is now `k/n`, in the same unit as
+`recall@k`; the expected-count figure is kept under the honest name
+`expected_hits_random@k`; and a run with fewer than 10 gold members in the corpus
+is reported `NON CONCLUANT` rather than interpreted. The embedding experiment now
+calls `compute_channel_embeddings` — the same function the scorer uses — so
+experiment and deployment share one code path, and it refuses to report when
+either class has fewer than 10 usable channels.
 
 ### D12. The evaluation harness cannot run from a clean clone
 
@@ -232,6 +278,25 @@ The `gan` and `russosphere` missions have produced T2 volumes differing by more
 than an order of magnitude. This is a calibration artefact of the `telegram_*`
 families and their gate, not a finding about relative prevalence. Until the gates
 are harmonized and documented, `gan` T2 counts are uninterpretable.
+
+### D15b. Isolated channels scored 1.0 in family (b) — **FIXED 2026-09**
+
+Found while writing the tests D17 called for. Not present in any earlier audit.
+
+`nx.in_degree_centrality` returns 1 for the only node of a singleton graph, and
+the eigenvector of a 1x1 matrix is 1. A channel with **no edges at all**
+therefore produced `bridge_raw = 10*1 + 7*1 = 17`, which became the corpus
+maximum, so `bridge_norm = 1.0` and `triggered = True` — **the maximum possible
+cascade score for a channel with no edges**.
+
+The main scoring path masked the symptom, because the rigorous layer overwrites
+value and trigger status for family (b). But `scripts/build_dossier.py:198` and
+`channel_archetypes` consume `score_cascade_role` directly and were exposed.
+
+**Fixed** by a degenerate-centrality guard: a node whose in-degree and
+out-degree are both zero scores 0.0, which is what `classify_archetype` already
+implied by returning `None`. Locked by two tests in
+`tests/scorer/test_cascade_role.py`.
 
 ### D16. A second, contradictory gate exists in the dossier builder
 
@@ -283,15 +348,26 @@ the historical numbers document a method that is no longer claimed.
 
 ## Part IV — Priority order for closing these
 
-1. **D1** — the language prior. It invalidates the interpretation of the one
-   discriminant number the project had.
-2. **L4** — an organic-coordination corpus. Unblocks the discriminant experiment
-   and any global ROC-AUC. Human annotation.
-3. **D2** — a null model for family (c). Removes the placebo p-value.
-4. **D11** — the two evaluation bugs. Cheap, and both currently produce
-   misleading output.
-5. **L5** — a real external gold. Makes episode recovery falsifiable.
-6. **D5, D6, D7, D9** — noise, fabricated intervals, bootstrap size, scale
-   mismatch. All cheap.
-7. **D14** — sensitivity analysis on the free parameters, starting with
+**Closed in September 2026:** D1 (language prior), D4 (combiner
+discontinuity), D7 (bootstrap size), D11 (both evaluation bugs), D15b (isolated
+channels scoring 1.0). D9 was re-measured and its description corrected — the
+original claim had the direction of the effect backwards.
+
+Still open, in order:
+
+1. **L4** — an organic-coordination corpus. Unblocks the discriminant experiment
+   and any global ROC-AUC. Human annotation; nothing else substitutes.
+2. **D2** — a null model for family (c). Removes the placebo p-value.
+3. **L5** — a real external gold. Makes episode recovery falsifiable.
+4. **D5** — `CO_HASHTAG` manufacturing coordination edges.
+5. **D6** — fabricated confidence bands outside families (b) and (d).
+6. **D9** — standardize the Bridge Score components so that the weights mean
+   something stable across corpus sizes.
+7. **D3** — the Stouffer independence violation.
+8. **D14** — sensitivity analysis on the free parameters, starting with
    `EMB_SIM` and the Leiden resolution.
+9. **D16** — unify the two gate definitions.
+
+**Measuring the effect of the D1 fix is itself a priority.** The ranking has
+changed, and by how much is unknown, because no corpus is available to compare
+against.

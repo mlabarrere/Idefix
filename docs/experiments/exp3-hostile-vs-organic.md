@@ -63,8 +63,12 @@ because `adversary_linkage` was itself driven by a language partition
 in few French keywords.
 
 So the historical run cannot distinguish "the score keys on adversary anchoring"
-from "the score keys on not writing in French". The language-prior ablation must
-run first; only then does this experiment measure what it names.
+from "the score keys on not writing in French".
+
+The confound has been removed **in the code** — the prior no longer reads
+language (`../limitations.md` D1) — but the historical numbers were produced
+before that change and remain uninterpretable. This experiment measures what it
+names only on a run made after the fix.
 
 ## Command
 

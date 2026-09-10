@@ -15,14 +15,16 @@ things, and have different consequences.
 | Computed by | `src/normalizer/targeting.py:183-193` | `scripts/tag_france.py:35` |
 | Definition | Weighted composite of lexicon breadth, depth and adversary-domain citation | `matching_messages / total_messages` for one French-keyword regex |
 | Range | [0,1], per channel, max over sampled messages | [0,1], a raw density |
-| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | **Sets `credibility_prior`** (`src/graph/loader.py:66,128`) |
-| Status | Uncalibrated but principled | **Known defect** — see `docs/limitations.md` §1 |
+| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | Display only |
+| Status | Uncalibrated but principled | Was a defect until 2026-09 — `docs/limitations.md` D1 |
 
-The second row is the important one. `fr_score` was documented for a long time as
-"a display field only, never used as a filter or anchor". It is in fact the
-threshold that decides whether a channel is labelled `suspect`, and that label
-feeds the largest severity modulator. The claim was false; it has been removed
-from this documentation and the underlying behaviour is tracked as a defect.
+The second row is the important one. `fr_score` was documented for a long time
+as "a display field only, never used as a filter or anchor", while in fact being
+the threshold that decided whether a channel was labelled `suspect` — a label
+feeding the largest severity modulator. The claim was false when written. The
+code was changed in September 2026 so that it is now true: `credibility_prior`
+is derived from documented adversary linkage, and language is no longer an
+input anywhere in the score.
 
 ## 4.2 The targeting engine
 

@@ -141,6 +141,13 @@ ADVERSARY_DOMAINS: frozenset[str] = frozenset(
     }
 )
 
+# Bande de « pas de signal » pour la combinaison de Stouffer (défaut D4).
+# Une famille dont la p-value unilatérale atteint ce seuil est indiscernable de
+# l'absence de signal et sort de la combinaison. Fixé juste sous 1.0 pour que
+# l'exclusion soit continue au voisinage de zéro-valeur : la famille (c) tire sa
+# pseudo-p de ``1 - value``, donc ce seuil correspond à ``value <= 0.01``.
+NO_SIGNAL_PVALUE = 0.99
+
 # Pondération de combinaison des familles déclenchées (base = signaux b/c/d ;
 # a/e = 0 en v0). Transparente : chaque part est justifiable (NFR-8). La
 # coordination et la récidive (épine dorsale) pèsent autant que le rôle.
@@ -186,7 +193,7 @@ _DEFAULT_PROFILE = ScoringProfile(
     max_targeting_boost=MAX_FRANCE_TARGETING_BOOST,
     stale_days=STALE_DAYS,
     relevance_signal="france_targeting",
-    suspect_threshold=0.15,
+    credibility_prior_enabled=True,
     adversary_domains=ADVERSARY_DOMAINS,
 )
 
@@ -563,11 +570,22 @@ def _combine_suspicion(
             "p": _round(pv),
             "triggered": triggered,
         }
-        # NEUTRALITÉ : une famille SANS signal (p≈1 : aucune arête de coordination,
-        # observé sous le nul…) ne doit PAS être traitée comme une preuve CONTRE
-        # (z→-∞ qui écraserait la combinaison). On l'EXCLUT de Stouffer : la
-        # suspicion reflète la force des familles qui portent un signal.
-        if pv >= 1.0:
+        # NEUTRALITÉ : une famille SANS signal ne doit PAS être traitée comme une
+        # preuve CONTRE (z→-∞ écraserait la combinaison). Elle est EXCLUE de
+        # Stouffer : la suspicion reflète la force des familles qui portent un
+        # signal.
+        #
+        # DÉFAUT D4 (corrigé 2026-09) — le test était ``pv >= 1.0``, une égalité
+        # exacte. Comme la pseudo-p de la famille (c) vaut ``1 - value``, un
+        # canal à ``value == 0.0`` donnait p == 1.0 et était exclu, tandis qu'un
+        # canal à ``value == 1e-4`` donnait p == 0.9999, donc z ≈ -3.7, ce qui
+        # écrasait le score combiné. Une variation infinitésimale de l'entrée
+        # produisait un saut de rang : exactement ce que l'exclusion cherchait à
+        # éviter. Le seuil est désormais une BANDE : toute famille dont la
+        # p-value est indiscernable de « aucun signal » est exclue, ce qui rend
+        # la frontière continue.
+        # Voir docs/limitations.md D4.
+        if pv >= NO_SIGNAL_PVALUE:
             components[letter]["combined_in"] = False
             continue
         components[letter]["combined_in"] = True
@@ -1054,12 +1072,17 @@ async def _build_channel_queue_live(
     edge_rows = await fetch_edge_rows(conn)
     channel_rows = await fetch_channel_rows(conn)
     if profile is not None:
+        # Le prior s'adosse au catalogue adverse de la mission, jamais à la
+        # langue (défaut D1 — docs/limitations.md).
         multi = build_graph(
             edge_rows, channel_rows,
-            prior_policy=make_prior_policy(profile.suspect_threshold),
+            prior_policy=make_prior_policy(profile.credibility_prior_enabled),
+            adversary_domains=profile.adversary_domains or ADVERSARY_DOMAINS,
         )
     else:
-        multi = build_graph(edge_rows, channel_rows)
+        multi = build_graph(
+            edge_rows, channel_rows, adversary_domains=ADVERSARY_DOMAINS
+        )
 
     # Méta de fraîcheur : last_polled_at par canal (si la colonne est lue).
     channels_meta: dict[int, dict[str, Any]] = {}

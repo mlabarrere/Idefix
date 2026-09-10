@@ -60,10 +60,22 @@ COORDINATION_EDGE_TYPES: frozenset[str] = frozenset(
      "CO_HASHTAG", "MEDIA_REUSE"}
 )
 
-# Seuil fr_score sous lequel un canal est a priori « suspect » (graph-model
-# §3.1 ; tag_france.py / detect_clusters.py). credibility_prior est un a priori
-# d'ÉCHANTILLONNAGE, jamais une cible de supervision (graph-model §1.2/§3.1).
-SUSPECT_FR_SCORE_MAX = 0.15
+# --------------------------------------------------------------------------- #
+# credibility_prior — DÉFAUT D1 CORRIGÉ (2026-09).                            #
+# --------------------------------------------------------------------------- #
+# Historiquement : ``credibility_prior = "suspect"`` SSI ``fr_score < 0.15``,
+# c'est-à-dire SSI le canal écrit peu de mots-clés français. Ce prior alimente
+# ``suspect_reforward_fraction``, le plus gros modulateur de sévérité — le
+# classement était donc pour une large part un classement PAR LANGUE, alors que
+# la méthodologie affirmait explicitement le contraire.
+#
+# Désormais le prior est ADOSSÉ À DES PREUVES : un canal est « suspect » quand
+# il cite une infrastructure adverse DOCUMENTÉE (catalogue de domaines, cf.
+# ``src/scorer/channel_suspicion.ADVERSARY_DOMAINS``) ou qu'il figure lui-même
+# au catalogue. La langue n'entre plus dans le calcul ; ``fr_score`` redevient
+# ce que la doc prétendait qu'il était : un champ d'affichage.
+#
+# Voir docs/limitations.md D1 et docs/experiments/exp-language-prior-ablation.md.
 
 
 # --------------------------------------------------------------------------- #
@@ -114,40 +126,47 @@ async def fetch_channel_rows(conn) -> list[dict]:
 # --------------------------------------------------------------------------- #
 # Dérivations pures de features de nœud.
 # --------------------------------------------------------------------------- #
-def credibility_prior(fr_score: float | None) -> str:
-    """A priori d'échantillonnage {legit, suspect, other} dérivé du fr_score.
+def credibility_prior(evidence: Mapping[str, Any]) -> str:
+    """A priori d'échantillonnage {suspect, other} adossé à des PREUVES.
 
-    graph-model §3.1 : ``fr_score < 0.15`` => cluster pro-RU francophone
-    (suspect). Un ``fr_score`` élevé n'implique pas « legit » (un canal orienté
-    France peut être propagateur) — on renvoie ``other`` quand le signal ne
-    tranche pas, ``None`` => ``other``. ``credibility_prior`` n'est JAMAIS la
-    cible de supervision (graph-model §1.2).
+    ``evidence`` décrit le lien OBSERVÉ du canal à une infrastructure adverse
+    documentée :
+
+    * ``adversary_domain_citations`` (int) — nb de domaines adverses catalogués
+      cités par le canal (arêtes ``CITES_DOMAIN``) ;
+    * ``catalogued_adversary`` (bool) — le canal lui-même figure au catalogue.
+
+    L'un ou l'autre suffit. En l'absence de preuve => ``other`` : l'absence de
+    lien documenté n'est PAS une présomption d'innocence, seulement l'absence
+    de signal. ``credibility_prior`` n'est jamais une cible de supervision.
+
+    ``fr_score`` n'est volontairement PAS un paramètre : voir le bandeau D1 en
+    tête de module.
     """
-    if fr_score is None:
-        return "other"
-    if fr_score < SUSPECT_FR_SCORE_MAX:
+    if evidence.get("catalogued_adversary"):
+        return "suspect"
+    if int(evidence.get("adversary_domain_citations") or 0) > 0:
         return "suspect"
     return "other"
 
 
-def make_prior_policy(suspect_threshold: float | None) -> Callable[[float | None], str]:
-    """Fabrique la politique de credibility_prior d'une mission (résout R1).
+def neutral_prior(_evidence: Mapping[str, Any]) -> str:
+    """Prior neutre : aucune présomption de suspicion sur toute la mission."""
+    return "other"
 
-    ``suspect_threshold=0.15`` -> comportement russosphère historique
-    (``signal < 0.15`` => « suspect »). ``None`` -> **prior NEUTRE** « other »
-    pour toute la mission (cas GAN : aucune présomption de suspicion sur les
-    canaux discutant d'un actif ami ; l'attention adverse y est portée par la
-    famille ``telegram_adverse_attention``, pas par le prior).
+
+def make_prior_policy(
+    enabled: bool = True,
+) -> Callable[[Mapping[str, Any]], str]:
+    """Fabrique la politique de ``credibility_prior`` d'une mission.
+
+    ``enabled=True``  -> prior adossé au catalogue adverse (``credibility_prior``).
+    ``enabled=False`` -> **prior NEUTRE** pour toute la mission (cas GAN :
+    aucune présomption de suspicion sur les canaux discutant d'un actif ami ;
+    l'attention adverse y est portée par ``telegram_adverse_attention``, pas
+    par le prior).
     """
-    if suspect_threshold is None:
-        return lambda _v: "other"
-
-    def _policy(v: float | None) -> str:
-        if v is None:
-            return "other"
-        return "suspect" if v < suspect_threshold else "other"
-
-    return _policy
+    return credibility_prior if enabled else neutral_prior
 
 
 def edge_family(edge_type: str) -> str:
@@ -158,11 +177,34 @@ def edge_family(edge_type: str) -> str:
 # --------------------------------------------------------------------------- #
 # Construction du graphe multiplex (PUR : lignes -> MultiDiGraph).
 # --------------------------------------------------------------------------- #
+def adversary_citation_counts(
+    edge_rows: Iterable[Mapping[str, Any]],
+    adversary_domains: frozenset[str],
+) -> dict[Any, int]:
+    """Nb de domaines adverses DISTINCTS cités par canal (arêtes CITES_DOMAIN).
+
+    Pur. C'est la preuve qui alimente ``credibility_prior`` depuis la
+    correction du défaut D1 (cf. bandeau en tête de module).
+    """
+    if not adversary_domains:
+        return {}
+    seen: dict[Any, set[str]] = defaultdict(set)
+    for e in edge_rows:
+        if e.get("edge_type") != "CITES_DOMAIN":
+            continue
+        dom = e.get("dst_domain")
+        if dom and dom.lower() in adversary_domains:
+            seen[e["src_channel_id"]].add(dom.lower())
+    return {cid: len(doms) for cid, doms in seen.items()}
+
+
 def build_graph(
     edge_rows: Iterable[Mapping[str, Any]],
     channel_rows: Iterable[Mapping[str, Any]] | None = None,
     *,
-    prior_policy: Callable[[float | None], str] | None = None,
+    prior_policy: Callable[[Mapping[str, Any]], str] | None = None,
+    adversary_domains: frozenset[str] = frozenset(),
+    catalogued_adversaries: frozenset[str] = frozenset(),
 ) -> nx.MultiDiGraph:
     """Construit le graphe multiplex centré-canal en mémoire.
 
@@ -174,27 +216,40 @@ def build_graph(
     sont des séquences de mappings (dicts ou Record asyncpg).
     """
     g = nx.MultiDiGraph()
-    # Politique de prior par mission (défaut = credibility_prior historique).
     policy = prior_policy or credibility_prior
+
+    # ``edge_rows`` est parcouru deux fois (preuve adverse, puis arêtes) : on le
+    # matérialise pour accepter aussi un générateur.
+    edges = list(edge_rows)
+
+    # 0) Preuve adossant le prior (défaut D1) : qui cite l'infra adverse ?
+    adv_citations = adversary_citation_counts(edges, adversary_domains)
+    catalogued = {u.lstrip("@").lower() for u in catalogued_adversaries}
 
     # 1) Nœuds canal + attributs (graph-model §2.2). Posés d'abord pour que les
     #    canaux connus aient leurs features même s'ils n'ont aucune arête.
     for c in channel_rows or ():
         cid = c["channel_id"]
-        fr = c.get("fr_score")
+        uname = c.get("username") or ""
+        # fr_score reste un champ d'AFFICHAGE : il n'entre pas dans le prior.
         g.add_node(
             cid,
             kind="channel",
-            username=c.get("username") or "",
+            username=uname,
             title=c.get("title") or "",
             member_count=c.get("member_count"),
-            fr_score=fr,
-            credibility_prior=policy(fr),
+            fr_score=c.get("fr_score"),
+            credibility_prior=policy(
+                {
+                    "adversary_domain_citations": adv_citations.get(cid, 0),
+                    "catalogued_adversary": uname.lstrip("@").lower() in catalogued,
+                }
+            ),
             engagement=int(c.get("engagement") or 0),
         )
 
     # 2) Arêtes. Pour CITES_DOMAIN, la cible est un nœud domaine (string).
-    for e in edge_rows:
+    for e in edges:
         src = e["src_channel_id"]
         etype = e["edge_type"]
         family = edge_family(etype)

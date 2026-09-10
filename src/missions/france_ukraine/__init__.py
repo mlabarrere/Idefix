@@ -101,7 +101,7 @@ MISSION = MissionDefinition(
         max_targeting_boost=MAX_FRANCE_TARGETING_BOOST,
         stale_days=STALE_DAYS,
         relevance_signal="france_ukraine_targeting",
-        suspect_threshold=0.15,
+        credibility_prior_enabled=True,
         adversary_domains=ADVERSARY_DOMAINS,
     ),
     dashboard=DashboardProfile(

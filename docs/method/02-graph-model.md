@@ -76,10 +76,11 @@ through the multi-source gate on its own. Recorded in `docs/limitations.md`.
 
 ## 2.5 Priors attached at load time
 
-`src/graph/loader.py` decorates nodes as the graph is built. One of these
-attachments, `credibility_prior`, is derived from French-keyword density and is a
-documented defect rather than a design feature — see `docs/limitations.md` §1
-before using or citing it.
+`src/graph/loader.py` decorates nodes as the graph is built. `credibility_prior`
+is derived from documented adversary linkage: a channel is `suspect` when its
+`CITES_DOMAIN` edges reach the adversary catalogue, or when it is itself
+catalogued. It was previously derived from French-keyword density, which was a
+defect — see `docs/limitations.md` D1.
 
 `engagement` (`loader.py:105`) is `SUM(views) + SUM(forwards)`. Reactions are not
 stored and are not part of it, despite what earlier documentation claimed.

@@ -49,10 +49,12 @@ def channel_row(cid, *, username="", title="", member_count=0,
 # --------------------------------------------------------------------------- #
 # Dérivations de features de nœud.
 # --------------------------------------------------------------------------- #
-def test_credibility_prior_from_fr_score():
-    assert credibility_prior(0.05) == "suspect"   # < 0.15 -> cluster pro-RU
-    assert credibility_prior(0.5) == "other"
-    assert credibility_prior(None) == "other"
+def test_credibility_prior_is_evidence_based():
+    """Défaut D1 : le prior suit la preuve adverse, jamais la langue."""
+    assert credibility_prior({"adversary_domain_citations": 1}) == "suspect"
+    assert credibility_prior({"catalogued_adversary": True}) == "suspect"
+    assert credibility_prior({"adversary_domain_citations": 0}) == "other"
+    assert credibility_prior({}) == "other"
 
 
 def test_edge_family_mapping():

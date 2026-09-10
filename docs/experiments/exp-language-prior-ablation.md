@@ -1,6 +1,6 @@
 # Experiment — Language-prior ablation
 
-**Status:** `NOT YET RUN` — script to be written
+**Status:** `NOT YET RUN` — the code fix has landed, the measurement has not
 **Artefact:** `results/language_prior_ablation.json`
 **Addresses:** `../limitations.md` D1
 
@@ -11,10 +11,16 @@ not write in French?
 
 ## Why this experiment exists
 
-`src/graph/loader.py:66,128` sets `credibility_prior = "suspect"` **iff
-`fr_score < 0.15`** — iff the channel's messages rarely match a French-keyword
-regex. That prior drives `suspect_reforward_fraction`, the largest severity
-modulator.
+Until September 2026 `src/graph/loader.py` set `credibility_prior = "suspect"`
+**iff `fr_score < 0.15`** — iff the channel's messages rarely matched a
+French-keyword regex. That prior drives `suspect_reforward_fraction`, the
+largest severity modulator.
+
+**The code has since been fixed** (`docs/limitations.md` D1): the prior is now
+derived from documented adversary linkage. What has *not* happened is the
+measurement — nobody knows how much the ranking moved, because no corpus is
+available to run both variants against. This protocol stays open for that
+reason, and it is the first thing to run once a corpus exists.
 
 A ranking that is substantially a language partition would be a serious defect
 for a system whose stated meta-constraint is that thematic relevance modulates
@@ -49,12 +55,14 @@ queue).
 
 ## Method
 
-Run the full scoring pipeline twice on the same corpus, changing only the prior:
+Run the full scoring pipeline three times on the same corpus, changing only the
+prior:
 
-1. **Shipped** — `credibility_prior` from `fr_score < 0.15`.
-2. **Ablated** — prior neutralized.
-3. **Catalogue** — prior sourced from the documented adversary catalogue instead
-   of from language, which is the proposed fix.
+1. **Legacy** — `credibility_prior` from `fr_score < 0.15` (the pre-fix
+   behaviour, reconstructible from git history).
+2. **Neutral** — prior disabled (`credibility_prior_enabled=False`).
+3. **Catalogue** — the shipped behaviour since September 2026: prior from
+   documented adversary linkage.
 
 Report, for each pair: Spearman over the full population, Jaccard@50 and
 Jaccard@100, rank displacement of the top 50, and `Spearman(suspicion, fr_score)`

@@ -33,12 +33,17 @@ bridge_norm = bridge_raw / max(bridge_raw over the corpus)
 
 **Two properties a reader must know before using this number.**
 
-The three terms are on **incompatible scales**. `in_degree_centrality` is
-normalized by `n-1` and lies in [0,1]; `eigenvector_centrality_numpy` returns an
-L2-normalized vector, so its entries are of order `1/sqrt(n)`; `clustering` is
-computed on the undirected projection and lies in [0,1]. On a graph of a few
-thousand nodes the eigenvector term is numerically negligible for nearly every
-channel, so in practice this is `10*in_degree + 7*clustering`.
+The three terms are on **incompatible scales, and they scale differently with
+corpus size**. `in_degree_centrality` is normalized by `n-1` and therefore
+decays as `1/n`; `eigenvector_centrality_numpy` returns an L2-normalized vector
+and does not decay the same way; `clustering` is scale-free in [0,1].
+
+Measured, the in-degree and eigenvector contributions **cross over** at a few
+hundred nodes: below that the score is driven by in-degree, above it by
+eigenvector centrality. The weights `10 / 7 / 7` therefore do not express the
+relative importance of the three signals at any particular scale, and the
+composite changes character as the corpus grows. See
+`docs/limitations.md` D9 for the measurements.
 
 The normalization is **max-scaling across the corpus**. A channel's `bridge_norm`
 therefore depends on every other channel in the run: adding one large hub
@@ -101,9 +106,11 @@ This is the **canonical combiner** and the one implemented at
 1. Each family yields a one-sided p-value. Families (b) and (d) get a genuine one
    from the null model of §3.6; every other family gets the `p = 1 - value`
    fallback of §3.3.
-2. Families with `p >= 1.0` are **excluded** from the combination rather than
-   counted as evidence against (`:568-576`), so that a silent family does not
-   drive `z` to minus infinity.
+2. Families whose p-value reaches `NO_SIGNAL_PVALUE = 0.99` are **excluded**
+   from the combination rather than counted as evidence against, so that a
+   silent family does not drive `z` to minus infinity. The threshold is a band
+   rather than an exact equality so that the frontier is continuous — see
+   `docs/limitations.md` D4.
 3. The survivors are combined by weighted Stouffer,
    `Z = sum(w_i*z_i)/sqrt(sum(w_i^2))` with `z_i = Phi^-1(1-p_i)`, using
    `BASE_FAMILY_WEIGHTS = {a: 0.15, b: 0.30, c: 0.25, d: 0.30, e: 0.15}`
@@ -113,19 +120,13 @@ This is the **canonical combiner** and the one implemented at
    (`significance.py:197-211`, via `statsmodels`), yielding `q_value` and
    `flagged`.
 
-**Two defects in this combination, both open.**
+**One defect in this combination remains open.**
 
 *Independence is violated.* Stouffer assumes independent p-values. Families (b)
 and (d) are computed on the same forward graph, against the **same null ensemble**
 (`rigor.py:136-138`) and the **same bootstrap draws** (`:142-149`). They are
 strongly correlated, so the combined p-value is anticonservative — it overstates
 significance.
-
-*There is a discontinuity at zero.* Because family (c)'s pseudo-p is `1 - value`,
-a channel with `coord_value = 0.0` yields `p = 1.0` and is dropped by step 2,
-while a channel with `coord_value = 0.0001` yields `p = 0.9999`, i.e.
-`z ~ -3.7`, which crushes the combined score. An arbitrarily small change in the
-input produces a large change in the rank.
 
 The family weights themselves have **no derivation**. The source comment asserts
 that "each share is justifiable"; no justification is recorded anywhere. Treat
@@ -147,9 +148,8 @@ Implementation notes that bound the result: the routine gives up after 8 attempt
 to avoid a self-loop and silently skips the edge (`:68-69`), so null graphs carry
 slightly fewer edges than observed. The p-value is the add-one one-sided upper
 tail `p = (1 + #{null >= obs}) / (n + 1)` (`:168`) — correct, and never zero.
-Defaults: `n_null = 200`, `n_bootstrap = 100`, `rng_seed = 1312`, `alpha = 0.05`
-(`src/missions/spec.py:125-128`). **`n_bootstrap = 100` is too low for stable
-confidence intervals**; 1000 or more is the standard expectation.
+Defaults: `n_null = 200`, `n_bootstrap = 1000`, `rng_seed = 1312`,
+`alpha = 0.05` (`src/missions/spec.py`).
 
 ## 3.7 Confidence bands
 
@@ -182,13 +182,14 @@ Because the modulation is multiplicative, a channel with zero base score stays a
 zero whatever its thematic relevance: relevance modulates **severity**, never
 **inclusion**. That property holds.
 
-**The first term is currently a language bias.** `suspect_reforward_fraction` is
-computed against `credibility_prior`, which `src/graph/loader.py:66,128` sets to
-`"suspect"` **iff `fr_score < 0.15`** — that is, iff the channel writes in few
-French keywords. This is the single most load-bearing threshold in the ranking
-and it is a keyword-density cut-off. See `docs/limitations.md` §1. Earlier
-versions of this document claimed `fr_score` was never used as an anchor; that
-claim was false and has been removed.
+`suspect_reforward_fraction` is computed against `credibility_prior`. Until
+September 2026 that prior was set from French-keyword density, which made the
+largest severity modulator a language bias and contradicted this document's own
+claim about `fr_score`. It is now evidence-based — a channel is `suspect` when
+it cites documented adversary infrastructure or is itself catalogued
+(`04-thematic-relevance.md` §4.1). `fr_score` is genuinely a display field now.
+See `docs/limitations.md` D1; the size of the ranking change is unmeasured for
+want of a corpus.
 
 The `0.20` bound on thematic targeting was chosen by analogy with the reforward
 bound, per the source comment. It is not calibrated.

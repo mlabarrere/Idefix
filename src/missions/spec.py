@@ -107,10 +107,16 @@ class ScoringProfile:
     # Nom du scalaire de pertinence par canal (affichage + clé d'ancrage).
     relevance_signal: str = "france_targeting"
     # Politique de credibility_prior (résout R1) : seuil sous lequel un canal est
-    # a priori « suspect » sur le ``relevance_signal``. None => prior neutre
-    # (« other ») pour toute la mission (cas GAN : pas de présomption de suspicion
-    # sur les canaux discutant d'un actif ami).
-    suspect_threshold: float | None = 0.15
+    # --- credibility_prior (défaut D1 corrigé, 2026-09) ----------------------
+    # Le prior était dérivé de la DENSITÉ DE MOTS-CLÉS FRANÇAIS (``fr_score <
+    # suspect_threshold``), ce qui faisait du classement un classement par
+    # langue. Il est désormais adossé au catalogue d'infrastructure adverse
+    # DOCUMENTÉE (``adversary_domains`` ci-dessous). Ce drapeau ne règle plus
+    # qu'une chose : la mission applique-t-elle un prior, ou reste-t-elle
+    # neutre ? ``False`` = prior neutre (cas GAN : pas de présomption de
+    # suspicion sur les canaux discutant d'un actif ami).
+    # Voir docs/limitations.md D1.
+    credibility_prior_enabled: bool = True
     # Domaines adverses pour le boost de citation (mission-spécifique).
     adversary_domains: frozenset[str] = frozenset()
     # Familles supplémentaires précalculées (ex. familles GAN telegram_*).
@@ -124,7 +130,11 @@ class ScoringProfile:
     # Benjamini-Hochberg appliquée à l'ENSEMBLE des canaux (définit ``flagged``).
     alpha: float = 0.05
     n_null: int = 200
-    n_bootstrap: int = 100
+    # D7 (2026-09) : 100 rééchantillonnages donnent des IC instables. 1000 est
+    # l'attente standard (Efron 1979). Coût linéaire, sans effet sur les
+    # p-values (qui viennent de ``n_null``), donc sans risque de régression sur
+    # le classement. Voir docs/limitations.md D7.
+    n_bootstrap: int = 1000
     rng_seed: int = 1312
     fdr_method: str = "fdr_bh"
     # Rubrique de précision-de-divulgation EEFI injectée (text, lang) -> [0,1],

@@ -124,9 +124,12 @@ def test_forward_digraph_only_forward_edges():
 # Helper : petit réseau adverse (origine relayée largement, fr_score BAS).    #
 # --------------------------------------------------------------------------- #
 def _adversary_network():
-    """Origine 'dugin' (fr_score 0.05) relayée par plusieurs canaux suspects,
-    qui co-forwardent ET co-citent -> 2 types de coordination, + citation
-    d'un domaine adverse. Tout en fr_score bas (adversaire RU/EN).
+    """Origine 'dugin' relayée par plusieurs canaux, qui co-forwardent ET
+    co-citent -> 2 types de coordination, + citation de domaine adverse.
+
+    Depuis la correction du défaut D1, le prior « suspect » vient de la PREUVE
+    (citation d'infra adverse documentée), plus du fr_score. Les fr_score bas
+    sont conservés ici précisément pour vérifier qu'ils ne pilotent plus rien.
     """
     chans = [
         channel_row(1001, username="Dugin", title="Alexander Dugin", fr_score=0.05),
@@ -149,8 +152,11 @@ def _adversary_network():
         edge_row(1002, dst_channel=1003, etype="CO_URL", count=2, window_delta_seconds=900),
         # Domaine adverse cité par 1002.
         edge_row(1002, dst_domain="geopolitika.ru", etype="CITES_DOMAIN", count=8),
+        # …et par l'origine 1001 : c'est CETTE preuve qui en fait un « suspect »
+        # et donne à 1002 une fraction de reforward-suspect non nulle.
+        edge_row(1001, dst_domain="katehon.com", etype="CITES_DOMAIN", count=3),
     ]
-    return build_graph(edges, chans)
+    return build_graph(edges, chans, adversary_domains=ADVERSARY_DOMAINS)
 
 
 def _signal_network():
@@ -553,17 +559,21 @@ def test_symmetric_ratio_independent_of_top_k():
     """P2 : le ratio symétrique (transparence EIP) est calculé sur la POPULATION
     COMPLÈTE, donc indépendant du paramètre d'affichage top_k."""
     chans = [
-        channel_row(1, username="adv", fr_score=0.02),    # suspect (fr<0.15)
-        channel_row(2, username="adv2", fr_score=0.03),   # suspect
-        channel_row(3, username="news", fr_score=0.80),   # other
-        channel_row(4, username="news2", fr_score=0.90),  # other
+        channel_row(1, username="adv", fr_score=0.02),
+        channel_row(2, username="adv2", fr_score=0.03),
+        channel_row(3, username="news", fr_score=0.80),
+        channel_row(4, username="news2", fr_score=0.90),
     ]
     edges = [  # seul le sous-réseau adverse a un rôle -> remonte en tête
         edge_row(1, dst_channel=2, etype="FORWARD", count=20, delay_seconds=600),
         edge_row(1, dst_channel=2, etype="CO_FORWARD", count=4, window_delta_seconds=600),
         edge_row(1, dst_channel=2, etype="CO_URL", count=3, window_delta_seconds=800),
+        # Preuve du prior « suspect » : 1 et 2 citent l'infra adverse documentée
+        # (défaut D1 : ce n'est plus le fr_score bas qui les marque).
+        edge_row(1, dst_domain="pravda-fr.com", etype="CITES_DOMAIN", count=2),
+        edge_row(2, dst_domain="rrn.media", etype="CITES_DOMAIN", count=2),
     ]
-    multi = build_graph(edges, chans)
+    multi = build_graph(edges, chans, adversary_domains=ADVERSARY_DOMAINS)
     q_top1 = compute_channel_queue(multi, top_k=1)
     q_all = compute_channel_queue(multi, top_k=50)
     # 2 suspects / 4 au total = 0.5, que l'on affiche 1 ou 50 canaux.

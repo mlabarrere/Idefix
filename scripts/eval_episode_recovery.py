@@ -34,6 +34,12 @@ DOSSIER = _REPO / "webapp" / "public" / "data" / "russosphere" / "dugin_cluster.
 GOLD_DIR = _REPO / "data" / "eval"
 
 
+# En deçà de ce nombre de membres du gold effectivement présents dans le
+# corpus, l'expérience n'a pas la puissance de trancher : le verdict est
+# NON CONCLUANT plutôt qu'interprété (docs/experiments/exp2-episode-recovery.md).
+MIN_MATCHED_FOR_VERDICT = 10
+
+
 def _norm(u: str) -> str:
     return (u or "").lstrip("@").lower()
 
@@ -42,23 +48,51 @@ def _evaluate(name: str, members: list[str], rank: dict, n: int) -> dict:
     matched = [(_norm(u), rank[_norm(u)]) for u in members if _norm(u) in rank]
     ranks = sorted(r for _, r in matched)
     out = {"episode": name, "cluster_size": len(members), "matched_in_corpus": len(matched)}
+    # DÉFAUT D11 (corrigé 2026-09). ``random_control_recall@k`` valait
+    # ``len(members) * k / n`` : c'est le NOMBRE DE HITS ATTENDU sous classement
+    # aléatoire, pas un recall. Il était pourtant affiché à côté d'un vrai
+    # ``recall@k = hits / len(members)``, si bien que le même fichier de sortie
+    # supportait deux lectures contradictoires du même run. Le contrôle correct
+    # pour un recall@k est ``k / n`` (probabilité qu'un membre donné tombe dans
+    # le top-k au hasard). Le comptage attendu est conservé, mais sous un nom
+    # qui dit ce qu'il est.
+    #
+    # ``matched_in_corpus`` est la base des recalls : un membre du gold ABSENT
+    # du corpus ne peut pas être récupéré, et le compter comme un échec de
+    # classement confond couverture et performance. Les deux dénominateurs sont
+    # publiés pour que la distinction reste lisible.
     for k in (20, 50, 100):
         hit = sum(1 for r in ranks if r <= k)
+        out[f"hits@{k}"] = hit
         out[f"recall@{k}"] = round(hit / len(members), 4) if members else 0.0
+        out[f"recall_in_corpus@{k}"] = round(hit / len(matched), 4) if matched else 0.0
         out[f"precision@{k}"] = round(hit / k, 4)
-        out[f"random_control_recall@{k}"] = round(len(members) * k / n, 3)
+        # Contrôle aléatoire, exprimé dans la MÊME unité que recall@k.
+        out[f"random_control_recall@{k}"] = round(min(1.0, k / n), 4) if n else 0.0
+        # …et le nombre de hits attendu, nommé pour ce qu'il est.
+        out[f"expected_hits_random@{k}"] = round(len(matched) * k / n, 3) if n else 0.0
     out["rank_median"] = ranks[len(ranks) // 2] if ranks else None
     out["rank_min"] = ranks[0] if ranks else None
     out["rank_max"] = ranks[-1] if ranks else None
-    # Verdict indicatif
-    ctrl50 = out["random_control_recall@50"]
-    hit50 = sum(1 for r in ranks if r <= 50)
-    out["beats_random_x"] = round(hit50 / ctrl50, 2) if ctrl50 else None
-    out["indicative_verdict"] = (
-        "FAIBLE (≤2× hasard ou sources enfouies)"
-        if (ctrl50 and hit50 <= 2 * ctrl50) or (out["rank_median"] or 0) > 200
-        else "RÉCUPÈRE (au-dessus du hasard)"
-    )
+
+    # Lift : hits observés / hits attendus. Comparaison homogène (comptes).
+    exp50 = out["expected_hits_random@50"]
+    hit50 = out["hits@50"]
+    out["beats_random_x"] = round(hit50 / exp50, 2) if exp50 else None
+
+    # Puissance : sous ~10 membres du gold réellement présents dans le corpus,
+    # un lift est arithmétiquement réel mais non probant. On le dit.
+    out["underpowered"] = len(matched) < MIN_MATCHED_FOR_VERDICT
+    if out["underpowered"]:
+        out["indicative_verdict"] = (
+            f"NON CONCLUANT ({len(matched)} membre(s) du gold dans le corpus, "
+            f"minimum {MIN_MATCHED_FOR_VERDICT}) — voir "
+            f"docs/experiments/exp2-episode-recovery.md"
+        )
+    elif (out["beats_random_x"] or 0) <= 2.0 or (out["rank_median"] or 0) > 200:
+        out["indicative_verdict"] = "FAIBLE (≤2× hasard ou sources enfouies)"
+    else:
+        out["indicative_verdict"] = "RÉCUPÈRE (au-dessus du hasard)"
     return out
 
 

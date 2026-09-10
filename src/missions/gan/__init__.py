@@ -12,7 +12,7 @@ sont déclarées dans le ``ScoringProfile`` et seront calculées par
 ``src/scorer/telegram_footprint.py`` (câblage Phase 3) ; d'ici là la mission sert
 le tagging (``scripts/tag_gan.py``) et la pertinence (``gan_targeting``).
 
-R1 (credibility_prior France-spécifique) : ``suspect_threshold=None`` ⇒ prior
+R1 (credibility_prior France-spécifique) : ``credibility_prior_enabled=False`` ⇒ prior
 neutre « other » pour le GAN (pas de présomption de suspicion sur les canaux
 discutant d'un actif ami).
 """
@@ -112,7 +112,7 @@ MISSION = MissionDefinition(
             }
         ),
         relevance_signal="gan_targeting",
-        suspect_threshold=None,  # R1 : prior neutre (pas de présomption de suspicion)
+        credibility_prior_enabled=False,  # R1 : prior neutre (actif ami)
         adversary_domains=GAN_ADVERSARY_DOMAINS,
         extra_family_scorers=(
             "telegram_visibility", "telegram_velocity", "telegram_source_diversity",

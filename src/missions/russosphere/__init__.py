@@ -102,7 +102,7 @@ MISSION = MissionDefinition(
         max_targeting_boost=MAX_FRANCE_TARGETING_BOOST,
         stale_days=STALE_DAYS,
         relevance_signal="france_targeting",
-        suspect_threshold=0.15,  # loader.SUSPECT_FR_SCORE_MAX
+        credibility_prior_enabled=True,  # prior adossé à adversary_domains
         adversary_domains=ADVERSARY_DOMAINS,
         # Famille (f) embedding (Phase 1) : baseline FR légit + adversaires RU.
         # ponytail: handles hardcodés, migrer vers data/eval/baseline_organic_fr.json (Phase 3).

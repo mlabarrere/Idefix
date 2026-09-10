@@ -32,7 +32,7 @@ def test_default_mission_is_russosphere():
     # Profils de la mission par défaut = constantes historiques (ordonné a..e).
     assert list(m.scoring.family_weights.keys())[:5] == ["a", "b", "c", "d", "e"]
     assert m.scoring.relevance_signal == "france_targeting"
-    assert m.scoring.suspect_threshold == 0.15
+    assert m.scoring.credibility_prior_enabled is True
     assert m.export.flat_default is True
     assert m.relevance_scorer is not None
 
@@ -42,7 +42,7 @@ def test_gan_mission_resolves_and_is_telegram_scoped():
     assert m.name == "gan"
     assert m.implemented is True
     # R1 : prior neutre pour le GAN.
-    assert m.scoring.suspect_threshold is None
+    assert m.scoring.credibility_prior_enabled is False
     assert m.scoring.relevance_signal == "gan_targeting"
     # Tous les scores propres au GAN sont nommés telegram_*.
     extra = m.scoring.extra_family_scorers

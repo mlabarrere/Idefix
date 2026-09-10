@@ -60,3 +60,55 @@ def test_flagged_implies_low_qvalue():
     for c in q["channels"]:
         if c["flagged"]:
             assert c["q_value"] <= _FAST.alpha + 1e-9
+
+
+# --------------------------------------------------------------------------- #
+# DÉFAUT D4 — continuité de la combinaison au voisinage de « pas de signal ».  #
+# --------------------------------------------------------------------------- #
+def _p_combined_for_coordination_value(value: float) -> float:
+    """Combine une famille (c) synthétique de valeur donnée, seule.
+
+    Reproduit le chemin de ``_combine`` sans dépendre d'un graphe : la famille
+    (c) n'a pas de modèle nul, donc sa pseudo-p vaut ``1 - value``.
+    """
+    import src.scorer.significance as sig
+    from src.scorer.channel_suspicion import NO_SIGNAL_PVALUE
+
+    pv = max(1e-12, min(1.0, 1.0 - value))
+    if pv >= NO_SIGNAL_PVALUE:
+        return 1.0  # exclue de la combinaison -> aucun signal
+    _, p = sig.stouffer_combine([pv], [0.25])
+    return p
+
+
+def test_combination_is_continuous_near_zero_signal():
+    """Non-régression D4.
+
+    La pseudo-p de la famille (c) vaut ``1 - value``. Avec l'ancien test
+    ``pv >= 1.0`` (égalité exacte), ``value == 0.0`` était exclu de Stouffer
+    tandis que ``value == 1e-4`` donnait p = 0.9999, soit z ≈ -3.7, ce qui
+    écrasait le score combiné. Une variation infinitésimale de l'entrée
+    produisait un saut de rang.
+
+    La bande ``NO_SIGNAL_PVALUE`` rend la frontière continue : les valeurs
+    indiscernables de zéro sont traitées comme zéro.
+    """
+    at_zero = _p_combined_for_coordination_value(0.0)
+    just_above = _p_combined_for_coordination_value(1e-4)
+    assert at_zero == 1.0
+    assert just_above == at_zero, (
+        "un signal infinitésimal ne doit pas basculer la combinaison"
+    )
+
+
+def test_a_real_signal_still_enters_the_combination():
+    """La bande ne doit pas avaler un signal authentique."""
+    strong = _p_combined_for_coordination_value(0.5)
+    assert strong < 1.0
+
+
+def test_combined_p_is_monotone_in_the_family_value():
+    """Plus la famille porte de signal, plus la p combinée est basse."""
+    values = [0.0, 0.05, 0.2, 0.5, 0.9]
+    ps = [_p_combined_for_coordination_value(v) for v in values]
+    assert ps == sorted(ps, reverse=True)

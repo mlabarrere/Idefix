@@ -90,6 +90,24 @@ def compute_bridge_scores(graph: nx.DiGraph) -> dict[int, dict]:
 
     raw: dict[int, float] = {}
     for n in graph.nodes:
+        # GARDE CENTRALITÉ DÉGÉNÉRÉE. Un canal SANS AUCUNE ARÊTE n'a pas de rôle
+        # de cascade : son score est 0, pas « inconnu ».
+        #
+        # Sans cette garde, networkx renvoie une centralité de 1 pour l'unique
+        # nœud d'un graphe singleton (in_degree_centrality divise par n-1, et le
+        # vecteur propre d'une matrice 1x1 vaut 1) : le canal isolé obtenait
+        # ``bridge_raw = 10*1 + 7*1 = 17``, devenait le maximum du corpus, donc
+        # ``bridge_norm = 1.0`` et ``triggered = True`` — le score MAXIMAL pour
+        # un canal sans la moindre arête.
+        #
+        # Le chemin de scoring principal masquait le symptôme (la couche
+        # rigoureuse écrase value/triggered), mais ``scripts/build_dossier.py``
+        # et ``channel_archetypes`` consomment cette famille directement.
+        # ``classify_archetype`` renvoie déjà None dans ce cas : la garde ne
+        # fait qu'aligner la valeur sur cette intention.
+        if graph.in_degree(n) == 0 and graph.out_degree(n) == 0:
+            raw[n] = 0.0
+            continue
         raw[n] = (
             W_IN_DEGREE * in_centrality.get(n, 0.0)
             + W_EIGENVECTOR * eigen.get(n, 0.0)
