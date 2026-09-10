@@ -9,7 +9,7 @@ For the fastest useful path, see [`quickstart.md`](./quickstart.md).
 
 | Tool | Version | Role |
 |---|---|---|
-| Python | >= 3.11 | Analytical pipeline |
+| Python | >= 3.14 | Analytical pipeline |
 | [uv](https://docs.astral.sh/uv/) | latest | Python package manager |
 | Node.js | >= 20 | Analyst interface |
 | Docker | >= 20 | PostgreSQL database |
@@ -169,7 +169,7 @@ nothing to display.
 ## 7. Verify the installation
 
 ```bash
-uv run python -m pytest                     # 447 tests
+uv run python -m pytest                     # 478 tests
 cd webapp && npx tsc --noEmit && cd ..      # strict typecheck
 uv run python scripts/check_docs.py         # documentation integrity
 uv run python scripts/test_supabase_connection.py   # database connectivity

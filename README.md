@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/mlabarrere/Idefix/actions/workflows/ci.yml/badge.svg)](https://github.com/mlabarrere/Idefix/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./LICENSE)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](./pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.14%2B-blue)](./pyproject.toml)
 
 > **Propagation and coordination analysis for Telegram public channels.**
 > A demonstrator that maps observable diffusion structure and produces a ranked,
@@ -91,7 +91,7 @@ Idefix/
 ├── scripts/            pipeline and evaluation CLIs
 ├── webapp/             React + Vite + TS analyst interface (static build)
 ├── alembic/            PostgreSQL migrations (head: 0008)
-└── tests/              447 pytest tests + strict frontend typecheck
+└── tests/              478 pytest tests + strict frontend typecheck
 ```
 
 **Bundles are not published in this repository.** They are corpus- and
@@ -132,7 +132,7 @@ migration `0008`), so tier assignment is auditable from the stored record.
 
 ## 5. Install
 
-Requirements: Python 3.11+, [`uv`](https://docs.astral.sh/uv/), Node 20+, Docker
+Requirements: Python 3.14+, [`uv`](https://docs.astral.sh/uv/), Node 20+, Docker
 (for PostgreSQL).
 
 ```bash
@@ -192,7 +192,7 @@ first. The browser never touches the database.
 ## 8. Tests
 
 ```bash
-uv run python -m pytest                    # 447 tests
+uv run python -m pytest                    # 478 tests
 cd webapp && npx tsc --noEmit              # strict frontend typecheck
 cd webapp && npx tsx scripts/check-i18n-parity.ts
 ```

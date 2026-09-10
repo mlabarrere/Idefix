@@ -5,7 +5,7 @@ changements et proposer une contribution.
 
 ## Prérequis
 
-- **Python ≥ 3.11** (CI testée sur 3.11 et 3.12)
+- **Python ≥ 3.14** (version unique, testée en CI)
 - **[uv](https://docs.astral.sh/uv/)** — gestionnaire de paquets et d'environnement Python
 - **Node.js ≥ 20** — uniquement pour la webapp (`webapp/`)
 
@@ -29,7 +29,7 @@ Les tests tournent **hors-ligne** : aucune base Postgres, Redis ou Supabase live
    make lint    # ruff check + mypy
    make test    # pytest
    ```
-4. Ouvrez une PR. La **CI doit être verte** (lint + mypy + tests sur 3.11 & 3.12).
+4. Ouvrez une PR. La **CI doit être verte** (lint + mypy + tests sur 3.14).
 
 Installez les hooks pour attraper les erreurs avant le commit :
 ```bash

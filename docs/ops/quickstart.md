@@ -13,7 +13,7 @@ The fastest path to a running system.
 ## Prerequisites
 
 - [Node.js 20+](https://nodejs.org/)
-- [Python 3.11+](https://www.python.org/) and [uv](https://docs.astral.sh/uv/)
+- [Python 3.14+](https://www.python.org/) and [uv](https://docs.astral.sh/uv/)
 - Docker, or any reachable PostgreSQL 17 instance
 - Telegram API credentials, **only** if you intend to collect (step 4)
 
@@ -44,7 +44,7 @@ uv run alembic upgrade head
 Nothing here touches Telegram or the network.
 
 ```bash
-uv run python -m pytest -x -q              # 447 tests
+uv run python -m pytest -x -q              # 478 tests
 cd webapp && npx tsc --noEmit && cd ..     # strict typecheck
 uv run python scripts/check_docs.py        # documentation integrity
 ```
