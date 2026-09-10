@@ -1,0 +1,207 @@
+# 3 — The per-channel suspicion score
+
+**Status:** implemented. Traceable to `src/scorer/channel_suspicion.py`,
+`rigor.py`, `significance.py` and the per-family modules.
+
+The score is a **rank ordering for triage**, not a probability of manipulation.
+It answers "which channels should an analyst read first", and every ranking it
+produces must be justifiable from the channel's own evidence block.
+
+## 3.1 Score families
+
+| Family | Name in code | Status | What it actually computes |
+|---|---|---|---|
+| (a) | `claim_proximity` | **Not wired.** Always N/A | Injection seam only; nothing supplies a value |
+| (b) | `cascade_role` | Active, with null model | §3.2 |
+| (c) | `coordination` | Active, **no null model** | §3.3 |
+| (d) | `recidivism` | Active, with null model | §3.4 |
+| (e) | `genai_origin` | **Not wired.** Always N/A | `e_res = None`, hardcoded |
+| (f) | `embedding_signals` | Active, opt-in | `05-semantic-family.md` |
+
+Families (a) and (e) have never produced a value. They are named here because
+the code reserves the letters, not because they contribute anything.
+
+## 3.2 Family (b) — cascade role
+
+`src/scorer/cascade_role.py:93-97`, after Shah, Ranka, Ng & Mehta (2024),
+arXiv:2411.05922:
+
+```
+bridge_raw  = 10*in_degree_centrality + 7*eigenvector_centrality + 7*clustering
+bridge_norm = bridge_raw / max(bridge_raw over the corpus)
+```
+
+**Two properties a reader must know before using this number.**
+
+The three terms are on **incompatible scales**. `in_degree_centrality` is
+normalized by `n-1` and lies in [0,1]; `eigenvector_centrality_numpy` returns an
+L2-normalized vector, so its entries are of order `1/sqrt(n)`; `clustering` is
+computed on the undirected projection and lies in [0,1]. On a graph of a few
+thousand nodes the eigenvector term is numerically negligible for nearly every
+channel, so in practice this is `10*in_degree + 7*clustering`.
+
+The normalization is **max-scaling across the corpus**. A channel's `bridge_norm`
+therefore depends on every other channel in the run: adding one large hub
+rescales everyone. Values are comparable *within* one export and **not across
+exports, corpora or time**. Do not treat `bridge_norm` as a measurement.
+
+Archetype assignment (`:146-167`) is a hardcoded priority cascade over
+`reactivator` / `cross-channel-bridge` / `forward-hub` / `seeding-source`. Note
+that the terminal `else` branch returns `forward-hub`, the same label as an
+earlier branch with a different structural condition — two distinct situations
+share one name.
+
+## 3.3 Family (c) — coordination
+
+`src/scorer/coordination.py:206-326`, over the materialized coordination edges of
+`02-graph-model.md`:
+
+```
+tightness = 1 - dt / window            (linear, window = 72 h)
+diversity = min(n_edge_types, 2) / 2
+value     = 0.5*tightness_max + 0.5*diversity
+triggered = value >= 0.3 and n_edge_types >= 2
+```
+
+**This family is close to binary.** Two distinct edge types give
+`diversity = 1.0`, hence `value >= 0.5`, hence triggered — *regardless of how
+loose the timing is*. Combined with the `CO_HASHTAG` defect
+(`02-graph-model.md` §2.4), a large share of any topical corpus saturates at
+`value = 1.0`.
+
+**This family has no null model**, and this is the most serious statistical
+weakness in the system. `rigor.py:111-130` explicitly excludes it. Its p-value
+therefore falls back to `p = 1 - value` (`channel_suspicion.py:501`), which is a
+monotone rescaling of the value, not a tail probability under any hypothesis.
+Nothing in family (c) estimates how surprising an observation is. The same
+fallback applies to the six `telegram_*` families and to injected family (a).
+
+A second implementation, `score_coordination` (Jaccard of shared forward
+origins, `:162`), exists but is not on the production path.
+
+## 3.4 Family (d) — recidivism
+
+`src/scorer/recidivism.py:87-89`:
+
+```
+value = 0.6*(out_strength / max_out_strength) + 0.4*(out_degree / max_out_degree)
+```
+
+**There is no cross-episode component.** Earlier documentation called this family
+"cross-episode recidivism"; the module's own docstring corrects it. With no
+populated episode table, it measures out-degree and out-strength on a single
+aggregate forward graph, max-normalized — and so inherits the same
+non-comparability as §3.2. Read it as *forward influence*, which is what it is.
+
+## 3.5 Combination — Stouffer under BH
+
+This is the **canonical combiner** and the one implemented at
+`channel_suspicion.py:524-599`. It is not a weighted average of family values.
+
+1. Each family yields a one-sided p-value. Families (b) and (d) get a genuine one
+   from the null model of §3.6; every other family gets the `p = 1 - value`
+   fallback of §3.3.
+2. Families with `p >= 1.0` are **excluded** from the combination rather than
+   counted as evidence against (`:568-576`), so that a silent family does not
+   drive `z` to minus infinity.
+3. The survivors are combined by weighted Stouffer,
+   `Z = sum(w_i*z_i)/sqrt(sum(w_i^2))` with `z_i = Phi^-1(1-p_i)`, using
+   `BASE_FAMILY_WEIGHTS = {a: 0.15, b: 0.30, c: 0.25, d: 0.30, e: 0.15}`
+   (`:145-151`).
+4. `base = 1 - p_combined`, then `value = clamp01(base * severity_factor)`.
+5. Benjamini-Hochberg FDR control is applied across channels
+   (`significance.py:197-211`, via `statsmodels`), yielding `q_value` and
+   `flagged`.
+
+**Two defects in this combination, both open.**
+
+*Independence is violated.* Stouffer assumes independent p-values. Families (b)
+and (d) are computed on the same forward graph, against the **same null ensemble**
+(`rigor.py:136-138`) and the **same bootstrap draws** (`:142-149`). They are
+strongly correlated, so the combined p-value is anticonservative — it overstates
+significance.
+
+*There is a discontinuity at zero.* Because family (c)'s pseudo-p is `1 - value`,
+a channel with `coord_value = 0.0` yields `p = 1.0` and is dropped by step 2,
+while a channel with `coord_value = 0.0001` yields `p = 0.9999`, i.e.
+`z ~ -3.7`, which crushes the combined score. An arbitrarily small change in the
+input produces a large change in the rank.
+
+The family weights themselves have **no derivation**. The source comment asserts
+that "each share is justifiable"; no justification is recorded anywhere. Treat
+them as five free parameters.
+
+## 3.6 The null model
+
+`significance.py:42-75`. `randomize_endpoints` holds the node set and edge count
+fixed, permutes the weight multiset, and reassigns both endpoints uniformly at
+random.
+
+Chosen because Telegram's propagation primitive is a depth-1 forward star, where
+classical degree-preserving rewiring is degenerate. The trade-off is explicit:
+this null **does not preserve degree**, so a channel's p-value is a comparison
+against a random channel in a network of the same size, density and weight
+distribution — not against a channel of the same degree.
+
+Implementation notes that bound the result: the routine gives up after 8 attempts
+to avoid a self-loop and silently skips the edge (`:68-69`), so null graphs carry
+slightly fewer edges than observed. The p-value is the add-one one-sided upper
+tail `p = (1 + #{null >= obs}) / (n + 1)` (`:168`) — correct, and never zero.
+Defaults: `n_null = 200`, `n_bootstrap = 100`, `rng_seed = 1312`, `alpha = 0.05`
+(`src/missions/spec.py:125-128`). **`n_bootstrap = 100` is too low for stable
+confidence intervals**; 1000 or more is the standard expectation.
+
+## 3.7 Confidence bands
+
+Bands do propagate: `rigor.py` replaces value, bands and trigger status for
+families (b) and (d) with the bootstrap CI mapped into significance space, and
+`channel_suspicion.py:573-580` carries the bounds through the same Stouffer
+combination.
+
+**But the inputs are only real for (b) and (d).** Family (c) has no null model,
+so its interval collapses to a point. Every other family — and every family
+before rigorous enrichment — ships the hardcoded constants `value +/- 0.15`,
+`+/- 0.10` or `+/- 0.20` found in `cascade_role.py:212`, `recidivism.py:93`,
+`coordination.py:326`, `telegram_footprint.py:41` and `embedding_signals.py:165`.
+`significance.py:16` calls these "bandes +/-0.15 factices" in the source itself.
+A published interval on a non-(b)/(d) family is a formatting convention, not an
+uncertainty estimate.
+
+## 3.8 Severity modulation
+
+`channel_suspicion.py:338-382`. Bounded, upward-only, multiplicative:
+
+```
+factor = 1 + 0.20*suspect_reforward_fraction
+           + 0.15*min(1, adversary_citations / 5)
+           + 0.20*clamp01(thematic_targeting)          # max factor 1.55
+value  = clamp01(base * factor)
+```
+
+Because the modulation is multiplicative, a channel with zero base score stays at
+zero whatever its thematic relevance: relevance modulates **severity**, never
+**inclusion**. That property holds.
+
+**The first term is currently a language bias.** `suspect_reforward_fraction` is
+computed against `credibility_prior`, which `src/graph/loader.py:66,128` sets to
+`"suspect"` **iff `fr_score < 0.15`** — that is, iff the channel writes in few
+French keywords. This is the single most load-bearing threshold in the ranking
+and it is a keyword-density cut-off. See `docs/limitations.md` §1. Earlier
+versions of this document claimed `fr_score` was never used as an anchor; that
+claim was false and has been removed.
+
+The `0.20` bound on thematic targeting was chosen by analogy with the reforward
+bound, per the source comment. It is not calibrated.
+
+## 3.9 The multi-source gate
+
+`channel_suspicion.py:602-628`. A channel crosses the gate when **at least 2
+distinct families are triggered** (`min_families_for_gate`, per-mission). The
+triggered set is materialized per channel as `gate_families` (Alembic `0008`), so
+tier assignment is auditable from the stored record: gate met implies T2,
+otherwise T1.
+
+The mechanism is sound. Its **inputs** are what limit it: with (a) and (e) never
+firing, the gate is effectively "2 of {b, c, d, f}", and family (c) triggers on
+two edge types alone. The gate does not currently establish independent
+corroboration in the sense the tier vocabulary implies.

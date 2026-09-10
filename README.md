@@ -4,218 +4,230 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](./pyproject.toml)
 
-> **Système d'analyse de propagation et de coordination sur Telegram.**
-> Démonstrateur (PoC) — cartographie de la diffusion coordonnée visant l'image, l'intégrité ou la souveraineté de la France.
+> **Propagation and coordination analysis for Telegram public channels.**
+> A demonstrator that maps observable diffusion structure and produces a ranked,
+> explainable examination queue for human analysts.
 
-**Idéfix n'est pas un détecteur de « fake news ».** Il ne juge jamais la véracité d'un message. Il décrit des *structures observables* de diffusion et de coordination, et restitue, pour chaque canal, les signaux concrets qui justifient son rang. Le livrable est une file d'examen priorisée, explicable et auditable — jamais un verdict.
+**Idéfix is not a fake-news detector.** It never judges whether a message is
+true. It describes *observable structures* of diffusion and coordination and
+shows, for each channel, the concrete signals that justify its rank. The
+deliverable is a prioritized review queue — never a verdict.
 
-La spécification scientifique complète est dans [`METHODOLOGY.md`](./METHODOLOGY.md) (document versionné, publié *avant* toute sortie de détection — exigence de résistance EIP). Ce README est le guide d'ingénierie : architecture, installation, exécution du pipeline.
+**Idéfix is also not a validated manipulation detector.** Whether a high rank
+corresponds to coordinated manipulation rather than to prominence within an
+adversarial media ecosystem is an open question this project has not answered.
+Read [`docs/limitations.md`](./docs/limitations.md) before drawing any
+conclusion from an output.
 
-**→ Nouveau sur le projet ? Commencer par [`docs/PRODUCT.md`](./docs/PRODUCT.md) (vue fonctionnelle) puis [`docs/QUICKSTART.md`](./docs/QUICKSTART.md).**
+> ### Reproducibility status
+>
+> **No result in this repository is currently reproducible.** The PostgreSQL
+> instance holding the corpus behind every previously published figure has been
+> decommissioned. Those artefacts are quarantined under
+> [`archive/`](./archive/) and may not be cited.
+> [`docs/experiments/`](./docs/experiments/) contains falsification protocols;
+> `docs/experiments/results/` is empty and will hold only figures regenerated
+> against a corpus a third party can rebuild.
+
+**Start here:** [`docs/`](./docs/) — method, experiments, limitations,
+references. [`METHODOLOGY.md`](./METHODOLOGY.md) is the versioned cover page
+whose hash ships in every export.
 
 ---
 
-## 1. Principe
+## 1. Principle
 
-Idéfix est **un moteur, N missions**. Une mission est une *configuration* (univers de sources, lexique, poids de ciblage, profil de scoring, tableau de bord, export), jamais un fork de code. Les familles de signaux structurelles sont thématiquement neutres ; les missions diffèrent par leurs graines, lexiques, signaux de pertinence et pondérations.
+**One engine, N missions.** A mission is a *configuration* — source universe,
+lexicon, targeting weights, scoring profile, dashboard, export — never a code
+fork. The structural score families are theme-agnostic; missions differ in
+seeds, lexicons, relevance signals and weights.
 
-| Mission | Statut | Objet |
-|---------|--------|-------|
-| `russosphere` | **active** | Désinformation coordonnée visant l'image / l'intégrité / la souveraineté de la France. |
-| `gan` | données à venir | Empreinte informationnelle *observable sur Telegram* du groupe aéronaval (*Charles de Gaulle*) — objectif OPSEC. |
-| `france_ukraine` | active | Narratifs visant la France dans le conflit ukrainien. |
-| `dircom_minarm` | planifiée | Reprise / transformation / déformation des messages officiels DIRCOM MinArm. (`implemented=False`) |
+| Mission | `implemented` | Object |
+|---|---|---|
+| `russosphere` | `True` | Coordinated disinformation targeting the image, integrity or sovereignty of France |
+| `france_ukraine` | `True` | Narratives targeting France in the Ukraine conflict |
+| `gan` | `True` | Telegram-observable informational footprint of the French Carrier Strike Group (OPSEC objective). Gate calibration **not reconciled** with `russosphere` — see [`limitations.md`](./docs/limitations.md) D15 |
+| `dircom_minarm` | `False` | Reuse and distortion of official French MoD communication. Packaged, refuses live selection until a crawl populates it |
 
-**Contrainte porteuse (méta-contrainte 1) :** la pertinence thématique et le lien à une infrastructure adverse **modulent la sévérité, jamais l'inclusion**. Aucun canal n'est exclu de la file pour être hors-thème ; un canal sans suspicion structurelle reste à zéro quelle que soit sa pertinence.
-
----
+**Load-bearing constraint:** thematic relevance and adversary linkage modulate
+**severity**, never **inclusion**. No channel is excluded from the queue for
+being off-theme, and because the modulation is multiplicative, a channel with
+zero structural suspicion stays at zero whatever its relevance.
 
 ## 2. Architecture
 
-Le système se scinde en **deux moitiés strictement disjointes** : un pipeline analytique *hors-ligne* (Python) qui matérialise des bundles JSON, et une interface analyste *100 % statique* (React) qui ne lit que ces bundles. Le navigateur ne touche jamais la base de données.
+Two strictly disjoint halves: an **offline analytical pipeline** (Python) that
+materializes JSON bundles, and a **fully static analyst interface** (React) that
+reads only those bundles. The browser never touches the database.
 
 ```
-┌─────────────────────────── PIPELINE HORS-LIGNE (Python) ───────────────────────────┐
-│                                                                                      │
-│  crawl ──▶ build_edges ──▶ build_scores ──▶ analyze_communities ──▶ export_static    │
-│  (MTProto)   (graphe)      (suspicion +     (Leiden : TF-IDF        (bundles JSON)   │
-│                             famille f)        + embeddings)              │            │
-└─────────────────────────────────────────────────────────────────────────│───────────┘
-                                                                          │
-┌───────────────────── INTERFACE ANALYSTE (React, statique) ──────────── │ ──────────┐
-│  webapp/public/data/<mission>/  ◀──────────────────────────────────────┘            │
-│        │  bundles JSON pré-calculés, figés au déploiement                           │
-│        ▼                                                                             │
-│  vite build ──▶ webapp statique ──▶ navigateur (fetch JSON local, zéro backend)     │
-└──────────────────────────────────────────────────────────────────────────────────── ┘
+┌──────────────────── OFFLINE PIPELINE (Python) ─────────────────────┐
+│  crawl ─▶ build_edges ─▶ build_scores ─▶ analyze_communities ─▶ export │
+│ (MTProto)   (graph)     (Stouffer/BH)      (Leiden)          (JSON)  │
+└──────────────────────────────────────────────────────────────┬─────┘
+                                                               │
+┌──────────── ANALYST INTERFACE (React, static) ───────────────┴─────┐
+│  webapp/public/data/<mission>/   ◀── precomputed bundles            │
+│        ▼                                                            │
+│  vite build ─▶ static site ─▶ browser (local JSON fetch, no backend)│
+└─────────────────────────────────────────────────────────────────────┘
 ```
-
-### Arborescence
 
 ```
 Idefix/
-├── METHODOLOGY.md          ← spécification scientifique versionnée (canonique)
-├── README.md               ← ce fichier
+├── METHODOLOGY.md      versioned cover page (hash shipped in every export)
+├── docs/               method · experiments · limitations · references · ops
+├── archive/            decommissioned-corpus artefacts — do not cite
 ├── src/
-│   ├── ingestor/           ← client MTProto (canaux publics, lecture seule)
-│   ├── normalizer/         ← texte, URLs, empreintes média ; ciblage thématique
-│   ├── graph/              ← graphe multiplex centré-canal (NetworkX), I/O DB séparée du pur
-│   ├── scorer/             ← familles de scores explicables (b/c/d + f embeddings)
-│   ├── embed/              ← encodeur local (sentence-transformers), cache offline
-│   ├── dossier/            ← assemblage « preuve-d'abord » des dossiers d'épisode
-│   ├── missions/           ← une mission = une MissionDefinition (registry auto-découvert)
-│   ├── validation_lab/     ← schémas de gold externe (validation non-circulaire)
-│   └── shared/             ← DB, scrub des secrets, store de snapshots (push + pull)
-├── scripts/                ← pipeline (crawl, build_*, mine_episodes, analyze_*, eval_*, export)
-├── webapp/                 ← interface analyste React + Vite + TS + Tailwind (build statique)
-├── alembic/                ← migrations PostgreSQL (head : 0008)
-├── data/                   ← corpus d'éval, baseline organique, gold (en partie gitignored)
-└── tests/                  ← suite pytest (468 tests) + tests frontend (tsc strict)
+│   ├── ingestor/       MTProto client (public channels, read-only)
+│   ├── normalizer/     text, URLs, media fingerprints, thematic targeting
+│   ├── graph/          channel-centric multiplex graph (NetworkX/igraph)
+│   ├── scorer/         score families, null model, Stouffer/BH combination
+│   ├── embed/          local sentence-transformers encoder, offline cache
+│   ├── dossier/        evidence-first episode dossiers
+│   ├── missions/       one mission = one MissionDefinition (auto-discovered)
+│   ├── validation_lab/ external-gold schemas (non-circular validation)
+│   └── shared/         DB, secret scrubbing, snapshot store
+├── scripts/            pipeline and evaluation CLIs
+├── webapp/             React + Vite + TS analyst interface (static build)
+├── alembic/            PostgreSQL migrations (head: 0008)
+└── tests/              447 pytest tests + strict frontend typecheck
 ```
 
----
+**Bundles are not published in this repository.** They are corpus- and
+run-specific by construction, so shipping them would publish numbers nobody can
+regenerate. Produce them locally with `scripts/export_static.py`.
 
-## 3. Stack technique
+## 3. Stack
 
-| Couche | Technologie | Notes |
-|--------|-------------|-------|
-| Ingestion | MTProto (client Telegram) | Canaux **publics** uniquement, un compte dédié en lecture, discipline `FLOOD_WAIT`. |
-| Stockage | PostgreSQL 17 | Messages, arêtes, scores. Docker en développement, Supabase ou toute instance PostgreSQL en production. |
-| Graphe | NetworkX `MultiDiGraph` (+ igraph/Leiden) | Reconstruit **en mémoire, à la demande**. Pas de base graphe serveur. |
-| Scoring | Familles explicables (Python pur) | Somme pondérée bornée + gate multi-source. Aucun appel réseau. |
-| Embeddings | `sentence-transformers` (local) | `paraphrase-multilingual-MiniLM-L12-v2` (384-dim, FR/RU/EN). Cache offline déterministe, coût 0 en relance. |
-| Communautés | Leiden (deux pistes) | **analytics** (lexical/TF-IDF) et **embeddings** (arêtes de similarité sémantique). |
-| Frontend | React 18 + Vite + TypeScript | Strict mode. Cytoscape (galaxie), Headless UI, Tailwind v4. **Build 100 % statique.** |
-| Diffusion | Vercel / tout hébergeur statique | Build statique (`vite build`) — le navigateur ne lit que des JSON locaux, zéro backend. |
+| Layer | Technology | Notes |
+|---|---|---|
+| Ingestion | MTProto (Telegram) | **Public channels only**, one dedicated read-only account, `FLOOD_WAIT` discipline |
+| Storage | PostgreSQL 17 | Messages, edges, scores. Docker in development; Supabase or any PostgreSQL in production |
+| Graph | NetworkX `MultiDiGraph` + igraph/Leiden | Rebuilt **in memory, on demand**. No graph-database server |
+| Scoring | Pure Python, no network calls | Per-family p-values, Stouffer combination, Benjamini-Hochberg FDR control |
+| Embeddings | `sentence-transformers`, local | `paraphrase-multilingual-MiniLM-L12-v2` (384-dim, FR/RU/EN), deterministic offline cache |
+| Communities | Leiden, two tracks | **analytics** (link graph) and **embeddings** (plus semantic edges) |
+| Frontend | React 18 + Vite + TypeScript | Strict mode, Cytoscape, Radix, Tailwind v4. **100% static build** |
+| Delivery | Any static host | `vite build`; the browser reads local JSON only |
 
----
+## 4. The suspicion score, in brief
 
-## 4. Le score de suspicion (vue d'ingénieur)
+Each family produces a one-sided p-value; the p-values are combined by weighted
+Stouffer and controlled for false discovery rate across channels. Full
+treatment, including the defects, in
+[`docs/method/03-suspicion-score.md`](./docs/method/03-suspicion-score.md).
 
-Le score combine des familles de signaux **indépendantes**, chacune affichée avec sa contribution (poids × valeur). Détails et justification scientifique dans [`METHODOLOGY.md §3`](./METHODOLOGY.md).
+| Family | Status | Method |
+|---|---|---|
+| **b** · Cascade role | Active, **with null model** | Bridge-Score composite on the forward graph |
+| **c** · Coordination | Active, **no null model** | Windowed coordination edges. Its p-value is a placeholder — [D2](./docs/limitations.md) |
+| **d** · Forward influence | Active, **with null model** | Out-degree and out-strength on the aggregate forward graph. **Not** cross-episode |
+| **f** · Semantic coherence | Active, opt-in | Distance to an organic-FR baseline, proximity to known adversary channels |
+| a · Claim proximity · e · GenAI origin | **Never wired** | Injection seams. They have never produced a value |
 
-| Famille | Statut | Méthode |
-|---------|--------|---------|
-| **b** · Rôle en cascade | active | Bridge-Score (in-degree, vecteur propre, clustering) sur le graphe de forwards. |
-| **c** · Coordination | active | Arêtes de coordination fenêtrées (Δt) : co-forwards, quasi-doublons de texte, co-URL. |
-| **d** · Récidive inter-épisodes | active | Influence de forward + récurrence du canal d'amorçage. |
-| **f** · Cohérence sémantique | **active** *(embeddings)* | Distance à une baseline FR organique + proximité à des canaux adversaires connus. `src/scorer/embedding_signals.py` |
-| a · Proximité revendication · e · Origine IA | réservées | Seams câblables (registre de revendications / détecteurs GenAI). |
+**Multi-source gate:** a channel crosses only when **at least 2 distinct
+families** trigger. The triggered set is persisted (`channel_scores.gate_families`,
+migration `0008`), so tier assignment is auditable from the stored record.
 
-**Gate multi-source :** un canal ne franchit la gate que si **≥ 2 familles distinctes** sont déclenchées. La liste exacte des familles déclenchées est matérialisée (`channel_scores.gate_families`, migration `0008`) — l'attribution de tier (T1/T2) est mécanique et auditable.
+## 5. Install
 
----
-
-## 5. Installation
-
-Prérequis : Python 3.11+, [`uv`](https://docs.astral.sh/uv/), Node 20+ (webapp), Docker (PostgreSQL).
+Requirements: Python 3.11+, [`uv`](https://docs.astral.sh/uv/), Node 20+, Docker
+(for PostgreSQL).
 
 ```bash
-# Dépendances Python (extra `embed` pour les familles sémantiques)
 uv sync --extra embed
 
-# Base de données PostgreSQL (Docker)
 docker run -d --name idefix-db --restart unless-stopped \
   -p 5432:5432 \
-  -e POSTGRES_USER=disinfo -e POSTGRES_PASSWORD=<mot-de-passe> \
+  -e POSTGRES_USER=disinfo -e POSTGRES_PASSWORD=<password> \
   -e POSTGRES_DB=disinfo_trace postgres:17-alpine
 
-# Variables d'environnement
-cp .env.example .env   # puis éditer DATABASE_URL + credentials Telegram
-
-# Migrations
+cp .env.example .env   # then edit DATABASE_URL + Telegram credentials
 uv run alembic upgrade head
 ```
 
-**Guide complet (Telegram API, session string, webapp) :** [`docs/INSTALL.md`](./docs/INSTALL.md)
+Full guide: [`docs/ops/install.md`](./docs/ops/install.md) ·
+Fastest path: [`docs/ops/quickstart.md`](./docs/ops/quickstart.md)
 
-**Démarrage rapide sans collecte (webapp sur données d'exemple) :** [`docs/QUICKSTART.md`](./docs/QUICKSTART.md)
+## 6. Running the pipeline
 
----
-
-## 6. Exécution du pipeline
-
-Tout le pipeline est *scopé par mission* (`--mission <nom>`, défaut : `russosphere`) et **idempotent** (réécriture atomique par run, jamais de `TRUNCATE` transverse). Lecture/écriture PostgreSQL uniquement — aucun appel Telegram hors de l'étape de collecte.
+Every stage is mission-scoped (`--mission <name>`, default `russosphere`) and
+idempotent. PostgreSQL reads and writes only — no Telegram contact outside the
+collection stage.
 
 ```bash
-# 0. Schéma à jour (head : 0008)
 uv run alembic upgrade head
 
-# 1. Collecte (historique + veille étagée)
-uv run python scripts/crawl.py --mission russosphere
-
-# 2. Graphe : familles d'arêtes (forwards, mentions, co-citations…)
+uv run python scripts/crawl.py                     --mission russosphere
 uv run python scripts/build_edges.py
-
-# 3. Score de suspicion — avec famille (f) sémantique
-uv run python scripts/build_scores.py --mission russosphere --embeddings
-
-# 4. Découverte d'épisodes (clusters + pourquoi sémantique)
-uv run python scripts/mine_episodes.py --mission russosphere
-
-# 5. Communautés (deux pistes : analytics + embeddings)
-uv run python scripts/analyze_communities.py        --mission russosphere
-uv run python scripts/analyze_communities_embed.py  --mission russosphere
-
-# 6. Export du bundle statique vers webapp/public/data/<mission>/
-uv run python scripts/export_static.py --mission russosphere
+uv run python scripts/build_scores.py              --mission russosphere --embeddings
+uv run python scripts/mine_episodes.py             --mission russosphere
+uv run python scripts/analyze_communities.py       --mission russosphere
+uv run python scripts/analyze_communities_embed.py --mission russosphere
+uv run python scripts/export_static.py             --mission russosphere
 ```
 
-### Validation (non-circulaire)
+### Evaluation
 
-```bash
-uv run python scripts/bootstrap_baseline.py                              # corpus FR organique (une fois)
-uv run python scripts/eval_embedding_discrimination.py --mission russosphere   # ROC-AUC baseline vs scorés
-uv run python scripts/eval_episode_recovery.py        --mission russosphere   # recall vs gold EXTERNE
-uv run python scripts/compare_snapshots.py            --mission russosphere   # dérive temporelle des communautés
-```
+Protocols, falsification criteria and current status:
+[`docs/experiments/`](./docs/experiments/). Note that several `eval_*` scripts
+cannot run from a clean clone ([D12](./docs/limitations.md)) and two are
+mis-specified ([D11](./docs/limitations.md)) — read the protocol page before
+running one.
 
----
-
-## 7. Interface analyste (webapp)
+## 7. Analyst interface
 
 ```bash
 cd webapp
 npm install
-npm run dev        # serveur de dev Vite → http://localhost:5173
-npm run build      # vite build → dist/ statique (déployable partout)
-npm run preview    # prévisualisation du build de prod
+npm run dev        # http://localhost:5173
+npm run build      # static dist/
 ```
 
-La webapp lit les bundles JSON dans `webapp/public/data/<mission>/` (produits par `export_static.py`). **Le navigateur ne touche jamais la base de données** — consultation 100 % statique.
-
----
+The webapp reads JSON bundles from `webapp/public/data/<mission>/`, produced by
+`export_static.py`. Those bundles are **not** in the repository — generate them
+first. The browser never touches the database.
 
 ## 8. Tests
 
 ```bash
-uv run python -m pytest                       # suite backend (468 tests)
-cd webapp && npx tsc --noEmit                 # typecheck strict du frontend
+uv run python -m pytest                    # 447 tests
+cd webapp && npx tsc --noEmit              # strict frontend typecheck
+cd webapp && npx tsx scripts/check-i18n-parity.ts
 ```
 
----
+Coverage is uneven: families (b) and (d) and the rigorous path have no dedicated
+test files ([D17](./docs/limitations.md)).
 
-## 9. Limite fondamentale (déclarée dans chaque sortie)
+## 9. The load-bearing limitation
 
-> **Couverture Telegram uniquement.** La couche d'amplification de masse (X / autres plateformes) n'est pas observée. Une opération atteignant la France principalement via d'autres plateformes, sans étape Telegram, **ne sera pas détectée.** Ce qui est mesuré est une empreinte *observable sur Telegram*, jamais l'empreinte totale d'un phénomène.
+> **Telegram coverage only.** The mass-amplification layer on other platforms is
+> not observed. An operation reaching France mainly through other platforms,
+> without a Telegram stage, **will not be detected.** What is measured is a
+> footprint *observable on Telegram*, never the total footprint of a phenomenon.
 
-Cette limite est un champ obligatoire et validé de chaque bundle exporté. Voir [`METHODOLOGY.md §5`](./METHODOLOGY.md) pour les limites permanentes additionnelles, et `§8` pour l'état de validation honnête (ce qui est prouvé, indicatif, ou pas encore testable).
+This is a mandatory, validated field of every exported bundle. The complete
+register of limits and known defects is
+[`docs/limitations.md`](./docs/limitations.md).
 
----
+## 10. Governance
 
-## 10. Gouvernance
+- **Arm-only.** Outputs go to designated institutional recipients — never to
+  platforms, the public, candidates or press.
+- **Tiered vocabulary** (T1/T2/T3) rather than true/false. Any T3 claim
+  (real-world attribution) is out of scope and a reportable defect.
+- **Structural corroboration.** No T2 label and no escalated severity without at
+  least 2 independent families triggered.
+- **ToS-respecting collection.** Public channels only, no scraping outside the
+  terms of service, no deanonymization. Member identifiers are not collected.
+  Secrets are scrubbed by key and by value from every export.
 
-- **Arm-only** : les sorties vont aux destinataires institutionnels désignés (VIGINUM / Arcom pour la mission par défaut ; cellule OPSEC pour GAN) — jamais aux plateformes, au public, aux candidats ou à la presse.
-- **Vocabulaire en tiers** (T1/T2/T3) plutôt que « vrai/faux » ; toute revendication T3 (attribution au monde réel) est hors périmètre et constitue un défaut signalable.
-- **Corroboration multi-source structurelle** : pas de label T2 ni de sévérité escaladée sans ≥ 2 familles indépendantes déclenchées.
-- **Collecte respectueuse des ToS** : canaux publics seulement, pas de scraping hors-ToS, pas de désanonymisation ; les identifiants de membres ne sont pas collectés ; les secrets sont expurgés (clé par clé et valeur par valeur) de chaque export.
+## 11. License and contributing
 
----
-
-## 11. Licence & contribution
-
-- **Licence** : [Apache-2.0](./LICENSE).
-- **Contribuer** : voir [`CONTRIBUTING.md`](./CONTRIBUTING.md) et le [code de conduite](./CODE_OF_CONDUCT.md).
-- **Sécurité** : signaler une vulnérabilité via [`SECURITY.md`](./SECURITY.md) — jamais en issue publique.
-- **Citer** : voir [`CITATION.cff`](./CITATION.cff).
-- **Historique** : [`CHANGELOG.md`](./CHANGELOG.md).
+- **License:** [Apache-2.0](./LICENSE)
+- **Contributing:** [`CONTRIBUTING.md`](./CONTRIBUTING.md) and the
+  [code of conduct](./CODE_OF_CONDUCT.md)
+- **Security:** report via [`SECURITY.md`](./SECURITY.md) — never as a public issue
+- **Citing:** [`CITATION.cff`](./CITATION.cff)
+- **History:** [`CHANGELOG.md`](./CHANGELOG.md)

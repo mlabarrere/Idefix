@@ -1,66 +1,82 @@
-# `docs/` — documentation canonique stakeholder
+# Documentation
 
-Ce dossier contient les documents partageables avec les stakeholders
-institutionnels (MinArm/EMA, VIGINUM, Arcom, SGDSN, partenaires académiques).
-Les artefacts BMAD intermédiaires (brainstorming, recherche, brouillons,
-décisions datées) vivent sous `_bmad-output/` — **local uniquement, non versionné**
-(gitignoré) : les chemins `_bmad-output/…` cités plus bas ne sont pas présents dans
-un clone nu.
+Everything this project claims, and the evidence for it. Organised as a paper:
+method, experiments, limitations, references.
 
-> **2026-06-10 — grand nettoyage (Lot 0).** Les trois artefacts HTML obsolètes
-> (`presentation.html`, `operational-plan.html`, `onboarding-report.html` —
-> tous antérieurs au re-scope Telegram-only) ont été **supprimés** (historique
-> git). Une présentation à jour est à régénérer après le pivot multi-mission.
+**If you read one file, read [`limitations.md`](./limitations.md).** It is the
+register of what bounds every claim here, including the defects we know about
+and have not yet fixed.
 
-## Inventaire `docs/`
+## Method
 
-| Fichier | Audience | Contenu |
-|---|---|---|
-| [`frontend.md`](./frontend.md) | Dev / design | **La galaxie narrative** : single-screen (galaxie → histoires → ego-focus → drawer), bundle statique par mission, budgets de performance |
-| [`multi-mission.md`](./multi-mission.md) | Contributeurs | La plateforme « un moteur, N missions » (profils, pipeline `--mission`, scores `telegram_*`) |
-| [`guerre-informationnelle-remediation.md`](./guerre-informationnelle-remediation.md) | Stakeholders / archi | Plan de remédiation pré-production par briques communes, issu de la gap analysis BMAD |
-| [`analytical-contract.md`](./analytical-contract.md) | Dev / méthodo | Contrat de données commun : claims, épisodes, preuves, poches, runs de score |
-| [`validation-lab.md`](./validation-lab.md) | Dev / validation | Contrats gold episode externe et corpus organique pour fermer les gaps de validation |
-| [`coordination-fabric.md`](./coordination-fabric.md) | Dev / méthodo | Registre des signaux de coordination actifs/réservés, seuils et fenêtres |
-| [`pockets-and-dossiers.md`](./pockets-and-dossiers.md) | Dev / méthodo | Score de poches informationnelles et contrat Evidence Dossier v1 |
-| [`official-hardening.md`](./official-hardening.md) | Opérateur / sponsor | Rôles, marquage, secrets, chaîne de conservation et gate pré-production |
-| [`advanced-capability-gates.md`](./advanced-capability-gates.md) | Dev / archi | Gates d'activation des capacités avancées : media reuse, GenAI, GNN, STIX |
-| [`graph-model.md`](./graph-model.md) | Dev / méthodo | Modèle de graphe multiplex centré-canal (familles d'arêtes) |
-| [`validation-state.md`](./validation-state.md) | Tous (honnêteté) | État de falsification du score de suspicion (4 expériences) |
-| [`ops-runbook.md`](./ops-runbook.md) | Opérateur | Supabase primaire, rollback PostgreSQL local, pipeline offline, crawler cadencé |
-| [`supabase-migration.md`](./supabase-migration.md) | Opérateur / dev | Format canonique dump/restore, cutover Supabase, sécurité et rollback anti-split-brain |
-| [`demo-runbook.md`](./demo-runbook.md) | Démo | Fil de démo 5 min sur la webapp statique (galaxie + histoires) |
-| [`migrations.md`](./migrations.md) | Dev | Alembic (head `0008`) |
-| [`glossary.md`](./glossary.md) | Tous | Vocabulaire technique et institutionnel |
-| [`agent-skills.md`](./agent-skills.md) | Dev | Manifeste des Agent Skills (pinnées via `skills-lock.json`) |
-| [`audits/ponytail-2026-06.md`](./audits/ponytail-2026-06.md) | Dev | Audit ponytail (perf / Supabase-Vercel) |
-| [`REPRISE_MAC.md`](./REPRISE_MAC.md) | Dev | Checklist de reprise d'environnement (Mac) |
-| `../METHODOLOGY.md` | Public (cible) | Méthodologie pré-publiée (exigence EIP-resistance P4) — **à réviser post-pivots** |
+What the system actually computes, traceable to `file:line` throughout.
 
-Artefacts BMAD détaillés à consulter en complément :
-`_bmad-output/planning-artifacts/gap-analysis-guerre-informationnelle-2026-06-15.md`,
-`_bmad-output/planning-artifacts/remediation-plan-guerre-informationnelle-prod-2026-06-15.md`,
-`_bmad-output/planning-artifacts/epics-v2-guerre-informationnelle-2026-06-15.md`,
-`_bmad-output/planning-artifacts/analytical-data-contract-2026-06-15.md`,
-`_bmad-output/planning-artifacts/validation-lab-contract-2026-06-15.md`,
-`_bmad-output/planning-artifacts/coordination-fabric-contract-2026-06-15.md`,
-`_bmad-output/planning-artifacts/pockets-dossier-v1-contract-2026-06-15.md`,
-`_bmad-output/planning-artifacts/official-environment-hardening-contract-2026-06-15.md`.
+| | |
+|---|---|
+| [01 — Problem and scope](./method/01-problem-and-scope.md) | What this is, what it is not, the single-platform limit, the mission model |
+| [02 — Graph model](./method/02-graph-model.md) | Nodes, the nine edge families, the windowing rule |
+| [03 — Suspicion score](./method/03-suspicion-score.md) | Families (a)–(f), the Stouffer/BH combiner, the null model, the gate |
+| [04 — Thematic relevance](./method/04-thematic-relevance.md) | The targeting engine, and the `targeting_score` / `fr_score` distinction |
+| [05 — Semantic family](./method/05-semantic-family.md) | Family (f) and embedding-based communities |
+| [06 — Episodes and communities](./method/06-episodes-and-communities.md) | Episode discovery, Leiden, labelling, the cohesion/modularity trade-off |
+| [07 — Tiers and governance](./method/07-tiers-and-governance.md) | T1/T2/T3, output discipline, collection posture |
 
-À produire vers `docs/` quand mûrs : `product-brief.md` (depuis
-`_bmad-output/planning-artifacts/briefs/`), `prd.md`, `architecture.md`
-(la version canonique actuelle vit dans `_bmad-output/planning-artifacts/architecture-multi-mission-2026-06-09.md`).
+## Experiments
 
-## Pour commencer
+Falsification protocols. **No experiment currently has a result** — the corpus
+behind every historical figure has been decommissioned.
 
-1. Lire `CLAUDE.md` (racine) — contexte, scope-changes datés, contraintes verrouillées.
-2. [`multi-mission.md`](./multi-mission.md) puis [`frontend.md`](./frontend.md) — la plateforme et son livrable.
-3. [`glossary.md`](./glossary.md) — le vocabulaire.
-4. `_bmad-output/planning-artifacts/` — recherche détaillée et décisions datées.
+| | |
+|---|---|
+| [Protocol contract and index](./experiments/README.md) | What a protocol page must contain |
+| [Exp 1 — Centrality ablation](./experiments/exp1-centrality-ablation.md) | Is the score just centrality? |
+| [Exp 2 — Episode recovery](./experiments/exp2-episode-recovery.md) | Blocked: no real external gold |
+| [Exp 3 — Hostile vs organic](./experiments/exp3-hostile-vs-organic.md) | Blocked: no negative class |
+| [Exp f — Embedding discrimination](./experiments/expf-embedding-discrimination.md) | Script must be fixed first |
+| [Language-prior ablation](./experiments/exp-language-prior-ablation.md) | How much of the ranking is language? |
+| [Parameter sensitivity](./experiments/exp-parameter-sensitivity.md) | Do the free parameters carry the results? |
+| [Validation lab contracts](./experiments/validation-lab.md) | Schemas for external gold and organic corpora |
 
-## Langues
+## Reference
 
-Code, configs, identifiants : **anglais**. Documents stakeholder : **français
-accepté**. Le vocabulaire institutionnel suit l'usage VIGINUM/UE
-(*manipulations de l'information*, *ingérences numériques étrangères*) — pas
-« fake news ».
+| | |
+|---|---|
+| [References](./reference/references.md) | Every entry verified against Crossref or arXiv, each stating where it is used |
+| [references.bib](./reference/references.bib) | Machine-readable form |
+| [Glossary](./reference/glossary.md) | Technical and institutional vocabulary |
+
+## Operations
+
+| | |
+|---|---|
+| [Install](./ops/install.md) | Full setup: database, Python, Telegram credentials, webapp |
+| [Quickstart](./ops/quickstart.md) | Fastest path to a running system |
+| [Migrations](./ops/migrations.md) | Alembic reference |
+| [Multi-mission](./ops/multi-mission.md) | Adding or configuring a mission |
+| [Demo runbook](./ops/demo-runbook.md) | Five-minute walkthrough |
+
+## Product
+
+| | |
+|---|---|
+| [Product](./product/product.md) | Functional view: the deliverables and non-goals |
+| [Frontend](./product/frontend.md) | The analyst interface |
+| [i18n](./product/i18n.md) | Locale contract |
+
+## Not documentation
+
+`../archive/2026-06-russosphere/` holds metric artefacts from a decommissioned
+corpus. They are kept for provenance and **may not be cited**. See that
+directory's README for why.
+
+## Conventions
+
+- **Language.** English throughout, except that
+  [`reference/glossary.md`](./reference/glossary.md) preserves French
+  institutional terms in their official form (VIGINUM / EU usage —
+  *manipulations de l'information*, *ingérences numériques étrangères*), with
+  translations. Not "fake news".
+- **Numbers.** No figure appears in prose without a matching artefact under
+  `experiments/results/`. This is enforced in CI.
+- **Claims.** Every methodological statement resolves to a `file:line` reference
+  or an artefact. Anything else is a defect and belongs in `limitations.md`.
