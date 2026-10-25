@@ -8,6 +8,60 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ## [Unreleased]
 
+### Reproducible setup on the public corpus (2026-10)
+
+A third party can now clone the repository and, with one command and no
+Telegram credentials, get the previously collected corpus in a local database,
+the full offline pipeline recomputed from it, and the analyst interface
+running. Collection becomes an optional, advanced path.
+
+#### Added
+- **Public dataset `v1.0.0`** (`dataset/`): the complete database snapshot —
+  channels, channel posts, and comments from public linked discussion groups
+  (commenter identifiers, usernames and text included), plus the derived
+  tables of an earlier pipeline run — as a GitHub Release asset, pinned by
+  SHA-256 in `dataset/manifest.json`, with a datasheet
+  (`dataset/DATASHEET.md`).
+- `scripts/bootstrap.py` (`make setup`): check prerequisites, fetch and verify
+  the dataset, start a local PostgreSQL 17 with Docker Compose
+  (`docker-compose.yml`), restore and migrate an empty database (a database
+  that holds data is left untouched), run the pipeline, start the webapp.
+  Never reads `.env`, never deletes data. Make targets `setup`, `data`, `db-up`, `db-down`,
+  `pipeline`, `webapp`.
+- `scripts/pipeline.py`: runs every offline stage in order for one mission or
+  all of them, with per-stage timings and `--list` / `--only` / `--from` /
+  `--skip-embeddings`.
+- `scripts/release_dataset.py`: builds the release artefacts and the manifest
+  (maintainers).
+- `docs/limitations.md` **D18**: the snapshot's derived tables come from an
+  earlier pipeline run and are recomputed by `scripts/pipeline.py`; only
+  regenerated numbers may be cited, and they are not expected to match the
+  archive.
+
+#### Changed
+- `README.md`, `docs/ops/quickstart.md`, `docs/ops/install.md`: the default
+  path is the bootstrap on the public corpus; Telegram collection moved to an
+  optional section. Manual `docker run` instructions removed in favour of the
+  Compose database (`idefix`/`idefix`, `127.0.0.1:5433`, `IDEFIX_DB_PORT`).
+- Reproducibility status (`README.md`, `docs/limitations.md` Part III,
+  `docs/experiments/README.md`): the corpus is public and rebuildable;
+  `docs/experiments/results/` stays empty until figures are regenerated from
+  it; the archive stays quarantined.
+- `docs/limitations.md` D12 narrowed (the database is now rebuildable, the
+  evaluation inputs still are not) and D17 marked partly fixed (families (b)
+  and (d) have test files; `rigor.py` has none).
+- `docs/method/07-tiers-and-governance.md` and the README governance section
+  now state that commenters of public linked discussion groups are collected
+  by `scripts/enrich_recrawl.py`, and that the public dataset includes them.
+  They previously said member identifiers were not collected, which was true
+  of channel member lists only.
+
+#### Fixed
+- Stale references: `scripts/crawl.py` (absent from the repository and its
+  history; the real collection entry points are now listed in the README),
+  `scripts/init_db.py` (removed), the `TG_*`-only variable names, sequential `uv sync --extra` commands that undo
+  each other, and statements that D1 and D11 were still open.
+
 ### Documentation audit (2026-09-10)
 
 An adversarial pass compared every documented claim against the code. Details in
@@ -59,7 +113,8 @@ An adversarial pass compared every documented claim against the code. Details in
 ### Added
 - Fichiers de santé communautaire OSS : `CONTRIBUTING`, `CODE_OF_CONDUCT`, `SECURITY`, `CITATION`,
   templates d'issues/PR.
-- CI GitHub Actions (lint + mypy + tests sur Python 3.11 & 3.12, avec couverture).
+- CI GitHub Actions (lint + mypy + tests avec couverture ; Python 3.14 seul depuis l'abandon de
+  la matrice 3.11/3.12).
 - Configuration `pre-commit` (ruff, hygiène de fichiers, `detect-private-key`).
 - Badges et mention de licence dans le README.
 

@@ -51,7 +51,8 @@ file per channel on drill-down.
 
 **Bundles are not tracked in this repository** — they are corpus- and
 run-specific, so publishing them would ship numbers nobody can regenerate.
-Generate one before running the app.
+Generate them before running the app — the one-command bootstrap does, from the
+public corpus ([`../ops/quickstart.md`](../ops/quickstart.md)).
 
 Stories are **discovered in the data, then edited**: derived from porosity
 crossings where a crawl exists, editorial (with `data_status: "partial"` shown

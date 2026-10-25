@@ -6,18 +6,15 @@ database, no Python server, no Telegram call while presenting.
 ## 0. Before the demo — generate the bundle
 
 Analyst bundles are **not** in the repository (they are corpus-specific and
-would publish numbers nobody can regenerate). Generate one first, with the
-database running — see [`install.md`](./install.md) §3.
+would publish numbers nobody can regenerate). Generate them from the public
+corpus first — see [`quickstart.md`](./quickstart.md):
 
 ```bash
-uv run python scripts/build_edges.py
-uv run python scripts/tag_france.py
-uv run python scripts/build_scores.py        --mission russosphere
-uv run python scripts/analyze_communities.py --mission russosphere
-uv run python scripts/analyze_porosity.py    --mission russosphere
-uv run python scripts/export_static.py       --mission russosphere
-uv run python scripts/build_stories.py       --mission russosphere
+uv run --extra embed python scripts/bootstrap.py --no-webapp   # fetch, restore, run the pipeline
 ```
+
+If the database is already restored, re-running only the pipeline is enough:
+`uv run --extra embed python scripts/bootstrap.py pipeline` (or `make pipeline`).
 
 Then `cd webapp && npm run dev`, or `npm run build` and serve `dist/`.
 
@@ -54,16 +51,19 @@ Do not overclaim. The honest position is short and it is in
 [`../limitations.md`](../limitations.md):
 
 - The system is a **T1 demonstrator**, not a validated manipulation detector.
-- No result is currently reproducible — the corpus behind the earlier figures
-  has been decommissioned, and those artefacts are quarantined.
+- The corpus is public (dataset `v1.0.0`) and anyone can rebuild what the demo
+  shows from it. No experiment has yet been re-run on it, so there is no
+  validation figure to quote; the earlier figures are quarantined and came from
+  an earlier pipeline.
 - Two gaps bound every stronger claim, both requiring human annotation: no
   organic-coordination corpus (the negative class), and no real external gold.
-- There is a known language bias in the credibility prior (defect D1) that
-  materially shapes the ranking, with an ablation protocol written to measure it.
+- The credibility prior used to be a language partition (defect D1). The code
+  is fixed, but how much the ranking moved has not been measured; the ablation
+  protocol that measures it can now run on the public corpus.
 
 ## 4. If something breaks
 
 - Blank page or empty states → the bundle is missing. Re-run §0.
-- `npm run dev` unavailable → run `npm install` inside `webapp/` first.
+- `npm run dev` unavailable → run `npm ci` inside `webapp/` first.
 - The database is needed **only** to regenerate the bundle, never during the
   demo itself.

@@ -1,6 +1,6 @@
 # Experiment 1 — Centrality ablation
 
-**Status:** `NOT YET RUN` (corpus unavailable)
+**Status:** `NOT YET RUN` (the public corpus exists; the harness cannot yet read it — `../limitations.md` D12)
 **Script:** `scripts/eval_ablation_centrality.py`
 **Artefact:** `results/ablation_centrality.json`
 
@@ -61,6 +61,7 @@ Two caveats specific to this experiment:
 ## History
 
 A June 2026 run reported a pass. That artefact is quarantined in
-`archive/2026-06-russosphere/` and **may not be cited**: the corpus is gone, and
-the run used a combiner that is no longer the method. The protocol above is
+`archive/2026-06-russosphere/` and **may not be cited**: the database it read
+was decommissioned, and the run used a combiner that is no longer the method.
+A re-run on the public corpus is a new result, not a reproduction of that one. The protocol above is
 unchanged; only the result is withdrawn.

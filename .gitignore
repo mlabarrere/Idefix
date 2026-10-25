@@ -33,6 +33,11 @@ data/embed_cache/
 backups/
 *.dump
 
+# Public dataset release: the manifest, datasheet and README under dataset/ are
+# tracked; the artefacts fetched or built locally (scripts/bootstrap.py fetch,
+# scripts/release_dataset.py) land in dataset/downloads/ and never enter git.
+dataset/downloads/
+
 # Bundle statique généré (scripts/export_static.py) — contient le dataset complet
 data/*.json
 data/*.js
@@ -105,3 +110,6 @@ docs/operational-plan.html
 webapp/public/data/
 .vercel
 .env*
+# The template holds no secret and documents the setup: keep it publishable
+# (the `.env*` line above would otherwise re-ignore it).
+!.env.example

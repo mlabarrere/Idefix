@@ -45,10 +45,12 @@ Both require human annotation: a corpus of **organic** coordination to serve as
 the negative class, and a **real** external seed list for a documented
 operation. Until they close, no output is presented as more than T1 or T2.
 
-**No result in this repository is currently reproducible.** The corpus behind
-every figure published before this version has been decommissioned. Those
-artefacts are quarantined in [`archive/`](./archive/) and may not be cited.
-`docs/experiments/` therefore contains protocols, not results.
+**The corpus is reproducible; no result has been regenerated from it yet.** The
+complete snapshot is published as dataset v1.0.0 (see
+[`dataset/`](./dataset/)) and `scripts/bootstrap.py` rebuilds every derived
+table and bundle from it. Figures published before this version are quarantined
+in [`archive/`](./archive/) and may not be cited. `docs/experiments/` therefore
+contains protocols, not results.
 
 ---
 

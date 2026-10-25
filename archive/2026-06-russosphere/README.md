@@ -9,10 +9,16 @@ repository may quote a number from this directory as a result.**
 
 Three independent reasons, any one of which is sufficient:
 
-1. **The corpus no longer exists.** The PostgreSQL instance holding the 3 699
-   scored channels and the 3 788-node forward graph has been decommissioned.
-   Nothing here can be regenerated, checked, or falsified by anyone — including
-   the authors.
+1. **The state these runs read is not identified.** The PostgreSQL instance
+   holding the 3 699 scored channels and the 3 788-node forward graph has been
+   decommissioned. A complete snapshot of it survived and is now published as
+   dataset `v1.0.0` — see `dataset/DATASHEET.md` — including the derived
+   tables (edges, scores) as they stood when it was taken. That does not make
+   these files reproducible: which pipeline run produced those derived tables,
+   and whether these files were computed from the same state, is not recorded;
+   and the bootstrap recomputes the derived tables with the current pipeline
+   anyway. A number regenerated from the public corpus is a new result, not a
+   check of one of these (`docs/limitations.md` D18).
 
 2. **They were produced by a combiner that is no longer the method.** These runs
    used a renormalized weighted average of triggered family values. The
@@ -40,6 +46,6 @@ described in `docs/limitations.md`:
   nothing about the semantic family it purports to test.
 
 Current experiment protocols, with their falsification criteria, live in
-`docs/experiments/`. Results regenerated against a reproducible corpus will be
-written to `docs/experiments/results/` and are the only numbers this project
-stands behind.
+`docs/experiments/`. Results regenerated from the public corpus (dataset
+`v1.0.0`) will be written to `docs/experiments/results/` and are the only
+numbers this project stands behind.

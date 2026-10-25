@@ -1,5 +1,8 @@
 cff-version: 1.2.0
-message: "Si vous utilisez ce logiciel ou sa méthodologie, merci de le citer comme suit."
+message: >-
+  Si vous utilisez ce logiciel ou sa méthodologie, merci de le citer comme suit.
+  Pour tout résultat calculé sur le corpus public, citez aussi le dataset v1.0.0
+  (voir references).
 title: "Idéfix — moteur d'analyse de propagation et de coordination sur Telegram"
 abstract: >-
   Démonstrateur (PoC) de cartographie de la diffusion coordonnée sur canaux Telegram publics.
@@ -21,3 +24,26 @@ keywords:
   - coordinated-behavior
   - graph-analysis
   - influence-operations
+references:
+  - type: data
+    title: "Idéfix Telegram public corpus (idefix-telegram-public-corpus)"
+    version: "1.0.0"
+    authors:
+      - family-names: Labarrère
+        given-names: Mickaël
+        alias: mlabarrere
+    abstract: >-
+      Instantané complet de la base collectée par Idéfix (dump PostgreSQL 17) :
+      canaux et messages de canaux Telegram publics, commentaires des groupes
+      de discussion publics liés, et tables dérivées d'une exécution antérieure
+      du pipeline, recalculées par scripts/pipeline.py.
+    url: "https://github.com/mlabarrere/Idefix/releases/tag/dataset-v1.0.0"
+    repository-code: "https://github.com/mlabarrere/Idefix"
+    notes: >-
+      Fichiers épinglés par SHA-256 dans dataset/manifest.json ; fiche
+      descriptive (datasheet) et conditions d'utilisation dans
+      dataset/DATASHEET.md.
+    keywords:
+      - telegram
+      - dataset
+      - public-channels

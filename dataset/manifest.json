@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "name": "idefix-telegram-public-corpus",
+  "version": "1.0.0",
+  "release_tag": "dataset-v1.0.0",
+  "created_at": "2026-10-25T06:43:52Z",
+  "source_snapshot": "idefix-supabase-post-cutover-20260618-132009",
+  "collection_window": {
+    "start": "2018-12-14T02:45:39Z",
+    "end": "2026-06-10T15:16:34Z"
+  },
+  "postgres_major": 17,
+  "alembic_revision": "0008",
+  "license": "see DATASHEET.md",
+  "files": [
+    {
+      "name": "idefix-corpus-v1.0.0.dump",
+      "role": "database",
+      "format": "pg_dump-custom",
+      "bytes": 45352794,
+      "sha256": "c2da11bbcce3f055b7f8e687e5febbbdf47bab22e82761b25abc1497c34db825",
+      "url": "https://github.com/mlabarrere/Idefix/releases/download/dataset-v1.0.0/idefix-corpus-v1.0.0.dump"
+    },
+    {
+      "name": "idefix-annotations-v1.0.0.tar.gz",
+      "role": "archive",
+      "format": "tar.gz",
+      "extract_to": "data",
+      "bytes": 173339,
+      "sha256": "116dbb6f14122f5c67e8300e606367aab2ac2f6abc1eaac62a532527f4a205c2",
+      "url": "https://github.com/mlabarrere/Idefix/releases/download/dataset-v1.0.0/idefix-annotations-v1.0.0.tar.gz"
+    }
+  ],
+  "row_counts": {
+    "channel_llm_scores": 0,
+    "channel_scores": 7313,
+    "channels": 3699,
+    "comments": 9241,
+    "edges": 16275,
+    "episodes": 0,
+    "evidence_dossiers": 0,
+    "messages": 166188,
+    "scores_run_meta": 2
+  },
+  "content_md5": {
+    "method": "per table: md5(coalesce(string_agg(md5(ROW(<all columns in ordinal order>)::text), '' ORDER BY <primary key>), '')), PostgreSQL 17, session settings TimeZone=UTC, DateStyle=ISO, MDY, IntervalStyle=postgres, extra_float_digits=1, bytea_output=hex",
+    "tables": {
+      "channel_llm_scores": "d41d8cd98f00b204e9800998ecf8427e",
+      "channel_scores": "66b1eaa44e7bb7faaacb12e4e2ede4e7",
+      "channels": "6b5f73be4596a1103bc7e0e28205b025",
+      "comments": "02181f63d3fcec695787ab2a1d55b1fc",
+      "edges": "6cdd52194a615b7e8612bf6c2c375ba1",
+      "episodes": "d41d8cd98f00b204e9800998ecf8427e",
+      "evidence_dossiers": "d41d8cd98f00b204e9800998ecf8427e",
+      "messages": "0a3141055d1931d8a142bd0a07a80743",
+      "scores_run_meta": "d9a343d4affabdf415013479dfbd372d"
+    }
+  },
+  "sanitization": [
+    "none -- complete snapshot: no row deleted, no table emptied, no column nulled, including comments (commenter ids, usernames and text) and every derived table",
+    "lossless restore verified: row count and content md5 of each of the 8 source tables equal the source restore before the upgrade (on the source columns; alembic_version excepted, it records the upgrade)",
+    "only additive migrations applied: alembic 0006 -> 0008 (new empty table(s) channel_llm_scores; new column(s) channel_scores.gate_families, NULL on every existing row)",
+    "owners and privileges stripped (pg_dump -Fc --no-owner --no-privileges); restore with pg_restore --no-owner --no-privileges",
+    "source hosting residue kept unchanged: row-level-security flag on 9 table(s), no policy; function(s) public.rls_auto_enable()",
+    "read-only secret scan: 4 collector secret value(s) from src.ingestor.session.secret_values() searched in every table and archived file -- 0 occurrence(s); data not modified",
+    "annotations archive: all 9 files under data/annotations/ and data/claims/ included byte-for-byte; nothing excluded or stripped"
+  ]
+}

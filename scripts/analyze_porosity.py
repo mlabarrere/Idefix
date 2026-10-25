@@ -46,6 +46,8 @@ load_dotenv()
 from src.shared.db import db_connect  # noqa: E402
 
 OUT_PATH = ROOT / "webapp" / "public" / "data" / "russosphere" / "porosity_snapshot.json"
+# Mission dont on lit le thème france_targeting (channel_scores est scopé mission).
+MISSION = "russosphere"
 
 # Seuil de côté : fr_score >= 0.15 => « a l'air français » (véhicule FR).
 # Identique au seuil suspect/France-relevant du graph-model (§3.1).
@@ -73,11 +75,15 @@ def _snippet(text: str, n: int = 90) -> str:
     return s[:n]
 
 
-async def load_channel_meta(conn) -> dict:
+async def load_channel_meta(conn, mission: str = MISSION) -> dict:
     """channel_id -> {username, title, fr_score, france_targeting, side}.
 
     Seuls les canaux TAGGÉS (avec fr_score, donc avec du texte observable) ont un
     côté ; les coquilles vides du catalogue sont ignorées pour la porosité.
+
+    ``channel_scores`` est scopé mission (alembic 0005/0006 : PK (mission,
+    channel_id)) : la jointure filtre sur ``mission``, sinon un canal scoré par
+    plusieurs missions sort en N lignes et ``france_targeting`` dépend de l'ordre.
     """
     rows = await conn.fetch(
         """
@@ -85,9 +91,11 @@ async def load_channel_meta(conn) -> dict:
                (ch.extra->>'fr_score')::float AS fr_score,
                s.france_targeting AS ft
         FROM channels ch
-        LEFT JOIN channel_scores s ON s.channel_id = ch.channel_id
+        LEFT JOIN channel_scores s
+          ON s.channel_id = ch.channel_id AND s.mission = $1
         WHERE (ch.extra->>'fr_score') IS NOT NULL
-        """
+        """,
+        mission,
     )
     meta = {}
     for r in rows:

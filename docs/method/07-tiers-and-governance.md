@@ -55,7 +55,12 @@ T3). Ignore it. It is scheduled for removal.
 Public channels only, via MTProto, with a single dedicated read-only account,
 history backfill plus tiered polling, and `FLOOD_WAIT` discipline. No grey
 collection, no scraping outside the terms of service, no deanonymization.
-Channel member identifiers are not collected. Telegram session and API
+Channel member lists are not collected. Commenters are: the enrichment pass
+(`scripts/enrich_recrawl.py`) stores the identifier, username and text of
+people who commented in public discussion groups linked to collected channels
+(`comments` table). Those are personal data of private individuals. The public
+dataset (`v1.0.0`, a complete database snapshot) **includes** that table; its
+terms of use are in `dataset/DATASHEET.md`. Telegram session and API
 credentials are scrubbed by key and by value from every export.
 
 Deletion detection runs by polling diff, with latency of roughly 15 minutes on

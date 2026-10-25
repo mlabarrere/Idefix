@@ -223,6 +223,17 @@ def _serialize_graph(graph, archetypes: dict) -> tuple[list, list]:
     return nodes, edges
 
 
+def _evidence_episode_ids(episodes: dict[str, dict]) -> list[str]:
+    """Épisodes qui reçoivent un dossier de preuve (``episodes/<id>.json``).
+
+    Seuls les épisodes du registre portent un ``scoring_file`` (le dossier de
+    scoring b/c/d que lit ``build_evidence``). Les épisodes découverts par
+    ``mine_episodes.py`` n'en ont pas : ils figurent dans ``episodes/index.json``
+    (``list_episodes``) et leur détail reste dans ``episodes_discovered.json``.
+    """
+    return [eid for eid, ep in episodes.items() if "scoring_file" in ep]
+
+
 async def _fetch_archetypes(conn, mission_name: str = DEFAULT_MISSION) -> dict:
     """Map channel_id -> archetype depuis channel_scores, SCOPÉ MISSION.
     {} si table absente/vide. (mission défaut = lignes historiques.)"""
@@ -410,7 +421,7 @@ async def export(
             _write_json(out / "episodes" / "index.json", index)
             files["episodes_index"] = "episodes/index.json"
             episodes = load_episodes(mission_name)
-            for eid in episodes:
+            for eid in _evidence_episode_ids(episodes):
                 _write_json(out / "episodes" / f"{eid}.json", await build_evidence(conn, eid, mission=mission_name))
 
         # --- Snapshots déjà statiques (relocalisés ; cœur du bundle PUBLIC) ------

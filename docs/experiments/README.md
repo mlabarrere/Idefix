@@ -6,14 +6,20 @@ artefact the command must produce.
 
 ## Current status
 
-**No experiment has a current result.** The corpus behind every historical
-figure has been decommissioned, so nothing published so far can be regenerated
-or checked. Historical artefacts are quarantined in
-`archive/2026-06-russosphere/` and may not be cited — see
-`../limitations.md` Part III.
+**No experiment has a current result.** A corpus that a third party can rebuild
+now exists — dataset `v1.0.0`, restored and recomputed by
+`scripts/bootstrap.py` (`../ops/quickstart.md`) — but no protocol has been run
+against it yet. Historical artefacts are quarantined in
+`archive/2026-06-russosphere/` and may not be cited; they came from an earlier
+pipeline and recomputing is not expected to reproduce them — see
+`../limitations.md` Part III and D18.
 
-`results/` is empty. It will contain only figures produced against a corpus that
-a third party can rebuild.
+`results/` is empty. It will contain only figures regenerated from the public
+corpus by the current pipeline — never values read from the derived tables the
+snapshot carries (`../limitations.md` D18) — each recording the commit and
+dataset version that produced it. One known obstacle stands before the first
+run: the evaluation harness still cannot read the local database
+(`../limitations.md` D12).
 
 ## The contract
 
@@ -44,8 +50,8 @@ Two rules follow from this repository's history:
 | [exp2-episode-recovery.md](./exp2-episode-recovery.md) | Does the ranking recover a documented operation? | `BLOCKED` — no real external gold |
 | [exp3-hostile-vs-organic.md](./exp3-hostile-vs-organic.md) | Does it separate hostile coordination from organic coordination? | `BLOCKED` — no negative class |
 | [expf-embedding-discrimination.md](./expf-embedding-discrimination.md) | Does family (f) separate organic-FR from scored channels? | `NOT YET RUN` — script must be fixed first |
-| [exp-language-prior-ablation.md](./exp-language-prior-ablation.md) | How much of the ranking is explained by the language prior? | `NOT YET RUN` |
-| [exp-parameter-sensitivity.md](./exp-parameter-sensitivity.md) | Do the free parameters carry the results? | `NOT YET RUN` |
+| [exp-language-prior-ablation.md](./exp-language-prior-ablation.md) | How much of the ranking is explained by the language prior? | `NOT YET RUN` — script to be written |
+| [exp-parameter-sensitivity.md](./exp-parameter-sensitivity.md) | Do the free parameters carry the results? | `NOT YET RUN` — script to be written |
 
 `BLOCKED` means the experiment cannot be run at all until a missing input
 exists, and the missing input requires human annotation rather than

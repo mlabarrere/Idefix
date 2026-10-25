@@ -89,17 +89,24 @@ def _snippet(text: str | None, n: int = 120) -> str:
     return " ".join((text or "").split())[:n]
 
 
-async def load_sides(conn) -> dict[int, dict]:
-    """channel_id -> {username, title, fr_score, france_targeting, side}."""
+async def load_sides(conn, mission: str = DEFAULT_MISSION) -> dict[int, dict]:
+    """channel_id -> {username, title, fr_score, france_targeting, side}.
+
+    ``channel_scores`` est scopé mission (alembic 0005/0006) : la jointure filtre
+    sur ``mission``, sinon un canal scoré par plusieurs missions sort en N lignes
+    et ``france_targeting`` dépend de l'ordre des lignes.
+    """
     rows = await conn.fetch(
         """
         SELECT ch.channel_id, ch.username, ch.title,
                (ch.extra->>'fr_score')::float AS fr_score,
                s.france_targeting AS ft
         FROM channels ch
-        LEFT JOIN channel_scores s ON s.channel_id = ch.channel_id
+        LEFT JOIN channel_scores s
+          ON s.channel_id = ch.channel_id AND s.mission = $1
         WHERE (ch.extra->>'fr_score') IS NOT NULL
-        """
+        """,
+        mission,
     )
     meta = {}
     for r in rows:
@@ -363,10 +370,12 @@ async def mine(conn, meta) -> list[dict]:
     return finalize(grouped, meta)
 
 
-def calculate_embeddings(episodes: list[dict]) -> None:
+def calculate_embeddings(episodes: list[dict], *, enabled: bool = True) -> None:
     """Calcule l'embedding de chaque cluster + métriques de cohésion/outliers.
 
     Graceful degradation: si l'extra embed n'est pas installé, passe silencieux.
+    ``enabled=False`` (``--no-embeddings``) : même sortie, sans charger le modèle
+    (aucun import de sentence-transformers, aucun téléchargement).
 
     Ajoute à chaque épisode:
         pourquoi_embedding = {
@@ -375,6 +384,10 @@ def calculate_embeddings(episodes: list[dict]) -> None:
             "top_outliers": [{"channel": str, "distance": float}, ...]  # top-3 farthest
         }
     """
+    if not enabled:
+        for e in episodes:
+            e["pourquoi_embedding"] = None
+        return
     try:
         from src.embed.encoder import Embedder, cosine
     except ImportError:
@@ -438,6 +451,8 @@ async def main() -> None:
     ap.add_argument("--mission", default=None)
     ap.add_argument("--min-corroboration", type=int, default=1,
                     help="Ne garder que les épisodes corroborés par >=N signaux (défaut 1 = tous)")
+    ap.add_argument("--no-embeddings", dest="embeddings", action="store_false",
+                    help="Ne charge pas le modèle d'embeddings (pourquoi_embedding = null)")
     args = ap.parse_args()
     mission = args.mission or DEFAULT_MISSION
     out_dir = _WEBAPP_DATA / mission
@@ -445,9 +460,9 @@ async def main() -> None:
 
     conn = await db_connect()
     try:
-        meta = await load_sides(conn)
+        meta = await load_sides(conn, mission)
         episodes = await mine(conn, meta)
-        calculate_embeddings(episodes)  # post-labeling enrichment
+        calculate_embeddings(episodes, enabled=args.embeddings)  # post-labeling enrichment
     finally:
         await conn.close()
 

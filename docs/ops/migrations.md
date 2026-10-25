@@ -1,15 +1,26 @@
 # Database migrations — Alembic
 
 Operational reference for the PostgreSQL schema. Alembic is the **source of
-truth**; `scripts/init_db.py` is retained only as a historical record of the
-original schema and is frozen.
+truth**. The script that created the original schema, `init_db.py`, is no
+longer in the repository; it is mentioned below only because databases it
+created need stamping (§4).
+
+The public corpus (dataset `v1.0.0`) is a snapshot taken before revisions
+`0007` and `0008`. Right after restoring it into an empty database, the
+bootstrap runs `alembic upgrade head`, which applies those additive revisions.
+On a database that already holds data the bootstrap migrates nothing; it
+prints the `alembic upgrade head` command if the schema is behind.
 
 Scope: data layer only. No Telegram or MTProto contact.
 
 ## 1. Conventions
 
-- `DATABASE_URL` lives in `.env` with the `+asyncpg` suffix. On Windows, prefix
-  commands with `$env:PYTHONUTF8="1"` (PowerShell) or `PYTHONUTF8=1` (bash).
+- `DATABASE_URL` carries the `+asyncpg` suffix. It comes from the environment
+  or from `.env`; an explicit environment variable wins. The bootstrap injects
+  the local Compose URL itself
+  (`postgresql+asyncpg://idefix:idefix@localhost:5433/idefix`). On Windows,
+  prefix commands with `$env:PYTHONUTF8="1"` (PowerShell) or `PYTHONUTF8=1`
+  (bash).
 - **Alembic runs in async mode** (`alembic init -t async`). This is forced: no
   synchronous driver is installed — neither `psycopg2` nor `psycopg` v3, only
   `asyncpg`. SQLAlchemy's async engine consumes the `+asyncpg` URL directly, so

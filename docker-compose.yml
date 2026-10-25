@@ -1,0 +1,38 @@
+# Local PostgreSQL 17 holding the public corpus (dataset/manifest.json).
+#
+# Driven by scripts/bootstrap.py (`make setup`): it starts this service, restores
+# the database artefact from dataset/downloads/ (mounted read-only at /dataset)
+# into an empty volume, then runs `alembic upgrade head`.
+#
+# Local-only credentials (idefix/idefix), port bound to the loopback interface.
+# Default URL: postgresql+asyncpg://idefix:idefix@localhost:5433/idefix
+# Another port: IDEFIX_DB_PORT=55432 (environment variable, read by both this file
+# and the bootstrap, so the injected DATABASE_URL always matches).
+name: idefix
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: idefix
+      POSTGRES_PASSWORD: idefix
+      POSTGRES_DB: idefix
+    ports:
+      - "127.0.0.1:${IDEFIX_DB_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./dataset/downloads:/dataset:ro
+    # Docker's default 64 MB /dev/shm is too small for parallel hash joins on the
+    # analytics queries ("could not resize shared memory segment").
+    shm_size: 256mb
+    healthcheck:
+      # TCP, not the unix socket: during first-run initialisation the entrypoint
+      # runs a socket-only temporary server, which must not count as ready.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U idefix -d idefix"]
+      interval: 2s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
+
+volumes:
+  pgdata:

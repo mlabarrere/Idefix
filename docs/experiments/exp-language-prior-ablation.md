@@ -1,6 +1,6 @@
 # Experiment — Language-prior ablation
 
-**Status:** `NOT YET RUN` — the code fix has landed, the measurement has not
+**Status:** `NOT YET RUN` — the code fix has landed, the measurement has not; script to be written
 **Artefact:** `results/language_prior_ablation.json`
 **Addresses:** `../limitations.md` D1
 
@@ -18,9 +18,11 @@ largest severity modulator.
 
 **The code has since been fixed** (`docs/limitations.md` D1): the prior is now
 derived from documented adversary linkage. What has *not* happened is the
-measurement — nobody knows how much the ranking moved, because no corpus is
-available to run both variants against. This protocol stays open for that
-reason, and it is the first thing to run once a corpus exists.
+measurement — nobody knows how much the ranking moved. Until now no corpus was
+available to run both variants against; the public corpus (dataset `v1.0.0`)
+removes that obstacle. What remains is the script named under *Command*, which
+does not exist yet. This protocol stays open until it is run, and it is the
+first thing to run on that corpus.
 
 A ranking that is substantially a language partition would be a serious defect
 for a system whose stated meta-constraint is that thematic relevance modulates

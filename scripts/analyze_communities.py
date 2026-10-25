@@ -15,7 +15,8 @@ Pipeline (formalise ``scripts/_explore_clusters.py``) :
   4. Betweenness sur la **projection canal** (non orientée, pondérée) → ponts.
   5. Vue **méta-nœuds** : une communauté = un nœud ; arêtes inter-communautés
      agrégées et pondérées.
-  6. Écrit ``webapp/public/data/russosphere/russosphere_snapshot.json``.
+  6. Écrit ``webapp/public/data/russosphere/russosphere_snapshot.json``
+     (``--mission <m>`` : même snapshot sous ``webapp/public/data/<m>/``).
 
 AUCUN appel Telegram / réseau. Lecture seule PostgreSQL via le loader existant.
 Library-first : igraph (Leiden), networkx (betweenness), asyncpg (I/O DB).
@@ -53,6 +54,7 @@ from src.graph.loader import (  # noqa: E402
     fetch_edge_rows,
     to_igraph,
 )
+from src.missions.loader import add_mission_arg, resolve_mission  # noqa: E402
 
 load_dotenv()
 
@@ -554,17 +556,32 @@ def build_snapshot(
     }
 
 
-async def main(push: bool = False) -> None:
+def snapshot_path(mission: str | None = None) -> Path:
+    """Chemin du snapshot pour la mission (``None`` => russosphère, chemin historique).
+
+    Le snapshot est calculé sur le graphe COMPLET (indépendant de la mission) ;
+    ``--mission`` ne choisit que le dossier du bundle, sous le nom canonique
+    ``russosphere_snapshot.json`` que la webapp lit pour toute mission.
+    """
+    if mission is None:
+        return OUT_PATH
+    subdir = resolve_mission(mission).export.out_subdir
+    return ROOT / "webapp" / "public" / "data" / subdir / OUT_PATH.name
+
+
+async def main(push: bool = False, mission: str | None = None) -> None:
+    out_path = snapshot_path(mission)
     g = await load_graph()
     print(f"Graphe : {g.number_of_nodes()} nœuds / {g.number_of_edges()} arêtes")
     snapshot = build_snapshot(g)
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(snapshot, ensure_ascii=False, indent=2)
-    OUT_PATH.write_text(payload, encoding="utf-8")
+    out_path.write_text(payload, encoding="utf-8")
     if push:
         from src.shared.snapshot_store import push_snapshot
-        push_snapshot("russosphere", "analytics", snapshot)
-        print("Push Supabase : community_snapshots[russosphere, analytics]")
+        subdir = out_path.parent.name
+        push_snapshot(subdir, "analytics", snapshot)
+        print(f"Push Supabase : community_snapshots[{subdir}, analytics]")
     s = snapshot["stats"]
     print(
         f"{s['n_communities']} communautés (modularité {s['modularity']}) · "
@@ -579,7 +596,7 @@ async def main(push: bool = False) -> None:
         conn = ", ".join(f"{c['label']}({c['edges']})" for c in b["connects"])
         print(f"  {b['betweenness']:.3f}  @{b['username']:24s} [{b['community']}] "
               f"→ {conn}")
-    print(f"\nÉcrit : {OUT_PATH}")
+    print(f"\nÉcrit : {out_path}")
 
 
 if __name__ == "__main__":
@@ -587,4 +604,6 @@ if __name__ == "__main__":
     _ap = argparse.ArgumentParser(description="Snapshot communautés analytics (lexical/TF-IDF).")
     _ap.add_argument("--push", action="store_true",
                      help="pousse le snapshot (scrubbé) vers Supabase community_snapshots")
-    asyncio.run(main(push=_ap.parse_args().push))
+    add_mission_arg(_ap)
+    _args = _ap.parse_args()
+    asyncio.run(main(push=_args.push, mission=_args.mission))

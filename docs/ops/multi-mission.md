@@ -28,9 +28,14 @@ Each `src/missions/<name>/__init__.py` exports
 ## Per-mission pipeline
 
 ```
-crawl/backfill -> build_edges -> tag_<mission> -> build_scores --mission <m>
-               -> analyze_*   -> export_static --mission <m> -> build_stories --mission <m>
+raw data (public dataset restore, or your own crawl/backfill)
+  -> build_edges -> tag_<mission> -> build_scores --mission <m>
+  -> analyze_*   -> export_static --mission <m> -> build_stories --mission <m>
 ```
+
+`scripts/pipeline.py --mission <m>` runs the offline part in order
+(`--mission all` for every implemented mission; `--list` prints the stages). A
+new mission's stages must be registered there to be part of a reproducible run.
 
 `export_static` and `build_stories` default to
 `webapp/public/data/<mission>/`; an explicit `--out` is not required. Those
@@ -71,12 +76,15 @@ disclosure precision, propagation, adverse attention), mission-scoped via
   holds the graded EEFI rubric behind `telegram_disclosure_precision`; its
   severities are a **business decision**, currently a v0 seed pending
   calibration by the sponsor.
-- `loader.make_prior_policy(suspect_threshold)` makes `credibility_prior`
-  mission-aware — `gan` uses a neutral prior, since discussing a friendly asset
-  carries no presumption of suspicion.
+- `loader.make_prior_policy(enabled)`, fed from
+  `ScoringProfile.credibility_prior_enabled`, makes `credibility_prior`
+  mission-aware — `gan` disables it (neutral prior), since
+  discussing a friendly asset carries no presumption of suspicion.
 
-  **Note:** for `russosphere` this prior is derived from French-keyword density
-  and is a known defect — [`../limitations.md`](../limitations.md) D1.
+  **Note:** until September 2026 this prior was derived from French-keyword
+  density — a language partition. It is now derived from documented adversary
+  linkage; the effect of that change on the ranking is unmeasured —
+  [`../limitations.md`](../limitations.md) D1.
 
 Full treatment:
 [`../method/03-suspicion-score.md`](../method/03-suspicion-score.md).
@@ -95,5 +103,6 @@ uv run python -m pytest                  # golden tests pin the default path
 cd webapp && npm run build && npx tsc --noEmit
 ```
 
-An end-to-end `gan` run requires a `gan` crawl (naval and defence seeds plus the
-russosphere catalogue) to populate the database.
+`scripts/pipeline.py --mission gan` runs on the public corpus. Widening the
+`gan` source universe (more naval and defence seeds) requires your own
+collection — see the [install guide](./install.md#optional-collect-your-own-data-from-telegram).

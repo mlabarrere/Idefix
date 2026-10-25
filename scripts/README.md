@@ -2,21 +2,32 @@
 
 Ce répertoire regroupe les scripts utilitaires du démonstrateur Idéfix.
 
-> **Vérité d'architecture (2026-06-10) — lire avant toute session.** Le livrable
-> est la **webapp statique** (`webapp/`, React+Vite+Tailwind, **sans backend**)
-> qui lit des **JSON précalculés** (bundle `webapp/public/data/<mission>/`
-> produit hors-ligne par `export_static.py` + `analyze_*.py` + `build_stories.py`),
-> intégralement côté navigateur. Python est **exclusivement** une **chaîne
-> hors-ligne** : ingestion MTProto via Hydrogram → normalisation → dérivation des
-> arêtes → scoring → analyse → export. **Le backend FastAPI (`src/api/`) et le
-> frontend HTML/JS legacy (`frontend/`) ont été SUPPRIMÉS le 2026-06-10** (Lot 0
-> d'allègement), avec les scripts `debug_*`, `score_channels` et `build_graph`.
-> Telegram uniquement (X abandonné 2026-05-26), client **Hydrogram** (jamais
-> Pyrogram/Telethon), graphe NetworkX/igraph en mémoire + table `edges`
-> PostgreSQL (pas de Neo4j, pas de Kùzu), Supabase PostgreSQL 17 primaire via
-> `DATABASE_URL` (pas de Docker local).
-> La détection livrée est un **score de suspicion explicable par canal**
-> (5 familles a–e) ; le GNN GraphSAGE+LSTM est une cible **ultérieure**.
+> **Vérité d'architecture (mise à jour 2026-10) — lire avant toute session.** Le
+> livrable est la **webapp statique** (`webapp/`, React+Vite+Tailwind, **sans
+> backend**) qui lit des **JSON précalculés** (bundle
+> `webapp/public/data/<mission>/` produit hors-ligne par `export_static.py` +
+> `analyze_*.py` + `build_stories.py`), intégralement côté navigateur. Python est
+> **exclusivement** une **chaîne hors-ligne** : données brutes (corpus public
+> restauré, **ou** ingestion MTProto via Hydrogram, optionnelle) → normalisation →
+> dérivation des arêtes → scoring → analyse → export.
+>
+> **Chemin par défaut : le corpus public.** `bootstrap.py` télécharge et vérifie
+> le dataset `v1.0.0` (épinglé par SHA-256 dans `dataset/manifest.json`), le
+> restaure dans un PostgreSQL 17 **local via Docker Compose**
+> (`docker-compose.yml`, `127.0.0.1:5433`, identifiants locaux
+> `idefix`/`idefix`), applique les migrations, lance `pipeline.py` puis la
+> webapp — sans identifiants Telegram ni `.env`. Supabase, ou tout autre
+> PostgreSQL 17, reste une alternative via `DATABASE_URL`.
+>
+> **Le backend FastAPI (`src/api/`) et le frontend HTML/JS legacy (`frontend/`)
+> ont été SUPPRIMÉS le 2026-06-10** (Lot 0 d'allègement), avec les scripts
+> `debug_*`, `score_channels` et `build_graph`. Telegram uniquement (X abandonné
+> 2026-05-26), client **Hydrogram** (jamais Pyrogram/Telethon), graphe
+> NetworkX/igraph en mémoire + table `edges` PostgreSQL (pas de Neo4j, pas de
+> Kùzu). La détection livrée est un **score de suspicion explicable par canal**
+> (familles b, c, d actives, f optionnelle ; a et e jamais branchées — voir
+> `docs/method/03-suspicion-score.md`) ; le GNN GraphSAGE+LSTM est une cible
+> **ultérieure**.
 
 ## Classification des scripts (référence rapide)
 
@@ -25,7 +36,8 @@ de la chaîne offline cible, ce qui est de l'outillage, et ce qui est obsolète.
 
 | Groupe | Scripts | Rôle |
 |---|---|---|
-| **(A) CHAÎNE COURANTE** (pipeline offline cible) | `session_web` · `backfill` · `backfill_seeds` · `snowball_crawl` · `crawl_france_ukraine` · `paced_backfill` · `enrich_recrawl` · `build_edges` · `tag_france` · `tag_gan` · `build_scores` · `analyze_communities` · `analyze_porosity` · `export_static` · `build_stories` | De l'amorçage de la base à l'export du bundle statique `webapp/public/data/<mission>/`. Le schéma est créé par les migrations Alembic (`make migrate` / `alembic upgrade head`). Ordre logique : (`session_web` une fois) → acquisition (`backfill*` / crawlers ciblés) → `build_edges` → `tag_france` (ou `tag_gan --mission gan`) → `build_scores` → `analyze_communities` / `analyze_porosity` → `export_static` → **`build_stories`** (histoires du sélecteur narratif). |
+| **(0) REPRODUCTIBILITÉ** (point d'entrée par défaut) | `bootstrap` · `pipeline` · `release_dataset` | `bootstrap` : d'un clone vierge à la webapp sur le corpus public, en une commande (`make setup`). `pipeline` : exécute dans l'ordre toutes les étapes hors-ligne du groupe (A) pour une ou toutes les missions. `release_dataset` : fabrique les artefacts de la release du dataset public (côté mainteneur). Aucun appel Telegram. |
+| **(A) CHAÎNE COURANTE** (pipeline offline cible) | `session_web` · `backfill` · `backfill_seeds` · `snowball_crawl` · `crawl_france_ukraine` · `paced_backfill` · `enrich_recrawl` · `build_edges` · `tag_france` · `tag_gan` · `build_scores` · `analyze_communities` · `analyze_porosity` · `export_static` · `build_stories` | De l'amorçage de la base à l'export du bundle statique `webapp/public/data/<mission>/`. Le schéma est créé par les migrations Alembic (`make migrate` / `alembic upgrade head`). Ordre logique : (`session_web` une fois) → acquisition (`backfill*` / crawlers ciblés — **optionnelle** : sur le corpus public restauré, la chaîne démarre à `build_edges`, et `pipeline.py` l'enchaîne) → `build_edges` → `tag_france` (ou `tag_gan --mission gan`) → `build_scores` → `analyze_communities` / `analyze_porosity` → `export_static` → **`build_stories`** (histoires du sélecteur narratif). |
 | **(B) ÉTIQUETAGE / ANNOTATION** (supervision gold) | `build_label_batch` · `aggregate_labels` · `finalize_gold` · `build_channel_digests` | Construction de la vérité-terrain niveau canal (lot stratifié → agrégation multi-juges → gold validé). Lecture/écriture fichiers + DB, aucun appel Telegram. |
 | **(C) ANALYSE** (exploration & dossiers) | `detect_clusters` · `build_dossier` · `build_dossier_v1_example` | Outils d'analyse et de production de dossiers/inspection ; consomment la base ou le bundle statique, ne pilotent pas l'acquisition. |
 | **(D) OUTILLAGE PARTAGÉ** | `_tg` | `_tg` fabrique le client Hydrogram en lecture seule pour d'éventuelles sondes ad-hoc. *(Les sondes ponctuelles `probe_*` / `forward_origins` / `resolve_discoveries` / `snowball_hop1` / `candidates` / `evidence_probe` / `fix_sensitive` / `explore_data` / `build_evidence` / `init_db` ont été supprimées le 2026-06-15 — l'historique git les conserve.)* |
@@ -47,12 +59,22 @@ pipeline) ; se reporter à la table ci-dessus pour le rattachement à un groupe.
 - **Répertoire d'exécution** : lancer les scripts depuis la racine du dépôt
   (`python scripts/<nom>.py`). Les scripts du pipeline qui importent `src/`
   reposent sur cette racine ; les sondes importent le module frère `_tg`.
-- **Configuration** : toutes les variables sensibles sont lues depuis `.env`
-  (chargé automatiquement via `python-dotenv`). Variables attendues :
-  - `TG_API_ID`, `TG_API_HASH`, `TG_SESSION_STRING` — accès MTProto en lecture
-    seule (compte FR +33 du PoC — see `docs/method/07-tiers-and-governance.md` §7.3) ;
+- **Configuration** : les scripts lisent `.env` (chargé automatiquement via
+  `python-dotenv`, **sans écraser** l'environnement : une variable passée
+  explicitement gagne). `bootstrap.py` ne lit jamais `.env` et injecte lui-même
+  `DATABASE_URL` dans ses sous-processus. Variables :
   - `DATABASE_URL` — chaîne de connexion PostgreSQL (le suffixe `+asyncpg`
-    est retiré à la volée pour `asyncpg.connect`).
+    est retiré à la volée pour `asyncpg.connect`). Base locale :
+    `postgresql+asyncpg://idefix:idefix@localhost:5433/idefix` (valeur par
+    défaut de `.env.example`) ;
+  - `TELEGRAM_API_ID`, `TELEGRAM_API_HASH`, `TELEGRAM_SESSION_STRING`,
+    `TELEGRAM_PHONE_NUMBER` — **collecte uniquement**, accès MTProto en lecture
+    seule (voir `docs/method/07-tiers-and-governance.md` §7.3). Les alias
+    historiques `TG_API_ID`, `TG_API_HASH`, `TG_SESSION_STRING`, `TG_PHONE`
+    restent acceptés ; les noms `TELEGRAM_*` priment (`src/ingestor/session.py`).
+    Exception : `_tg.py` (sondes ad-hoc) ne lit que les alias `TG_*` ;
+  - `IDEFIX_DB_PORT` (port local, défaut `5433`) et `IDEFIX_DATASET_BASE_URL`
+    (miroir du dataset) — lus par `bootstrap.py`.
 
 ## Module partagé — `_tg.py`
 
@@ -75,6 +97,20 @@ async with tg_client("nom_session") as c:
 
 ---
 
+## Section 1 — Reproductibilité (corpus public, orchestration)
+
+Point d'entrée par défaut d'un nouvel intervenant. Aucun de ces scripts ne
+contacte Telegram ni une API payante ; aucun ne lit `.env` pour se configurer.
+Guide utilisateur : `docs/ops/quickstart.md`.
+
+| Script | But | Usage | Dépendances |
+|---|---|---|---|
+| `bootstrap.py` | D'un clone vierge à la webapp, en une commande. Étapes (chacune est aussi une sous-commande) : `check` (Python 3.14, Docker + Compose v2, Node + npm, port libre, extra `embed`, manifeste valide) → `fetch` (téléchargement des fichiers de `dataset/manifest.json` dans `dataset/downloads/`, vérification taille + SHA-256, extraction sûre des archives) → `db` (`docker compose`, service `db` ; **base vide seulement** : restauration puis `alembic upgrade head` pour les migrations additives postérieures à l'instantané ; une base qui contient des données est laissée intacte — ni restauration ni migration, la commande `alembic upgrade head` est affichée si le schéma est en retard) → `pipeline` (`pipeline.py`, `DATABASE_URL` locale injectée ; dans `all`, lancé automatiquement seulement sur une base restaurée par le bootstrap, jusqu'à une exécution complète — `bootstrap.py pipeline` l'exécute toujours) → `webapp` (`npm ci` si besoin, `npm run dev`). N'efface jamais de données ; relançable sans risque. Bibliothèque standard uniquement. | `uv run --extra embed python scripts/bootstrap.py [check\|fetch\|db\|pipeline\|webapp\|all] [--mission M] [--skip-embeddings] [--no-webapp] [--dataset-dir DIR]` — ou `make setup` | Docker, Node, `docker-compose.yml`, `dataset/manifest.json` ; env `IDEFIX_DB_PORT`, `IDEFIX_DATASET_BASE_URL` |
+| `pipeline.py` | Exécute dans l'ordre toutes les étapes hors-ligne (groupe A, sans acquisition) pour une mission ou toutes, en sous-processus ; affiche la durée de chaque étape et s'arrête au premier échec. `--list` imprime l'ordre faisant foi. | `uv run --extra embed python scripts/pipeline.py --mission {russosphere,france_ukraine,gan,all} [--list] [--only ÉTAPE] [--from ÉTAPE] [--skip-embeddings]` — ou `make pipeline MISSION=…` | `DATABASE_URL` (environnement) |
+| `release_dataset.py` | **Côté mainteneur.** Fabrique les artefacts de la release du dataset public à partir de l'instantané source — l'instantané **complet**, `comments` (identifiants, pseudonymes et textes de commentateurs) et tables dérivées d'une exécution antérieure compris — puis `dataset/manifest.json` (SHA-256, tailles, instantané source, comptes de lignes). Voir `dataset/README.md` et `dataset/DATASHEET.md`. | voir `dataset/README.md` | Docker, PostgreSQL 17 jetable |
+
+---
+
 ## Section 2 — Pipeline (backfill, graphe, scoring, tag)
 
 Briques du pipeline d'acquisition et de traitement. Les scripts d'acquisition
@@ -86,7 +122,7 @@ discipline d'hygiène de compte (cadence jittée, FLOOD_WAIT).
 | `session_web.py` | Interface web (Streamlit) de génération d'une chaîne de session MTProto persistante : saisie du numéro, envoi du code, connexion (2FA gérée), puis écriture de `TG_SESSION_STRING` / `TG_PHONE` dans `.env`. | `streamlit run scripts/session_web.py --server.port 8502` | streamlit, hydrogram, `TG_API_ID`, `TG_API_HASH` |
 | `backfill.py` | Backfill d'un canal unique vers PostgreSQL via le client de production (`TelegramClient.from_env`) et `backfill_channel`. Journalisation structlog. | `python scripts/backfill.py --channel @Vbachir --limit 500` | `src/ingestor`, asyncpg, structlog, `DATABASE_URL` |
 | `backfill_seeds.py` | Backfill du socle de graines accessibles (hubs FR + ancre adverse documentée) en une seule session, pour l'hygiène de compte. Accepte des canaux en arguments pour des hops arbitraires. | `python scripts/backfill_seeds.py [@canal ...]` | `src/ingestor`, asyncpg, `DATABASE_URL` |
-| `crawl_france_ukraine.py` | Campagne bornée France–Ukraine/russophone : refresh des canaux pertinents + découverte d'origines via forwards cyrilliques ; verrou global, préflight, cadence 90–150 s. | `python scripts/crawl_france_ukraine.py [--dry-run]` | Hydrogram, asyncpg, Supabase via `DATABASE_URL` |
+| `crawl_france_ukraine.py` | Campagne bornée France–Ukraine/russophone : refresh des canaux pertinents + découverte d'origines via forwards cyrilliques ; verrou global, préflight, cadence 90–150 s. | `python scripts/crawl_france_ukraine.py [--dry-run]` | Hydrogram, asyncpg, `DATABASE_URL` |
 | `snowball_crawl.py` | Crawl borné de la frontière snowball (hop-N) : sélectionne les canaux les plus *forwardés* non encore backfillés, les backfille (plafonné, jitté), puis étiquette tous les canaux d'un score de pertinence-France brut dans `channels.extra`. **Écrit en base.** | `python scripts/snowball_crawl.py` | `src/ingestor`, asyncpg, `DATABASE_URL` |
 | `paced_backfill.py` | **(Groupe A)** Démon de backfill **cadencé** (48h) qui remplit en continu les coquilles cataloguées-mais-vides, pile sous la limite tolérée (jitté, adaptatif, reprenable), pour ne jamais faire bannir le compte +33. Sérialisé, un seul process. **Écrit en base.** | `python scripts/paced_backfill.py` (détaché) | `src/ingestor`, asyncpg, `DATABASE_URL` |
 | `enrich_recrawl.py` | **(Groupe A)** Re-crawl d'enrichissement (une seule session sérialisée) sur un ensemble de canaux EXISTANTS : capture `media_hash` (file_unique_id, sans téléchargement), bio de canal, et commentateurs du groupe de discussion public lié (table `comments`, base légale RGPD §8). **Écrit en base.** | `python scripts/enrich_recrawl.py` | `src/ingestor`, asyncpg, `DATABASE_URL` |
@@ -110,6 +146,9 @@ Préfixer le shell de `$env:PYTHONUTF8="1"` (PowerShell).
 
 | Script | But | Entrée | Sortie | Telegram |
 |---|---|---|---|---|
+| `bootstrap.py` | **(0)** Mise en place reproductible sur le corpus public : vérification, téléchargement vérifié, base locale Compose, pipeline, webapp. | `dataset/manifest.json` | base locale restaurée + bundles `webapp/public/data/<mission>/` | non |
+| `pipeline.py` | **(0)** Enchaîne les étapes hors-ligne d'une ou de toutes les missions. | PostgreSQL (`DATABASE_URL`) | tables dérivées + bundles | non |
+| `release_dataset.py` | **(0, mainteneur)** Artefacts de la release du dataset public (instantané complet + manifeste épinglé). | instantané source | fichiers de release + `dataset/manifest.json` | non |
 | `tag_france.py` | Score de pertinence-France brut par canal (mots-clés, regex `~*`). Axiome #1 : tag, ne filtre pas. | `messages.text` | `channels.extra.fr_score` | non |
 | `snowball_crawl.py` | Crawl borné de la frontière snowball (hop-N, **multi-vagues**) : backfill des canaux les plus *forwardés* non ingérés (capé, jitté), puis re-tag France. | frontière `channels` / `messages` | messages backfillés + `fr_score` | ⛔ sérialisé |
 | `build_label_batch.py` | Échantillon stratifié reproductible d'items à labelliser (2 portes France + lien revendication TF-IDF). Lecture DB seule, aucun appel réseau. | PostgreSQL (`messages`/`episodes`/`channels`) | `data/annotations/<batch_id>.jsonl` (+ `__needs_manual_screening.jsonl`) | non |

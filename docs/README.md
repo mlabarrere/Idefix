@@ -23,8 +23,9 @@ What the system actually computes, traceable to `file:line` throughout.
 
 ## Experiments
 
-Falsification protocols. **No experiment currently has a result** — the corpus
-behind every historical figure has been decommissioned.
+Falsification protocols. **No experiment currently has a result.** The corpus
+is now public and rebuildable (dataset `v1.0.0`), but no protocol has been run
+against it yet.
 
 | | |
 |---|---|
@@ -49,11 +50,21 @@ behind every historical figure has been decommissioned.
 
 | | |
 |---|---|
-| [Install](./ops/install.md) | Full setup: database, Python, Telegram credentials, webapp |
-| [Quickstart](./ops/quickstart.md) | Fastest path to a running system |
+| [Quickstart](./ops/quickstart.md) | One command from a fresh clone to a running system on the public corpus; troubleshooting |
+| [Install](./ops/install.md) | Manual setup: Python extras, local or managed database, pipeline, webapp, optional Telegram collection |
 | [Migrations](./ops/migrations.md) | Alembic reference |
 | [Multi-mission](./ops/multi-mission.md) | Adding or configuring a mission |
 | [Demo runbook](./ops/demo-runbook.md) | Five-minute walkthrough |
+
+## Dataset
+
+The public corpus lives outside `docs/`, next to the code that fetches it.
+
+| | |
+|---|---|
+| [Datasheet](../dataset/DATASHEET.md) | What dataset `v1.0.0` contains — including personal data in `comments` — how it was collected, licence and terms of use |
+| [Dataset README](../dataset/README.md) | How to fetch and verify it, and how a release is rebuilt |
+| [Manifest](../dataset/manifest.json) | Release files with their SHA-256 and size, source snapshot, row counts |
 
 ## Product
 
@@ -65,9 +76,11 @@ behind every historical figure has been decommissioned.
 
 ## Not documentation
 
-`../archive/2026-06-russosphere/` holds metric artefacts from a decommissioned
-corpus. They are kept for provenance and **may not be cited**. See that
-directory's README for why.
+`../archive/2026-06-russosphere/` holds metric artefacts from the June 2026
+runs on a since-decommissioned database. They are kept for provenance and **may
+not be cited**: they came from an earlier pipeline, and recomputing on the
+public corpus is not expected to reproduce them. See that directory's README
+for why.
 
 ## Conventions
 
