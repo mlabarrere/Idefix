@@ -909,9 +909,9 @@ the local Compose database.
 
 | Observation | Cause | Consequence |
 |---|---|---|
-| `views`, `forwards`, `media_hash` frozen at first sight | `insert_message` uses `ON CONFLICT (channel_id, message_id) DO NOTHING` (`src/ingestor/queries.py:49`) | A re-crawl never refreshes a message it already has |
-| `urls`, `raw_content` always `NULL` | Hard-coded `None, None` in `insert_message` (`queries.py:57`) | URL pivots are re-derived from text instead |
-| `language` always `NULL` | `_parse_message` sets `"language": None` (`src/ingestor/handlers.py:61`) | The `TRANSLATION` edge family never fires |
+| `views`, `forwards`, `media_hash` frozen at first sight | `insert_message` uses `ON CONFLICT (channel_id, message_id) DO NOTHING` (`src/ingestor/queries.py::insert_message`) | A re-crawl never refreshes a message it already has |
+| `urls`, `raw_content` always `NULL` | Hard-coded `None, None` in `insert_message` (`src/ingestor/queries.py::insert_message`) | URL pivots are re-derived from text instead |
+| `language` always `NULL` | `_parse_message` sets `"language": None` (`src/ingestor/handlers.py::_parse_message`) | The `TRANSLATION` edge family never fires |
 | `is_deleted` always `false` | No code detects deletions | Deleted posts look alive |
 | `channels.extra` loses keys | `snowball_crawl.py` replaces the whole object (`SET extra = $2::jsonb`) where everything else merges with `\|\|` | `gan_targeting` can vanish until `tag_gan` runs again |
 | Duplicate comments possible | The unique key includes nullable `commenter_id` and `timestamp`, and `NULL`s are distinct | A comment with a `NULL` timestamp is never deduplicated |
@@ -1120,10 +1120,6 @@ The open defects[^ids], in the priority order of
 
 Small, verifiable, and genuinely useful:
 
-- [ ] The method chapters and `METHODOLOGY.md` cite defects D19–D26, which
-      `docs/limitations.md` does not define yet.
-- [ ] `check_docs.py` strips `#anchors` before checking links, so dangling
-      anchors such as `limitations.md#d19` pass. Teach it to check them.
 - [ ] `france_ukraine` is missing from `webapp/src/data/missions.ts` and from
       the locales, so its bundle cannot be reached in the interface.
 - [ ] `scripts/` is neither linted nor type-checked in CI.
