@@ -1,0 +1,72 @@
+# Setup smoke test: a fresh clone on each supported operating system runs the
+# setup commands of docs/ops/quickstart.md verbatim.
+#
+# Catches the failure the 2026-10 documentation audit found: a setup path that
+# no longer works on a fresh clone (a dependency without wheels for one
+# platform, a test that needs an optional extra). No Docker, no network beyond
+# package downloads, no secrets.
+#
+# `scripts/bootstrap.py check` needs a Docker daemon, which only the Linux
+# runners have; on macOS and Windows the step runs the checks that need none
+# (Python, Node.js and npm, the database port, the dataset manifest).
+name: setup-smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 5 * * 1" # Mondays 05:41 UTC
+  pull_request:
+    paths:
+      - pyproject.toml
+      - uv.lock
+      - docs/ops/**
+      - .github/workflows/setup-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-14, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.14
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: uv sync --extra dev
+      - name: Offline test suite
+        run: uv run --extra dev python -m pytest
+      - name: Prerequisite check (Linux, with Docker)
+        if: runner.os == 'Linux'
+        run: uv run python scripts/bootstrap.py check --skip-embeddings
+      - name: Prerequisite checks that need no Docker (macOS, Windows)
+        if: runner.os != 'Linux'
+        shell: bash
+        run: |
+          uv run python - <<'EOF'
+          import sys
+
+          sys.path.insert(0, "scripts")
+          import bootstrap as b
+
+          b.configure_output()
+          checks = [b.Check("python", sys.version_info[:2] >= b.MIN_PYTHON, sys.version)]
+          checks += b.check_node(True)
+          checks.append(b.check_embeddings(False))
+          port = b.db_port()
+          checks.append(b.Check("db port", b.port_available(port), f"127.0.0.1:{port}"))
+          manifest = b.load_manifest(b.DEFAULT_MANIFEST)
+          checks.append(b.Check("manifest", True, f"{manifest.label}"))
+          for c in checks:
+              tag = " ok " if c.ok else ("FAIL" if c.required else "warn")
+              print(f"  [{tag}] {c.name:<11} {c.detail}")
+          sys.exit(any(c.required and not c.ok for c in checks))
+          EOF

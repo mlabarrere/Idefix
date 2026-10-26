@@ -42,8 +42,8 @@
 <summary>📖 <b>Conventions used in this guide</b></summary>
 
 - `code spans` are literal names: files, commands, columns.
-- `path:line` references point at the code as of the commit this guide was
-  written against; line numbers drift, names do not.
+- Code is cited as `path::symbol` (see [`docs/STYLE.md`](./docs/STYLE.md)):
+  line numbers drift, names do not.
 - Shell blocks give the **bash** form (Linux, macOS, Git Bash). Where
   PowerShell differs in substance — environment variables, `nul` — a second
   block follows. For bash commands split with a trailing `\`, PowerShell
@@ -269,28 +269,13 @@ uv run alembic current        # expected: 0008 (head)
 > It **replaces** whatever bundle is there, so rerun the pipeline afterwards if
 > you had a real one.
 
-<details>
-<summary>🩺 <b>Troubleshooting the bootstrap</b></summary>
-
-| Symptom | Fix |
-|---|---|
-| `check`: database port already in use | `export IDEFIX_DB_PORT=55432` (bash) or `$env:IDEFIX_DB_PORT=55432` (PowerShell), then rerun |
-| `check`: Docker daemon not reachable | Start Docker Desktop or `sudo systemctl start docker`, wait, rerun |
-| `check`: permission denied on the Docker socket (Linux) | `sudo usermod -aG docker $USER`, then log out and back in |
-| `check`: the `embed` extra is not installed | Rerun with `uv run --extra embed …`, or pass `--skip-embeddings` |
-| Garbled accents or `UnicodeEncodeError` (Windows) | `$env:PYTHONUTF8="1"` before the command |
-| A step failed half-way | Fix the cause and rerun the same command: verified downloads are kept, and a non-empty database is never restored again |
-| You want the pipeline to run again | `uv run --extra embed python scripts/bootstrap.py pipeline` always runs it |
-| `db` says the schema is behind | Run the printed `uv run alembic upgrade head` with `DATABASE_URL` set |
-| One pipeline stage failed | `uv run python scripts/pipeline.py --list`, then resume with `--from STAGE` |
-| No access to GitHub | `IDEFIX_DATASET_BASE_URL` or `--dataset-dir` |
-| Blank page or empty states in the interface | The pipeline has not finished: run the `pipeline` step and read the failing stage |
-
-The full table lives in [`docs/ops/quickstart.md`](./docs/ops/quickstart.md);
-the manual route, including a managed database, in
-[`docs/ops/install.md`](./docs/ops/install.md).
-
-</details>
+> [!NOTE]
+> This chapter is an overview. The step-by-step setup, with the checkpoints
+> to compare against your screen, is owned by
+> [`docs/ops/quickstart.md`](./docs/ops/quickstart.md); every error and its fix
+> by [`docs/ops/troubleshooting.md`](./docs/ops/troubleshooting.md); the manual
+> route, including a managed database, by
+> [`docs/ops/install.md`](./docs/ops/install.md).
 
 ---
 
@@ -301,21 +286,27 @@ the manual route, including a managed database, in
 ### Python
 
 ```bash
-uv sync --extra dev --extra llm --extra embed   # name every extra you need, in one command
-uv run pre-commit install                       # ruff, whitespace, private-key detection
+uv sync --extra dev          # development tooling; the tests need no other extra
+uv run pre-commit install    # ruff, whitespace, private-key detection
 ```
 
 > [!WARNING]
-> `uv sync` **removes** the extras you do not name. Running `uv sync --extra dev`
-> after the line above silently uninstalls `llm` and `embed`, and the tests
-> that import them then fail. Always sync with the full list, as CI does.
+> `uv sync` **removes** the extras you do not name. If you also run the
+> pipeline's embedding stage or collect from Telegram, name every extra in one
+> command (`uv sync --extra dev --extra embed --extra collect`), or the next
+> plain `uv sync --extra dev` silently uninstalls them.
 
 | Task | With make | Without make |
 |---|---|---|
-| Format | `make fmt` | `uv run ruff format src/ tests/` and `uv run ruff check --fix src/ tests/` |
-| Lint and type-check | `make lint` | `uv run ruff check src/ tests/` and `uv run mypy src/ --ignore-missing-imports` |
-| Test | `make test` | `uv run pytest tests/` |
-| Documentation integrity | — | `uv run python scripts/check_docs.py` |
+| Format | `make fmt` | `uv run --extra dev ruff format src/ tests/` and `uv run --extra dev ruff check --fix src/ tests/` |
+| Lint and type-check | `make lint` | `uv run --extra dev ruff check src/ tests/` and `uv run --extra dev mypy src/ --ignore-missing-imports` |
+| Test | `make test` | `uv run --extra dev python -m pytest` |
+| Documentation integrity | — | `uv run --no-project python scripts/check_docs.py` |
+
+The documentation checker enforces part of the house style of
+[`docs/STYLE.md`](./docs/STYLE.md): links and anchors, Oxford spelling,
+`path::symbol` references, quoted Alembic heads, and fact markers. Read that
+guide before you write prose.
 
 The test suite is **entirely offline**: no PostgreSQL, no network, no model
 download. Database access is replaced by fake connections, embeddings by an
@@ -337,9 +328,10 @@ npm run test:e2e       # Playwright smoke tests (needs a bundle, see the tip in 
 
 | Workflow | Trigger | What blocks a merge |
 |---|---|---|
-| [`ci.yml`](./.github/workflows/ci.yml) | every push to `main`, every pull request | ruff, mypy, pytest with coverage on Python 3.14; `check_docs.py` |
+| [`ci.yml`](./.github/workflows/ci.yml) | every push to `main`, every pull request | ruff, mypy, pytest with coverage on Python 3.14; `check_docs.py` and its own tests |
 | [`ui-gate.yml`](./.github/workflows/ui-gate.yml) | changes under `webapp/` or to the workflow itself | typecheck, i18n parity, ESLint, the UI contract, and Playwright on a synthetic bundle |
 | [`reproduce.yml`](./.github/workflows/reproduce.yml) | weekly (Monday, 04:23 UTC) and on demand | the whole bootstrap on a real PostgreSQL, then `npm run build` |
+| [`setup-smoke.yml`](./.github/workflows/setup-smoke.yml) | weekly (Monday, 05:41 UTC), on demand, and pull requests touching the dependencies or `docs/ops/` | install, offline tests, and the prerequisite check on Linux, macOS, and Windows |
 
 > [!NOTE]
 > `reproduce.yml` is the **only** place where code meets a real database in
@@ -353,7 +345,7 @@ npm run test:e2e       # Playwright smoke tests (needs a bundle, see the tip in 
 ## 🗄️ 6. The database, in depth
 
 Everything Idéfix collects lives in one PostgreSQL 17 database. There is **no
-ORM**: the schema is the eight hand-written Alembic revisions under
+ORM**: the schema is the hand-written Alembic revisions under
 [`alembic/versions/`](./alembic/versions/), and all runtime access is raw
 `asyncpg` SQL (pool in [`src/shared/db.py`](./src/shared/db.py), writers in
 [`src/ingestor/queries.py`](./src/ingestor/queries.py)).
@@ -451,15 +443,15 @@ Dotted lines are *logical* links that no foreign key enforces.
 
 | Table | Kind | Written by | Read by | Rows in `v1.0.0` |
 |---|:-:|---|---|--:|
-| `channels` | 🧱 | `upsert_channel` (collectors); `tag_france` / `tag_gan` merge into `extra`; `build_edges` inserts placeholder rows for edge targets | almost every stage | 3,699 |
-| `messages` | 🧱 | `insert_message` (collectors) only | graph, scorer, targeting, episodes, export | 166,188 |
-| `comments` | 🧱 | `insert_comment`, via `scripts/enrich_recrawl.py` | `build_commenters` (ids and usernames, never text) | 9,241 |
-| `edges` | ⚙️ | `build_edges` (upsert only) | graph loader, porosity, GAN footprint, export | 16,275 |
-| `channel_scores` | ⚙️ | `build_scores` (per mission) | `export_static`, `analyze_porosity`, `mine_episodes` | 7,313 |
-| `scores_run_meta` | ⚙️ | `build_scores` | REST exporters | 2 |
-| `channel_llm_scores` | ⚙️ | `classify_channels_llm` / `classify_channels_embed` (paid, outside the pipeline) | LLM evaluation scripts | 0 |
-| `episodes` | 💤 | nothing | nothing (episodes are JSON files) | 0 |
-| `evidence_dossiers` | 💤 | nothing | nothing | 0 |
+| `channels` | 🧱 | `upsert_channel` (collectors); `tag_france` / `tag_gan` merge into `extra`; `build_edges` inserts placeholder rows for edge targets | almost every stage | <!-- fact:manifest.row_counts.channels -->3,699<!-- /fact --> |
+| `messages` | 🧱 | `insert_message` (collectors) only | graph, scorer, targeting, episodes, export | <!-- fact:manifest.row_counts.messages -->166,188<!-- /fact --> |
+| `comments` | 🧱 | `insert_comment`, via `scripts/enrich_recrawl.py` | `build_commenters` (IDs and usernames, never text) | <!-- fact:manifest.row_counts.comments -->9,241<!-- /fact --> |
+| `edges` | ⚙️ | `build_edges` (upsert only) | graph loader, porosity, GAN footprint, export | <!-- fact:manifest.row_counts.edges -->16,275<!-- /fact --> |
+| `channel_scores` | ⚙️ | `build_scores` (per mission) | `export_static`, `analyze_porosity`, `mine_episodes` | <!-- fact:manifest.row_counts.channel_scores -->7,313<!-- /fact --> |
+| `scores_run_meta` | ⚙️ | `build_scores` | REST exporters | <!-- fact:manifest.row_counts.scores_run_meta -->2<!-- /fact --> |
+| `channel_llm_scores` | ⚙️ | `classify_channels_llm` / `classify_channels_embed` (paid, outside the pipeline) | LLM evaluation scripts | <!-- fact:manifest.row_counts.channel_llm_scores -->0<!-- /fact --> |
+| `episodes` | 💤 | nothing | nothing (episodes are JSON files) | <!-- fact:manifest.row_counts.episodes -->0<!-- /fact --> |
+| `evidence_dossiers` | 💤 | nothing | nothing | <!-- fact:manifest.row_counts.evidence_dossiers -->0<!-- /fact --> |
 
 Row counts are those of [`dataset/manifest.json`](./dataset/manifest.json),
 which also pins a per-table content MD5 so that a restore can be proved
@@ -798,10 +790,10 @@ docker run --rm -d --name idefix-scratch \
 docker exec idefix-scratch pg_isready -h 127.0.0.1 -U idefix   # repeat until "accepting connections"
 
 export DATABASE_URL=postgresql+asyncpg://idefix:idefix@localhost:55435/idefix
-uv run alembic upgrade head      # 0001 → 0009 on an empty schema
+uv run alembic upgrade head      # on an empty schema, applies 0001 to 0009
 uv run alembic downgrade -1      # 0009 → 0008
 uv run alembic upgrade head      # and back
-uv run alembic current           # expected: 0009 (head)
+uv run alembic current           # expected: 0009, now marked as the head
 docker stop idefix-scratch       # --rm disposes of the container
 ```
 
@@ -829,16 +821,16 @@ back at port `5433`, run the `EXPLAIN` of §6.3, apply the migration with
 read `Bitmap Index Scan on idx_messages_text_trgm`; if it does not, the index
 is not earning its keep, and the pull request should say so.
 
-**Step 6 — the head-bump checklist.** A new head ripples through files that no
-test ties together:
+**Step 6 — the head-bump checklist.** A new head ripples through several
+files:
 
 - [ ] `scripts/release_dataset.py` — `ALEMBIC_HEAD = "0008"` becomes `"0009"`
       (a release refuses to build otherwise, and no test catches a stale value)
-- [ ] [`docs/ops/migrations.md`](./docs/ops/migrations.md) — the revision
-      table of §2 and every `0008 (head)`
-- [ ] [`docs/ops/install.md`](./docs/ops/install.md) — the expected output of
-      `alembic current`
-- [ ] [`README.md`](./README.md) — the repository tree (`head: 0008`)
+- [ ] Every document that quotes the head — run
+      `uv run --no-project python scripts/check_docs.py`: its `alembic-head`
+      rule lists each one, `README.md` and the ops guides included
+- [ ] [`docs/ops/migrations.md`](./docs/ops/migrations.md) — a row in the
+      revision table
 - [ ] `tests/ingestor/test_migration_0009.py` — the smoke test above
 - [ ] [`CHANGELOG.md`](./CHANGELOG.md) — under `[Unreleased]`
 
@@ -871,21 +863,19 @@ Collection is optional, advanced, and the **only** part of Idéfix that contacts
 Telegram: public channels only, one dedicated read-only account, terms of
 service respected, and `FLOOD_WAIT` honoured.
 
-**1. Credentials.** Copy `.env.example` to `.env` (gitignored) and fill
-`TELEGRAM_API_ID` and `TELEGRAM_API_HASH` (from <https://my.telegram.org>, *API
-development tools*) and `TELEGRAM_PHONE_NUMBER`. Generate the session string
-once:
-
-```bash
-make session    # = uv run --extra session streamlit run scripts/session_web.py --server.port 8502
-```
-
-Paste the result into `TELEGRAM_SESSION_STRING`. These values are secrets:
+**1. Credentials.** The steps are owned by the collection section of
+[`docs/ops/install.md`](./docs/ops/install.md#optional-collect-your-own-data-from-telegram):
+the `collect` extra (Hydrogram and tgcrypto, which needs a C compiler on
+Python 3.14), a dedicated account, an API ID and hash, `.env` with the
+`TELEGRAM_*` variables (`TG_*` is accepted as a fallback), and a session
+string generated once with `make session`. These values are secrets:
 [`src/shared/scrub.py`](./src/shared/scrub.py) strips them from every export,
 by key *and* by value.
 
-**2. Collect.** Collectors write wherever `DATABASE_URL` points — by default,
-the local Compose database.
+**2. Collect.** Every collector runs with the `collect` extra
+(`uv run --extra collect python scripts/backfill.py --channel @name --limit 500`)
+and writes wherever `DATABASE_URL` points — by default, the local Compose
+database.
 
 | Script | Collects | Shortcut or cautious first run |
 |---|---|---|
@@ -909,9 +899,9 @@ the local Compose database.
 
 | Observation | Cause | Consequence |
 |---|---|---|
-| `views`, `forwards`, `media_hash` frozen at first sight | `insert_message` uses `ON CONFLICT (channel_id, message_id) DO NOTHING` (`src/ingestor/queries.py:49`) | A re-crawl never refreshes a message it already has |
-| `urls`, `raw_content` always `NULL` | Hard-coded `None, None` in `insert_message` (`queries.py:57`) | URL pivots are re-derived from text instead |
-| `language` always `NULL` | `_parse_message` sets `"language": None` (`src/ingestor/handlers.py:61`) | The `TRANSLATION` edge family never fires |
+| `views`, `forwards`, `media_hash` frozen at first sight | `src/ingestor/queries.py::insert_message` uses `ON CONFLICT (channel_id, message_id) DO NOTHING` | A re-crawl never refreshes a message it already has |
+| `urls`, `raw_content` always `NULL` | Hard-coded `None, None` in `src/ingestor/queries.py::insert_message` | URL pivots are re-derived from text instead |
+| `language` always `NULL` | `src/ingestor/handlers.py::_parse_message` sets `"language": None` | The `TRANSLATION` edge family never fires |
 | `is_deleted` always `false` | No code detects deletions | Deleted posts look alive |
 | `channels.extra` loses keys | `snowball_crawl.py` replaces the whole object (`SET extra = $2::jsonb`) where everything else merges with `\|\|` | `gan_targeting` can vanish until `tag_gan` runs again |
 | Duplicate comments possible | The unique key includes nullable `commenter_id` and `timestamp`, and `NULL`s are distinct | A comment with a `NULL` timestamp is never deduplicated |
