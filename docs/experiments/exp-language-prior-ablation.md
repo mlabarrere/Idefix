@@ -2,7 +2,7 @@
 
 **Status:** `NOT YET RUN` — the code fix has landed, the measurement has not; script to be written
 **Artefact:** `results/language_prior_ablation.json`
-**Addresses:** `../limitations.md` D1
+**Addresses:** [D1](../limitations.md#d1)
 
 ## Question
 
@@ -16,8 +16,8 @@ Until September 2026 `src/graph/loader.py` set `credibility_prior = "suspect"`
 French-keyword regex. That prior drives `suspect_reforward_fraction`, the
 largest severity modulator.
 
-**The code has since been fixed** (`docs/limitations.md` D1): the prior is now
-derived from documented adversary linkage. What has *not* happened is the
+**The code has since been fixed** ([D1](../limitations.md#d1)): the prior is
+now derived from documented adversary linkage. What has *not* happened is the
 measurement — nobody knows how much the ranking moved. Until now no corpus was
 available to run both variants against; the public corpus (dataset `v1.0.0`)
 removes that obstacle. What remains is the script named under *Command*, which
@@ -39,16 +39,17 @@ The ranking is **not** substantially explained by the language prior.
 ## Falsification criterion
 
 Fixed before the run. Let `S` be the suspicion ranking as shipped and `S'` the
-ranking with `credibility_prior` neutralized (all channels `"other"`, so
-`suspect_reforward_fraction = 0`). The hypothesis is **falsified** if either:
+ranking with `credibility_prior` neutralized (all channels `"other"`, so the
+suspect-reforward fraction, detail key `reforward_suspect_frac`, is 0). The
+hypothesis is **falsified** if either:
 
-```
+```text
 Spearman(suspicion_shipped, fr_score) < -0.50
 ```
 
 (the score is strongly anti-correlated with writing in French), **or**
 
-```
+```text
 Jaccard@50(S, S') < 0.60
 ```
 
@@ -76,9 +77,9 @@ not, the defect is demonstrated directly and legibly.
 
 ## Command
 
-```bash
-uv run python scripts/eval_language_prior_ablation.py --mission <mission>
-```
+No script exists yet. The planned one, `scripts/eval_language_prior_ablation.py`, should take
+the mission as an argument (`--mission russosphere`) and write the artefact
+above; until it is written there is no command to run.
 
 ## What this would establish
 
@@ -87,5 +88,5 @@ threshold. It does not establish that the ablated ranking is correct — only th
 the shipped one was partly measuring language.
 
 It is also a precondition for Experiment 3. Until the language confound is
-removed, `adversary_linkage` and "does not write in French" cannot be told
+removed, `adversary_linkage` and 'does not write in French' cannot be told
 apart, so any discriminant result is uninterpretable.

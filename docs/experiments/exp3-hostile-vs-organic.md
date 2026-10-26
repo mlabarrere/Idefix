@@ -2,7 +2,7 @@
 
 **Status:** `BLOCKED` — the negative class does not exist
 **Script:** `scripts/eval_discriminant_organic.py`, `scripts/eval_organic_control.py`
-**Artefact:** `results/discriminant_organic.json`
+**Artefact:** `results/discriminant_organic.json` (the scripts write `data/eval/discriminant_organic.json` and `data/eval/organic_control.json` today, [D25](../limitations.md#d25))
 
 ## Question
 
@@ -37,6 +37,13 @@ Fixed before the run:
   structure, and the hypothesis fails on its own terms even without organic
   negatives.
 
+Neither criterion is implemented as a verdict yet.
+`scripts/eval_discriminant_organic.py` records the contamination rule as text
+for a human step and computes the two Spearman correlations without a
+threshold; `scripts/eval_organic_control.py` raises its false-positive alarm
+when at least three organic channels, or two from the same organic group,
+reach the top 50 ([`validation-lab.md`](./validation-lab.md)).
+
 ## Why it is blocked
 
 The corpus is **seeded on the adversary**. Snowball crawling from adversary seeds
@@ -50,7 +57,7 @@ above is not merely unmet — it is **untestable**.
 Building the negative class means deliberately crawling French-language
 communities that coordinate for legitimate reasons and having a human confirm
 they are organic. It is annotation work, not engineering. See
-`../limitations.md` L4.
+[L4](../limitations.md#l4).
 
 ## Confound that must be removed first
 
@@ -59,28 +66,33 @@ correlated far more strongly with adversary linkage than with coordination
 value. Those figures are quarantined and may not be cited, and in any case the
 result is **not interpretable as a finding about the method**,
 because `adversary_linkage` was itself driven by a language partition
-(`../limitations.md` D1) — `credibility_prior = "suspect"` iff the channel wrote
-in few French keywords.
+([D1](../limitations.md#d1)): `credibility_prior = "suspect"` if and only if the
+channel wrote in few French keywords.
 
-So the historical run cannot distinguish "the score keys on adversary anchoring"
-from "the score keys on not writing in French".
+So the historical run cannot distinguish 'the score keys on adversary anchoring'
+from 'the score keys on not writing in French'.
 
-The confound has been removed **in the code** — the prior no longer reads
-language (`../limitations.md` D1) — but the historical numbers were produced
+The confound has been removed **in the code**, since the prior no longer reads
+language ([D1](../limitations.md#d1)), but the historical numbers were produced
 before that change and remain uninterpretable. This experiment measures what it
 names only on a run made after the fix.
 
 ## Command
 
+Neither script takes arguments ([D24](../limitations.md#d24)), and
+`scripts/eval_discriminant_organic.py` needs `data/channels.json`, which a
+clean clone does not have ([D12](../limitations.md#d12)).
+
 ```bash
-uv run python scripts/eval_discriminant_organic.py --mission <mission>
-uv run python scripts/eval_organic_control.py --mission <mission>
+uv run python scripts/eval_discriminant_organic.py
+uv run python scripts/eval_organic_control.py
 ```
 
 ## Dependent blocked experiment
 
 Global scoring significance (ROC-AUC against gold, permutation test,
 calibration curve, `scripts/eval_scoring_significance.py`) is blocked by the same
-gap. `channel_gold` holds positives and **zero** negatives, so ROC-AUC is
-undefined. The script exits immediately. No global performance figure can be
-stated until L4 closes.
+gap. A channel gold would hold positives and **zero** negatives, so ROC-AUC is
+undefined; and no `data/eval/channel_gold.json` exists, so the script exits
+immediately. No global performance figure can be stated until
+[L4](../limitations.md#l4) closes.

@@ -1,13 +1,14 @@
 cff-version: 1.2.0
 message: >-
-  Si vous utilisez ce logiciel ou sa méthodologie, merci de le citer comme suit.
-  Pour tout résultat calculé sur le corpus public, citez aussi le dataset v1.0.0
-  (voir references).
-title: "Idéfix — moteur d'analyse de propagation et de coordination sur Telegram"
+  If you use this software or its methodology, please cite it as below. For
+  any result computed from the public corpus, also cite dataset v1.0.0 (see
+  references).
+title: "Idéfix: propagation and coordination analysis for Telegram public channels"
 abstract: >-
-  Démonstrateur (PoC) de cartographie de la diffusion coordonnée sur canaux Telegram publics.
-  Décrit des structures observables de diffusion et restitue une file d'examen priorisée,
-  explicable et auditable — jamais un verdict de véracité.
+  A demonstrator that maps observable diffusion and coordination structure
+  across public Telegram channels and produces a ranked, explainable and
+  auditable examination queue for human analysts. It never judges whether a
+  message is true, and it is not a validated manipulation detector.
 type: software
 authors:
   - family-names: Labarrère
@@ -16,12 +17,12 @@ authors:
 repository-code: "https://github.com/mlabarrere/Idefix"
 url: "https://github.com/mlabarrere/Idefix"
 license: Apache-2.0
-version: 0.3.0-poc
-date-released: 2026-06-29
+version: 0.4.1
+date-released: 2026-10-26
 keywords:
   - disinformation
   - telegram
-  - coordinated-behavior
+  - coordinated-behaviour
   - graph-analysis
   - influence-operations
 references:
@@ -33,16 +34,16 @@ references:
         given-names: Mickaël
         alias: mlabarrere
     abstract: >-
-      Instantané complet de la base collectée par Idéfix (dump PostgreSQL 17) :
-      canaux et messages de canaux Telegram publics, commentaires des groupes
-      de discussion publics liés, et tables dérivées d'une exécution antérieure
-      du pipeline, recalculées par scripts/pipeline.py.
+      A complete snapshot of the database Idéfix collected (a PostgreSQL 17
+      dump): channels and posts of public Telegram channels, comments from
+      their public linked discussion groups, including the commenters'
+      identifiers, usernames and text, and the derived tables of an earlier
+      pipeline run, which scripts/pipeline.py recomputes.
     url: "https://github.com/mlabarrere/Idefix/releases/tag/dataset-v1.0.0"
     repository-code: "https://github.com/mlabarrere/Idefix"
     notes: >-
-      Fichiers épinglés par SHA-256 dans dataset/manifest.json ; fiche
-      descriptive (datasheet) et conditions d'utilisation dans
-      dataset/DATASHEET.md.
+      Files pinned by SHA-256 in dataset/manifest.json; datasheet and terms of
+      use in dataset/DATASHEET.md.
     keywords:
       - telegram
       - dataset

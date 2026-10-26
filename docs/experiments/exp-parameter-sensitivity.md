@@ -2,7 +2,7 @@
 
 **Status:** `NOT YET RUN` — script to be written
 **Artefact:** `results/parameter_sensitivity.json`
-**Addresses:** `../limitations.md` D14
+**Addresses:** [D14](../limitations.md#d14)
 
 ## Question
 
@@ -29,7 +29,7 @@ parameters.
 Fixed before the run. For each parameter, sweep the range below and compare each
 run against the default. The hypothesis is **falsified** for that parameter if:
 
-```
+```text
 Jaccard@50(top-50 suspicion) < 0.70    (score parameters)
 NMI(partition, default_partition) < 0.70    (community parameters)
 ```
@@ -38,16 +38,16 @@ NMI(partition, default_partition) < 0.70    (community parameters)
 
 | Parameter | Default | Sweep | Location |
 |---|---|---|---|
-| `EMB_SIM` k | 5 | 3, 5, 10, 20 | `embed/community.py:52` |
+| `EMB_SIM` k | 5 | 3, 5, 10, 20 | `src/embed/community.py::add_embedding_edges` |
 | `EMB_SIM` threshold | 0.5 | 0.4, 0.5, 0.6, 0.7 | same |
 | `EMB_SIM` weight scale | 3.0 | 1.0, 3.0, 5.0 | same |
-| Leiden resolution | 1.6 | 0.8, 1.0, 1.4, 1.6, 2.0 | `analyze_communities.py:293` |
-| `TRIGGER_THRESHOLD` | 0.3 | 0.2, 0.3, 0.4, 0.5 | five modules |
-| Family weights | .30/.25/.30 | uniform; each family +/-50% | `channel_suspicion.py:145-151` |
-| Coordination window | 72 h | 24, 48, 72, 168 h | `graph/edges.py:86` |
-| Severity bounds | .20/.15/.20 | all zero; doubled | `channel_suspicion.py:157-167` |
+| Leiden resolution | 1.6 | 0.8, 1.0, 1.4, 1.6, 2.0 | `scripts/analyze_communities.py::detect_communities` |
+| `TRIGGER_THRESHOLD` | 0.3 | 0.2, 0.3, 0.4, 0.5 | five modules, [D14](../limitations.md#d14) |
+| Family weights | .30/.25/.30 | uniform; each family +/-50% | `src/scorer/channel_suspicion.py::BASE_FAMILY_WEIGHTS` |
+| Coordination window | 72 h | 24, 48, 72, 168 h | `src/graph/edges.py::DEFAULT_WINDOW_SECONDS` |
+| Severity bounds | .20/.15/.20 | all zero; doubled | `src/scorer/channel_suspicion.py::MAX_REFORWARD_BOOST` and its two neighbours |
 
-The "all severity bounds zero" run is worth reporting on its own: it isolates the
+The 'all severity bounds zero' run is worth reporting on its own: it isolates the
 structural base score from every modulator.
 
 ## Ablations, not just sweeps
@@ -57,16 +57,16 @@ carries the result rather than a *value*:
 
 - **Drop `CO_HASHTAG`** and recompute. Family (c) triggers on two distinct edge
   types alone, so if `CO_HASHTAG` is doing the work the coordination family is
-  largely noise (`../limitations.md` D5).
+  largely noise ([D5](../limitations.md#d5)).
 - **Swap the embedding model** — MiniLM-L12-v2 against e5 and MPNet. No ablation
   has ever been run, so it is unknown whether family (f) and the embedding
   community track depend on the specific encoder.
 
 ## Command
 
-```bash
-uv run python scripts/eval_parameter_sensitivity.py --mission <mission>
-```
+No script exists yet. The planned one, `scripts/eval_parameter_sensitivity.py`, should take
+the mission as an argument (`--mission russosphere`) and write the artefact
+above; until it is written there is no command to run.
 
 ## What this would establish
 
