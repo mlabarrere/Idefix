@@ -1,7 +1,7 @@
 # 5 — Semantic coherence, family (f)
 
 **Status:** implemented, **opt-in and off by default**
-(`compute_embeddings=False` in `channel_suspicion.py::_build_channel_queue_live`),
+(`compute_embeddings=False` in `src/scorer/channel_suspicion.py::_build_channel_queue_live`),
 enabled with `build_scores.py --embeddings`, which `scripts/pipeline.py` does
 not pass. Code: `src/scorer/embedding_signals.py`, `src/embed/`.
 
@@ -16,7 +16,7 @@ not pass. Code: `src/scorer/embedding_signals.py`, `src/embed/`.
 
 A scored channel is represented by the mean of the embeddings of its **15
 longest messages**, L2-renormalized
-(`embedding_signals.py::compute_channel_embeddings`); each anchor channel uses
+(`src/scorer/embedding_signals.py::compute_channel_embeddings`); each anchor channel uses
 its 20 longest. The default encoder is
 `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (384 dimensions,
 French, Russian, and English), run locally and deterministically, with an
@@ -54,7 +54,7 @@ press'.
 
 **Silent failure inflates the score.** When an anchor handle does not resolve,
 the fallback vector is `np.zeros(384)`
-(`embedding_signals.py::build_baseline_embedding`). Cosine against a zero vector is
+(`src/scorer/embedding_signals.py::build_baseline_embedding`). Cosine against a zero vector is
 0, so `baseline_distance` becomes `1.0` for **every channel**, adding a uniform
 `+0.4` to the family value with no error and no warning. Any run using family (f)
 must verify that the anchors resolved before the numbers are read

@@ -42,7 +42,7 @@ domain_signal = 1.0 if any adversary domain is cited else 0.0
 score = breadth_weight*breadth + depth_weight*depth + domain_weight*domain_signal
 ```
 
-For the `russosphere` mission (`france_targeting.py::_FRANCE_WEIGHTS`): 5
+For the `russosphere` mission (`src/normalizer/france_targeting.py::_FRANCE_WEIGHTS`): 5
 categories, `breadth_weight = 0.55`, `depth_weight = 0.30`,
 `domain_weight = 0.15`, `depth_saturation = 4.0`. The `gan` mission uses
 `0.40 / 0.45 / 0.15`, and `france_ukraine` and `dircom_minarm` carry their own
@@ -61,7 +61,7 @@ this channel's text hits a hand-written word list'.
 
 ## 4.3 The claim-proximity seam is dead code
 
-`targeting.py::score_targeting` implements a soft-OR that would raise the score
+`src/normalizer/targeting.py::score_targeting` implements a soft-OR that would raise the score
 when a claim-proximity value is supplied:
 
 ```text

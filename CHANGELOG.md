@@ -30,7 +30,7 @@ changing the code. The code fixes are separate, later, versioned changes.
 - **`METHODOLOGY.md` 0.4.1.** One full rewrite. Its methodology hash, the first
   eight hexadecimal characters of the SHA-256 of the file's LF bytes as
   `src/shared/dossier.py::get_methodology_version_hash` computes them, is now
-  `cd38fde0`. A checkout with CRLF line endings computes a different value
+  <!-- fact:methodology.hash -->**cd38fde0**<!-- /fact -->. A checkout with CRLF line endings computes a different value
   ([D27](./docs/limitations.md#d27)).
 - **Privacy.** The README now opens with a caution: the `comments` table holds
   the Telegram user ID, username and text of private commenters, and dataset
@@ -75,8 +75,8 @@ changing the code. The code fixes are separate, later, versioned changes.
   invocations of evaluation scripts that take no arguments
   ([D24](./docs/limitations.md#d24)), and the artefact paths those scripts
   actually write ([D25](./docs/limitations.md#d25)).
-- **Code references** in the documentation are now `path/to/file.py::symbol`
-  instead of `file:line`. Commit `cc258e4` had broken 23 of them.
+- **Code references** in the documentation now name a path and a symbol, such
+  as `src/scorer/rigor.py::compute_family_significance`, instead of a line. Commit `cc258e4` had broken 23 of them.
 - **Language.** This changelog and `CITATION.cff` are now in British English.
 
 ### Added

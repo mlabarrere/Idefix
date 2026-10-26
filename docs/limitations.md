@@ -8,7 +8,8 @@ The rule this repository follows: *what is measured above chance is reported as
 such; what is not measurable is declared blocked, never filled in with prose.*
 
 Nothing in this file is hypothetical. Every defect below was verified against
-the code it names, cited as `path/to/file.py::symbol`.
+the code it names, cited as a path and a symbol, such as
+`src/scorer/rigor.py::compute_family_significance`.
 
 <a id="status"></a>
 
@@ -47,7 +48,7 @@ defects.
 | [D24](#d24) | Protocol commands are documented for scripts that take no arguments | 🔴 open |
 | [D25](#d25) | Evaluation artefacts are written under `data/eval/` | 🔴 open |
 | [D26](#d26) | The gold and organic-corpus templates are gitignored | 🔴 open |
-| [D27](#d27) | The methodology hash depends on the checkout's line endings | 🔴 open; fix pending in the setup PR (`.gitattributes`) |
+| [D27](#d27) | The methodology hash depends on the checkout's line endings | 🟠 partial: `.gitattributes` forces LF checkouts; the hash function still hashes raw bytes |
 | [D28](#d28) | Staleness of a channel can never be reported | 🔴 open |
 | [D29](#d29) | The collector never records message language or URLs | 🔴 open |
 | [D30](#d30) | The credibility prior is evidence-based on the scoring path only | 🔴 open |
@@ -623,18 +624,19 @@ un-ignore `data/eval/templates/`.
 methodology hashes.
 
 **Evidence.** `src/shared/dossier.py::get_methodology_version_hash` hashes the
-raw bytes of the working copy (`Path.read_bytes`). The repository has no
-`.gitattributes`, so on Windows with `core.autocrlf=true` Git checks
-`METHODOLOGY.md` out with CRLF line endings, and the hash differs from the one
-computed on the LF bytes Git stores.
+raw bytes of the working copy (`Path.read_bytes`). Until the setup pull
+request added `.gitattributes`, Git on Windows with `core.autocrlf=true`
+checked `METHODOLOGY.md` out with CRLF line endings, and the hash differed from
+the one computed on the LF bytes Git stores. `.gitattributes` now forces LF
+for `METHODOLOGY.md` and `docs/method/**`, but a copy whose line endings change
+outside Git (an editor, an archive tool) still hashes differently.
 
 **Impact.** The hash cannot identify a methodology version across operating
 systems. The hashes recorded in `CHANGELOG.md` are computed on LF bytes.
 
-**Planned fix.** Pending in the setup pull request: a `.gitattributes` rule
-that checks text files out with LF line endings. Normalizing line endings
-inside the hash function would make it independent of Git configuration
-altogether.
+**Planned fix.** The `.gitattributes` rule is in place. Normalizing line
+endings inside the hash function would make it independent of how the file
+was obtained altogether.
 
 <a id="d28"></a>
 

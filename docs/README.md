@@ -9,8 +9,8 @@ and have not yet fixed.
 
 ## Method
 
-What the system actually computes, traceable throughout to code references of
-the form `path/to/file.py::symbol`.
+What the system actually computes, traceable throughout to code references that
+name a path and a symbol, such as `src/scorer/rigor.py::compute_family_significance`.
 
 | | |
 |---|---|
@@ -94,5 +94,5 @@ for why.
   artefact under `experiments/results/`. CI enforces this for
   `experiments/*.md` (`scripts/check_docs.py::check_numbers`).
 - **Claims.** Every methodological statement resolves to a code reference
-  (`path/to/file.py::symbol`) or an artefact. Anything else is a defect and
+  (a path and a symbol) or an artefact. Anything else is a defect and
   belongs in `limitations.md`.

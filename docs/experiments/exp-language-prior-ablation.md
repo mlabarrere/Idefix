@@ -77,12 +77,9 @@ not, the defect is demonstrated directly and legibly.
 
 ## Command
 
-No script exists yet. The intended invocation, once
-`scripts/eval_language_prior_ablation.py` is written, is:
-
-```bash
-uv run python scripts/eval_language_prior_ablation.py --mission russosphere
-```
+No script exists yet. The planned one, `scripts/eval_language_prior_ablation.py`, should take
+the mission as an argument (`--mission russosphere`) and write the artefact
+above; until it is written there is no command to run.
 
 ## What this would establish
 
