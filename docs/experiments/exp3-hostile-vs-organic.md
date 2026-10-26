@@ -1,16 +1,15 @@
-# Experiment 3 — Hostile versus organic coordination
+# Experiment 3: Hostile versus organic coordination
 
-**Status:** `BLOCKED` — the negative class does not exist
+**Status:** `BLOCKED`—the negative class does not exist
 **Script:** `scripts/eval_discriminant_organic.py`, `scripts/eval_organic_control.py`
 **Artefact:** `results/discriminant_organic.json` (the scripts write `data/eval/discriminant_organic.json` and `data/eval/organic_control.json` today, [D25](../limitations.md#d25))
 
-## Question
+## 🧭 Question
 
-Does the score separate **hostile** coordination from **organic** coordination —
-fan communities, activist networks, newsrooms, anything that coordinates for
+Does the score separate **hostile** coordination from **organic** coordination—fan communities, activist networks, newsrooms, anything that coordinates for
 ordinary reasons?
 
-## Why this is the experiment that matters
+## 🧭 Why this is the experiment that matters
 
 Every other experiment is a necessary condition. This is the one that decides
 whether the system detects what it claims to detect.
@@ -19,13 +18,13 @@ Coordination is not rare and is not inherently hostile. A detector that fires on
 coordination as such will fire on legitimate communities, and its operational
 queue will be contaminated. Nothing in this project has yet tested that.
 
-## Hypothesis
+## 🧪 Hypothesis
 
 Among channels that trigger the coordination family, suspicion is driven by
 **coordination structure**, and confirmed-organic communities do not contaminate
 the top of the queue.
 
-## Falsification criterion
+## 🧪 Falsification criterion
 
 Fixed before the run:
 
@@ -44,7 +43,7 @@ threshold; `scripts/eval_organic_control.py` raises its false-positive alarm
 when at least three organic channels, or two from the same organic group,
 reach the top 50 ([`validation-lab.md`](./validation-lab.md)).
 
-## Why it is blocked
+## 🧭 Why it is blocked
 
 The corpus is **seeded on the adversary**. Snowball crawling from adversary seeds
 produces a corpus of adversary-adjacent channels, so the count of organic
@@ -52,14 +51,14 @@ candidates is zero and `eval_organic_control.py` reports
 `has_organic_corpus: false`.
 
 With no negatives the discriminant is never stressed. The falsification rule
-above is not merely unmet — it is **untestable**.
+above is not merely unmet—it is **untestable**.
 
 Building the negative class means deliberately crawling French-language
 communities that coordinate for legitimate reasons and having a human confirm
 they are organic. It is annotation work, not engineering. See
 [L4](../limitations.md#l4).
 
-## Confound that must be removed first
+## 🧪 Confound that must be removed first
 
 The second criterion above was already met on the June 2026 run: the ranking
 correlated far more strongly with adversary linkage than with coordination
@@ -77,7 +76,7 @@ language ([D1](../limitations.md#d1)), but the historical numbers were produced
 before that change and remain uninterpretable. This experiment measures what it
 names only on a run made after the fix.
 
-## Command
+## 🔧 Command
 
 Neither script takes arguments ([D24](../limitations.md#d24)), and
 `scripts/eval_discriminant_organic.py` needs `data/channels.json`, which a
@@ -88,7 +87,7 @@ uv run python scripts/eval_discriminant_organic.py
 uv run python scripts/eval_organic_control.py
 ```
 
-## Dependent blocked experiment
+## 🧩 Dependent blocked experiment
 
 Global scoring significance (ROC-AUC against gold, permutation test,
 calibration curve, `scripts/eval_scoring_significance.py`) is blocked by the same

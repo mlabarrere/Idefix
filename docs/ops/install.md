@@ -9,7 +9,7 @@ It describes Idéfix version 0.4.1. For a first installation, follow the
 quickstart: it is the tested path, and this guide links to it for every step
 the two share.
 
-## Contents
+## 🧭 Contents
 
 - [Prerequisites](#prerequisites)
 - [Python environment and extras](#python-environment-and-extras)
@@ -23,14 +23,18 @@ the two share.
 - [Optional: collect your own data from Telegram](#optional-collect-your-own-data-from-telegram)
 - [Problems](#problems)
 
-## Prerequisites
+<a id="prerequisites"></a>
+
+## 📦 Prerequisites
 
 The same tools as the quickstart: Git, `uv`, Node.js, and Docker. Install them
 as [Install the prerequisites](./quickstart.md#install-the-prerequisites)
 describes for your system, including the proxy and synchronized-folder notes.
 Docker is optional if you use a [managed database](#managed-or-external-postgresql).
 
-## Python environment and extras
+<a id="python-environment-and-extras"></a>
+
+## 📦 Python environment and extras
 
 The base install covers the offline pipeline, the database migrations, and the
 export. Optional extras add the rest:
@@ -68,7 +72,9 @@ uv run --extra dev python -m pytest
 
 They pass without the `llm` extra.
 
-## Database
+<a id="database"></a>
+
+## 📦 Database
 
 Idéfix targets PostgreSQL 17. All scripts read the connection string from
 `DATABASE_URL`, which must keep the `+asyncpg` driver suffix (Alembic and the
@@ -211,7 +217,9 @@ database as it is, because it is no longer empty; and because every clone
 shares the database, do this only on a machine with no corpus you want to keep.
 Migration reference: [`migrations.md`](./migrations.md).
 
-## Pipeline
+<a id="pipeline"></a>
+
+## 🔧 Pipeline
 
 `scripts/pipeline.py` runs every offline stage in order, stops at the first
 failure, and prints per-stage timings. It contacts neither Telegram nor any
@@ -247,7 +255,9 @@ the missions it runs, and `build_edges` adds and updates edges without deleting
 those that only the earlier run produced. Each stage is documented in
 [`scripts/README.md`](../../scripts/README.md).
 
-## Analyst interface
+<a id="analyst-interface"></a>
+
+## 🧩 Analyst interface
 
 ```bash
 cd webapp
@@ -272,7 +282,9 @@ The interface reads the JavaScript Object Notation (JSON) bundles under
 repository. Until the pipeline has
 run, every page shows empty states.
 
-## Verify the installation
+<a id="verify-the-installation"></a>
+
+## 🧪 Verify the installation
 
 Run the offline checks in quickstart [step 8](./quickstart.md#step-8), then
 confirm that the database answers (with `DATABASE_URL` set):
@@ -289,7 +301,9 @@ Before you interpret any output, read [the limitations](../limitations.md):
 several defects materially affect how the ranking should be read.
 
 
-## Optional: collect your own data from Telegram
+<a id="optional-collect-your-own-data-from-telegram"></a>
+
+## 🔧 Optional: collect your own data from Telegram
 
 Nothing above needs Telegram. Collection is the only part of Idéfix that
 contacts it: read-only, over MTProto (Telegram's client protocol), from public channels only.
@@ -410,7 +424,9 @@ documented in [`scripts/README.md`](../../scripts/README.md).
 
 </details>
 
-## Problems
+<a id="problems"></a>
+
+## 🩺 Problems
 
 Every error message with its cause and fix is in
 [Troubleshooting](./troubleshooting.md). The ones specific to this guide:

@@ -1,4 +1,4 @@
-# Archived metrics — `russosphere`, June 2026
+# Archived metrics: `russosphere`, June 2026
 
 > **Do not cite these files.** They are kept for provenance only.
 
@@ -12,7 +12,7 @@ Three independent reasons, any one of which is sufficient:
 1. **The state these runs read is not identified.** The PostgreSQL instance
    holding the 3,699 scored channels and the 3,788-node forward graph has been
    decommissioned. A complete snapshot of it survived and is now published as
-   dataset `v1.0.0` — see `dataset/DATASHEET.md` — including the derived
+   dataset `v1.0.0`—see `dataset/DATASHEET.md`—including the derived
    tables (edges, scores) as they stood when it was taken. That does not make
    these files reproducible: which pipeline run produced those derived tables,
    and whether these files were computed from the same state, is not recorded;
@@ -29,7 +29,7 @@ Three independent reasons, any one of which is sufficient:
 
 3. **They embed a language bias that is now treated as a defect.** The scoring
    run inherited `credibility_prior = "suspect"` from `fr_score < 0.15`
-   (`src/graph/loader.py`) — that is, from a channel writing in few French
+   (`src/graph/loader.py`)—that is, from a channel writing in few French
    keywords. `discriminant_organic.json` records a far stronger correlation of
    suspicion with adversary linkage than with coordination; the ranking these
    files describe is substantially a ranking by language. The defect was fixed
@@ -38,10 +38,10 @@ Three independent reasons, any one of which is sufficient:
 Two further artefacts in this directory are internally inconsistent and are
 described in `docs/limitations.md`:
 
-- `episode_recovery.json` — `random_control_recall@k` is an expected *hit count*,
+- `episode_recovery.json`—`random_control_recall@k` is an expected *hit count*,
   not a recall, yet it is printed beside a genuine recall. The same file supports
   both 'at chance' and 'an order of magnitude above chance'.
-- `embedding_discrimination_russosphere.json` — the run embedded channel handles
+- `embedding_discrimination_russosphere.json`—the run embedded channel handles
   (`@username`) rather than message content, so its near-chance ROC-AUC
   measures nothing about the semantic family it purports to test.
 

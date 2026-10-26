@@ -15,7 +15,7 @@ links under it lead to the fix in [Troubleshooting](./troubleshooting.md).
 > steps 3 to 7 in a row: `uv run python scripts/bootstrap.py`. This tutorial
 > runs them one at a time so that you can check each result.
 
-## Contents
+## 🧭 Contents
 
 - [Before you begin](#before-you-begin)
 - [Install the prerequisites](#install-the-prerequisites)
@@ -38,7 +38,9 @@ links under it lead to the fix in [Troubleshooting](./troubleshooting.md).
 - [Bootstrap reference](#bootstrap-reference)
 - [Next](#next)
 
-## Before you begin
+<a id="before-you-begin"></a>
+
+## 🧭 Before you begin
 
 - [ ] A Windows 10 or 11, macOS, or Linux computer on which you may install
       software (Docker Desktop needs administrator rights).
@@ -79,7 +81,9 @@ Where a command is the same in every shell, the tutorial shows it once, in a
 `bash` block; it runs unchanged in PowerShell 7. Where the shells differ, it
 shows a `bash` block and a `powershell` block.
 
-## Install the prerequisites
+<a id="install-the-prerequisites"></a>
+
+## 📦 Install the prerequisites
 
 You need four tools. Follow the section for your system, then go to
 [Step 1](#step-1).
@@ -301,7 +305,7 @@ $env:UV_PROJECT_ENVIRONMENT = "C:\dev\venvs\idefix"
 
 <a id="step-1"></a>
 
-## Step 1: Clone the repository
+## 🚀 Step 1: Clone the repository
 
 Create a working folder outside any synchronized folder, and clone into it:
 
@@ -333,7 +337,7 @@ If it fails: [certificate error](./troubleshooting.md#tls-git).
 
 <a id="step-2"></a>
 
-## Step 2: Install the Python environment
+## 🚀 Step 2: Install the Python environment
 
 ```bash
 uv sync --extra embed --extra dev
@@ -382,7 +386,7 @@ If it fails: [`uv` not found](./troubleshooting.md#uv-not-found),
 
 <a id="step-3"></a>
 
-## Step 3: Check the prerequisites
+## 🚀 Step 3: Check the prerequisites
 
 ```bash
 uv run --extra embed python scripts/bootstrap.py check
@@ -416,7 +420,7 @@ If a line says `[FAIL]`, the line under it names the fix:
 
 <a id="step-4"></a>
 
-## Step 4: Download the dataset
+## 🚀 Step 4: Download the dataset
 
 ```bash
 uv run python scripts/bootstrap.py fetch
@@ -468,7 +472,7 @@ from another machine and pass their folder:
 
 <a id="step-5"></a>
 
-## Step 5: Start and restore the database
+## 🚀 Step 5: Start and restore the database
 
 ```bash
 uv run python scripts/bootstrap.py db
@@ -548,7 +552,7 @@ earlier run exists; the bootstrap never overwrites it
 
 <a id="step-6"></a>
 
-## Step 6: Run the pipeline
+## 🚀 Step 6: Run the pipeline
 
 The pipeline recomputes every derived table and writes the JavaScript Object Notation (JSON) bundles
 that the interface reads. It contacts neither Telegram nor any paid application
@@ -662,7 +666,7 @@ with `--from` ([details](./troubleshooting.md#pipeline-failed)). See also
 
 <a id="step-7"></a>
 
-## Step 7: Open the analyst interface
+## 🚀 Step 7: Open the analyst interface
 
 ```bash
 uv run python scripts/bootstrap.py webapp
@@ -708,7 +712,7 @@ If it fails: [blank page or empty states](./troubleshooting.md#blank-page),
 
 <a id="step-8"></a>
 
-## Step 8: Verify the checkout
+## 🧪 Step 8: Verify the checkout
 
 These checks need neither Docker nor the network. Run the test suite:
 
@@ -763,7 +767,9 @@ You should now see `All documentation checks passed.`
 If the tests fail with `No module named 'mistralai'`, your checkout predates
 version 0.4.1 ([details](./troubleshooting.md#module-mistralai)).
 
-## Stop, restart, and update
+<a id="stop-restart-and-update"></a>
+
+## 🔧 Stop, restart, and update
 
 **Stop the database** and keep its data:
 
@@ -803,7 +809,9 @@ The `webapp` step reinstalls the Node.js dependencies when the lock file
 changed.
 
 
-## Start over
+<a id="start-over"></a>
+
+## 🔧 Start over
 
 Use this only to discard the local database, for example after a failed
 restore.
@@ -833,7 +841,9 @@ Run [step 5](#step-5) and [step 6](#step-6) again. The verified files in
 `dataset/downloads/` are reused, so there is nothing to download. The pipeline
 overwrites the old bundles in `webapp/public/data/`.
 
-## Bootstrap reference
+<a id="bootstrap-reference"></a>
+
+## 📚 Bootstrap reference
 
 `scripts/bootstrap.py` runs the steps of this tutorial. With no step name it
 runs `all`: steps 3 to 7 in order, then prints the time each took.
@@ -889,7 +899,9 @@ Where `make` is available, the `Makefile` wraps the same commands:
 | `make pipeline MISSION=russosphere` | `pipeline`, with the `embed` extra |
 | `make webapp` | `webapp` |
 
-## Next
+<a id="next"></a>
+
+## 📚 Next
 
 - [Install guide](./install.md): manual setup, a managed PostgreSQL, the
   Python extras, and Telegram collection.

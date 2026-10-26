@@ -1,20 +1,20 @@
-# Experiment f — Embedding discrimination
+# Experiment f: Embedding discrimination
 
 **Status:** `NOT YET RUN` (the harness cannot yet read the public corpus, [D12](../limitations.md#d12))
 **Script:** `scripts/eval_embedding_discrimination.py`
 **Artefact:** `results/embedding_discrimination_russosphere.json` (the script writes `data/eval/embedding_discrimination_russosphere.json` and a `.png` today, [D25](../limitations.md#d25))
 
-## Question
+## 🧭 Question
 
 Does the representation behind semantic family (f) separate an external
 organic-French baseline from the scored population?
 
-## Hypothesis
+## 🧪 Hypothesis
 
 Channel embeddings place organic French outlets and scored channels in
 distinguishable regions of the embedding space.
 
-## Falsification criterion
+## 🧪 Falsification criterion
 
 Fixed in the script: the representation is **not discriminative** if
 
@@ -25,7 +25,7 @@ ROC-AUC < 0.7    OR    silhouette < 0.3
 ROC-AUC is computed on each channel's distance to the centroid of the scored
 channels in the same run.
 
-## Precondition
+## 📦 Precondition
 
 Family (f) is computed, not scored ([D19](../limitations.md#d19)). A pass would
 therefore show that the representation could carry signal, not that the score
@@ -37,7 +37,7 @@ zero-vector fallback of [D10](../limitations.md#d10) does not affect it. Its
 module docstring promises a refusal when anchors fail to resolve; no such check
 exists.
 
-## Method
+## 🧪 Method
 
 Encode the external organic-FR baseline channels and the scored channels with
 the deployed representation,
@@ -47,7 +47,7 @@ Report ROC-AUC of the baseline-versus-scored separation, silhouette, and
 centroid separation. The script refuses to report when either class has fewer
 than 10 usable channels.
 
-## Command
+## 🔧 Command
 
 `scripts/bootstrap_baseline.py` writes the baseline file
 `data/eval/baseline_organic_fr.json`. The evaluation script accepts
@@ -60,7 +60,7 @@ uv run python scripts/bootstrap_baseline.py
 uv run python scripts/eval_embedding_discrimination.py --mission russosphere
 ```
 
-## Interpretation limits
+## 📊 Interpretation limits
 
 The organic-FR baseline supplies **anchors**, not the organic *negatives*
 Experiment 3 needs. A pass here would show that the embedding space distinguishes
@@ -68,7 +68,7 @@ mainstream French outlets from the scored corpus, which is a much weaker claim
 than distinguishing hostile from organic coordination, and must not be reported
 as the latter.
 
-## History
+## 📝 History
 
 Until version 0.4.0 the script embedded channel handles (the literal string
 `@somechannel`) instead of message content, so it did not test the family it
