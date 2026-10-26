@@ -1,14 +1,12 @@
 [project]
 name = "disinfo-trace"
-version = "0.1.0"
+version = "0.4.1"
 description = "Idéfix — Telegram disinformation propagator tracing system (MisinfoTeleGraph-FR)"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    # --- OFFLINE PIPELINE (the live system: ingest -> normalize -> graph -> score -> export) ---
-    # Telegram MTProto ingestion
-    "hydrogram>=0.1.4",
-    "tgcrypto>=1.2",          # crypto acceleration for Hydrogram
+    # --- OFFLINE PIPELINE (normalize -> graph -> score -> export, on the public corpus) ---
+    # Telegram collection (hydrogram + tgcrypto) is the optional "collect" extra.
     # Database (PostgreSQL) + schema migrations
     "asyncpg>=0.29.0",
     "sqlalchemy[asyncio]>=2.0",   # used by alembic/env.py only
@@ -34,11 +32,22 @@ dependencies = [
 # Removed 2026-06-10 (Lot 0 — stack slimming): fastapi, uvicorn, httpx (the legacy
 #   live backend src/api/ is deleted; the shipped frontend is the static webapp/).
 #   streamlit moved to the optional "session" extra (one-shot session_web.py only).
+# Moved 2026-10-26 to the optional "collect" extra: hydrogram, tgcrypto. tgcrypto ships
+#   no Python 3.14 wheels, so in the base set it forced a C compiler on every fresh
+#   clone, although only Telegram collection (src/ingestor/client.py, scripts/_tg.py,
+#   scripts/session_web.py) imports them.
 
 [project.optional-dependencies]
+collect = [
+    # Telegram MTProto collection (backfill, crawlers, session_web.py). Install on
+    # demand: uv sync --extra collect. tgcrypto has no Python 3.14 wheels: building it
+    # needs a C compiler (MSVC Build Tools on Windows, gcc/clang elsewhere).
+    "hydrogram>=0.1.4",
+    "tgcrypto>=1.2",          # crypto acceleration for Hydrogram
+]
 session = [
     # One-shot Telegram session-string generation UI (scripts/session_web.py).
-    # Install on demand: uv sync --extra session
+    # Needs "collect" too: uv sync --extra session --extra collect (or `make session`).
     "pillow>=12.3.0",      # transitive dep of streamlit — pins safe version (CVE HIGH fixed)
     "streamlit>=1.35",
 ]

@@ -1,0 +1,17 @@
+# Byte-stable files: always LF in every checkout, whatever core.autocrlf says.
+# src/shared/dossier.py::get_methodology_version_hash hashes METHODOLOGY.md with
+# read_bytes(), so a CRLF checkout (Windows, core.autocrlf=true) gave a different
+# methodology hash than Linux (defect D27). The claims seed and the method chapters
+# are reproducibility inputs too. The committed blobs are already LF: this file
+# changes only the Windows working copies, not the Linux hash.
+METHODOLOGY.md text eol=lf
+data/claims/*.jsonl text eol=lf
+docs/method/** text eol=lf
+
+# Never apply text conversion to images or PDFs, even under docs/method/.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.pdf binary

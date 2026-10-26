@@ -1,0 +1,8 @@
+# Issue template chooser. Every issue goes through a template, so that bug
+# reports carry an environment and no one pastes secrets or personal data into
+# a blank issue. Security problems never belong in a public issue.
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability or a personal-data problem
+    url: https://github.com/mlabarrere/Idefix/security/advisories/new
+    about: Report it privately through GitHub's private vulnerability reporting, never in a public issue. See SECURITY.md.
