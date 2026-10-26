@@ -1,4 +1,4 @@
-# 4 — Thematic relevance and targeting
+# 4. Thematic relevance and targeting
 
 **Status:** implemented. `src/normalizer/targeting.py`,
 `src/normalizer/france_targeting.py`, `scripts/tag_france.py`.
@@ -8,6 +8,8 @@ confuse, and confusing them has already produced a false claim in an earlier
 version of the methodology. They are computed by different code, mean different
 things, and have different consequences.
 
+<a id="s4-1"></a>
+
 ## 4.1 Two quantities, not one
 
 | Property | `targeting_score` | `fr_score` |
@@ -15,7 +17,7 @@ things, and have different consequences.
 | Computed by | `src/normalizer/targeting.py::score_targeting` | `scripts/tag_france.py::main` |
 | Definition | Weighted composite of lexicon breadth, depth and adversary-domain citation | `matching_messages / total_messages` for one French-keyword regex |
 | Range | [0,1], per channel, max over sampled messages | [0,1], a raw density |
-| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | Not the score. It decides the side of each episode and which channels can enter episodes (`scripts/mine_episodes.py`), drives the porosity view (`scripts/analyze_porosity.py`), and ranks the snowball frontier (`scripts/snowball_crawl.py`). The mission profile names these signals (`porosity_side_signal` and `snowball_anchor_signal` in `src/missions/spec.py`), but both scripts read `fr_score` directly |
+| Used for | Bounded severity modulation ([`03-suspicion-score.md` §3.8](./03-suspicion-score.md#s3-8)) | Not the score. It decides the side of each episode and which channels can enter episodes (`scripts/mine_episodes.py`), drives the porosity view (`scripts/analyze_porosity.py`), and ranks the snowball frontier (`scripts/snowball_crawl.py`). The mission profile names these signals (`porosity_side_signal` and `snowball_anchor_signal` in `src/missions/spec.py`), but both scripts read `fr_score` directly |
 | Status | Uncalibrated but principled | Fed the credibility prior until 2026-09—[D1](../limitations.md#d1), fixed |
 
 The 'Used for' row is the important one. `fr_score` was documented for a long
@@ -27,6 +29,8 @@ documented adversary linkage, and language is no longer an input anywhere in
 the score. `fr_score` is still not a display field, though: outside the score,
 it filters and orients episodes, the porosity view, and the snowball crawl, as
 the table says.
+
+<a id="s4-2"></a>
 
 ## 4.2 The targeting engine
 
@@ -59,6 +63,8 @@ to score the channel.
 There is no model here. Read `targeting_score` as 'how densely and how broadly
 this channel's text hits a hand-written word list'.
 
+<a id="s4-3"></a>
+
 ## 4.3 The claim-proximity seam is dead code
 
 `src/normalizer/targeting.py::score_targeting` implements a soft-OR that would raise the score
@@ -72,12 +78,14 @@ Nothing ever supplies one. The evidence record contains the literal string
 `"N/A — episodes registry empty (v0)"`. This branch has never executed in
 production and should not be described as part of the method.
 
+<a id="s4-4"></a>
+
 ## 4.4 The property that does hold
 
 Thematic relevance enters the score only through the bounded multiplicative
-modulator of `03-suspicion-score.md` §3.8. A channel with zero base suspicion
+modulator of [`03-suspicion-score.md` §3.8](./03-suspicion-score.md#s3-8). A channel with zero base suspicion
 stays at zero regardless of how strongly it is on-theme, so legitimate press
 writing about France is not promoted by relevance alone. That guarantee is
-structural, and it held even while the defect of §4.1 was open: that defect
+structural, and it held even while the defect of [§4.1](#s4-1) was open: that defect
 distorted *which* channels were boosted, not *whether* an unsuspicious channel
 could be boosted from zero.

@@ -1,4 +1,6 @@
-# 1 — Problem, scope and what this system is not
+# 1. Problem, scope, and what this system is not
+
+<a id="s1-1"></a>
 
 ## 1.1 The problem
 
@@ -11,6 +13,8 @@ adjudicating whether any individual message is true.
 Idéfix reconstructs that structure from public Telegram channels and produces a
 **ranked, explainable examination queue** for human analysts: which channels to
 read first, and the concrete signals that justify each rank.
+
+<a id="s1-2"></a>
 
 ## 1.2 What this system is not
 
@@ -32,6 +36,8 @@ collects. Tier T3 is out of scope by construction (`07-tiers-and-governance.md`)
 **It does not act.** Output goes to designated institutional recipients. The
 system never executes platform action and never publishes attribution itself.
 
+<a id="s1-3"></a>
+
 ## 1.3 The load-bearing limitation: single-platform coverage
 
 Idéfix observes **Telegram public channels only**. An operation that reaches its
@@ -45,6 +51,8 @@ mission's coverage callout, or a default one when the mission sets none
 (`scripts/export_static.py::build_export_metadata`). The full standing-limits
 register is [`docs/limitations.md`](../limitations.md).
 
+<a id="s1-4"></a>
+
 ## 1.4 Unit of analysis
 
 The **channel**, not the message. Channels are followed by numeric `channel_id`,
@@ -57,6 +65,8 @@ The choice is deliberate: per-message weak labelling against fact-check corpora
 was piloted and abandoned because the resulting gold was approximately 97%
 'true' and therefore uninformative. Supervision, if it ever arrives, will be at
 channel level.
+
+<a id="s1-5"></a>
 
 ## 1.5 One engine, N missions
 
@@ -76,13 +86,17 @@ auto-discovered from `src/missions/` by the registry.
 The `gan` mission names all its own families `telegram_*` as a deliberate
 perimeter lock: it measures the observable-on-Telegram footprint, never the total
 footprint. None of those families has a null model; they all use the
-`p = 1 - value` fallback of `03-suspicion-score.md` §3.3. It combines nine
+`p = 1 - value` fallback of [`03-suspicion-score.md` §3.3](./03-suspicion-score.md#s3-3). It combines nine
 families—(b), (c), (d) and six `telegram_*` families; (a) and (e) carry zero
 weight—and only (b) and (d) have a null model, so seven of its nine combined
 'p-values' are not p-values. Its gate has never been calibrated against
 that of `russosphere`, so T2 counts are not comparable across the two missions.
-Treat `gan` T2 counts as uninterpretable until the gates are harmonized
-([D15](../limitations.md#d15)).
+
+> [!WARNING]
+> Treat `gan` T2 counts as uninterpretable until the gates are harmonized
+> ([D15](../limitations.md#d15)).
+
+<a id="s1-6"></a>
 
 ## 1.6 Reading order
 

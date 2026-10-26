@@ -1,13 +1,15 @@
-# 6 — Episode discovery and community detection
+# 6. Episode discovery and community detection
 
 **Status:** implemented. `scripts/mine_episodes.py`,
 `scripts/analyze_communities.py`, `scripts/analyze_communities_embed.py`,
 `src/embed/community.py`.
 
+<a id="s6-1"></a>
+
 ## 6.1 Episode discovery
 
-An **episode** is a relation between one Russian-side channel and one
-French-side channel (`scripts/mine_episodes.py::group_by_pair`): every raw pivot is
+An **episode** is a relation between one Russian-side (RU) channel and one
+French-side (FR) channel (`scripts/mine_episodes.py::group_by_pair`): every raw pivot is
 keyed on the first RU seeder and the first FR receiver it lists, and the
 pivots that share that pair form one episode. An RU side is required, and no
 time window is applied. Discovery pivots
@@ -29,9 +31,22 @@ observed (`scripts/mine_episodes.py::finalize`). Two channels sharing a URL *and
 the same structural weakness as family (c): distinct signal *types* are treated
 as independent corroboration without anything establishing that they are.
 
+The same steps as a diagram:
+
+```mermaid
+flowchart LR
+    M["Reused media (media_pivots)"] --> G
+    U["Exact-match URLs (url_pivots), never fires: D29"] --> G
+    F["Forward republication (forward_pivots)"] --> G
+    G["group_by_pair: first RU seeder, first FR receiver"] --> E["Episode"]
+    E --> C{"Distinct pivot types >= 2?"}
+    C -- yes --> T2["T2"]
+    C -- no --> T1["T1"]
+```
+
 The `side` attribution (`FR` if `fr_score >= 0.15` else `RU`,
 `scripts/mine_episodes.py::FR_SIDE_MIN` and `scripts/mine_episodes.py::load_sides`) is the same
-keyword-density measure discussed in `04-thematic-relevance.md` §4.1. It no
+keyword-density measure discussed in [`04-thematic-relevance.md` §4.1](./04-thematic-relevance.md#s4-1). It no
 longer reaches the score, but it decides which side of an episode a channel
 sits on, and so which channels can appear in episodes at all.
 
@@ -40,6 +55,8 @@ computes intra-cluster cohesion and distance to a baseline—but the baseline it
 uses is 'all FR texts across all episodes', that is, **the corpus explains
 itself**. The source labels this a simplification. It is not comparable to the external organic baseline of
 `05-semantic-family.md` and should not be reported as one.
+
+<a id="s6-2"></a>
 
 ## 6.2 Community detection
 
@@ -56,7 +73,7 @@ Two tracks are run and compared:
   one undirected weighted graph (`src/graph/loader.py::to_igraph`): forwards,
   mentions, every coordination type and the cited-domain nodes
 - **embeddings** — the same graph plus the `EMB_SIM` edges of
-  `05-semantic-family.md` §5.5
+  [`05-semantic-family.md` §5.5](./05-semantic-family.md#s5-5)
 
 ### The trade-off, stated correctly
 
@@ -64,7 +81,10 @@ The `EMB_SIM` edges connect channels that *write* alike. Those edges cut across
 the communities defined by *who forwards whom*, so moving from the analytics
 track to the embeddings track is expected to raise semantic cohesion.
 
-The two modularity figures are **not comparable**. Each track's modularity is
+> [!WARNING]
+> The two modularity figures are **not comparable**.
+
+ Each track's modularity is
 computed on the graph that track partitioned
 (`scripts/analyze_communities_embed.py` calls `detect_communities` on the link
 graph plus the `EMB_SIM` edges): the analytics figure is modularity of the link
@@ -80,6 +100,8 @@ empirical question, and the protocol for answering it is in
 database; they are quarantined and may not be cited—see
 `archive/2026-06-russosphere/README.md`.
 
+<a id="s6-3"></a>
+
 ## 6.3 Topic labelling is a regex vote
 
 Community topic labels come from **27 hand-written tuples** of
@@ -94,6 +116,8 @@ This is a keyword vote over channel names, not a classifier, and its coverage is
 bounded by whatever the 27 patterns happen to capture. Labels are a navigation
 aid for an analyst; they are not evidence.
 
+<a id="s6-4"></a>
+
 ## 6.4 Bridges
 
 `nx.betweenness_centrality(h, weight=None, normalized=True)` on the channel
@@ -101,6 +125,8 @@ projection (`scripts/analyze_communities.py::build_snapshot`). Note `weight=None
 call **discards the edge weights the projection just computed** in
 `scripts/analyze_communities.py::channel_projection`. Bridge rankings are therefore
 unweighted betweenness, whatever the underlying forward volumes.
+
+<a id="s6-5"></a>
 
 ## 6.5 Layout
 

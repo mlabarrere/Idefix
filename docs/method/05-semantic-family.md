@@ -1,4 +1,4 @@
-# 5 — Semantic coherence, family (f)
+# 5. Semantic coherence, family (f)
 
 **Status:** implemented, **opt-in and off by default**
 (`compute_embeddings=False` in `src/scorer/channel_suspicion.py::_build_channel_queue_live`),
@@ -11,6 +11,8 @@ not pass. Code: `src/scorer/embedding_signals.py`, `src/embed/`.
 > export, and it is not stored anywhere ([D19](../limitations.md#d19)).
 > Everything below describes what the family computes, not something that
 > currently moves a ranking.
+
+<a id="s5-1"></a>
 
 ## 5.1 What it computes
 
@@ -36,6 +38,8 @@ the closest adversary channel, so that, were (f) scored, a ranking driven by it
 could be read as 'this channel reads like @X and sits far from the
 French-press baseline'. Today that evidence is discarded with the result.
 
+<a id="s5-2"></a>
+
 ## 5.2 Three properties that bound its interpretation
 
 **The two terms are not independent.** `baseline_distance` and
@@ -60,7 +64,9 @@ the fallback vector is `np.zeros(384)`
 must verify that the anchors resolved before the numbers are read
 ([D10](../limitations.md#d10)).
 
-## 5.3 Independence from the graph — a claim to state carefully
+<a id="s5-3"></a>
+
+## 5.3 Independence from the graph: a claim to state carefully
 
 Family (f) is a **content** signal computed from message text, while (b), (c) and
 (d) are computed from the graph. In that narrow structural sense it is
@@ -75,15 +81,19 @@ because it is part of the same operation, or because it covers the same topics i
 the same register. Nothing in (f) distinguishes those. Treat it as a topical and
 stylistic similarity signal, which is what it is.
 
+<a id="s5-4"></a>
+
 ## 5.4 Degradation
 
 If embeddings cannot be computed at all (the encoder fails to load, or the
 embedding step raises), family (f) is absent and the structural score is
 returned unchanged. Anchors that do not resolve are a different case: they do
 not make (f) absent. The family is still computed, against a zero vector or an
-empty adversary set (§5.2, [D10](../limitations.md#d10)). Either way (f) never
+empty adversary set ([§5.2](#s5-2), [D10](../limitations.md#d10)). Either way (f) never
 filters a channel out, and today it does not change any score
 ([D19](../limitations.md#d19)).
+
+<a id="s5-5"></a>
 
 ## 5.5 Communities from embeddings
 
