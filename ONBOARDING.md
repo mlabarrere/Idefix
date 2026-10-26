@@ -1120,23 +1120,12 @@ The open defects[^ids], in the priority order of
 
 Small, verifiable, and genuinely useful:
 
-- [ ] Four documents say the `v1.0.0` snapshot predates `0007` and `0008`
-      (`docs/ops/migrations.md`, `docs/ops/install.md`,
-      `docs/ops/quickstart.md`, and D18 in `docs/limitations.md`); the
-      manifest records `0008`. Align them.
 - [ ] The method chapters and `METHODOLOGY.md` cite defects D19–D26, which
       `docs/limitations.md` does not define yet.
 - [ ] `check_docs.py` strips `#anchors` before checking links, so dangling
       anchors such as `limitations.md#d19` pass. Teach it to check them.
 - [ ] `france_ukraine` is missing from `webapp/src/data/missions.ts` and from
       the locales, so its bundle cannot be reached in the interface.
-- [ ] `scripts/README.md` still describes `build_scores` as
-      ‘TRUNCATE + réécriture’ and lists a `build_dossier_v1_example.py` that no
-      longer exists.
-- [ ] The docstring of `src/shared/db.py` shows `async with get_pool()`, but
-      `get_pool` is a coroutine.
-- [ ] `webapp/README.md` points at `docs/frontend.md`, now
-      `docs/product/frontend.md`.
 - [ ] `scripts/` is neither linted nor type-checked in CI.
 
 ---

@@ -17,6 +17,23 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
   releases), with an improvement backlog and good first issues. Linked from
   `README.md`, and covered by the dead-link check of `scripts/check_docs.py`.
 
+#### Fixed
+- Documentation drift listed as good first issues in `ONBOARDING.md` §7.3
+  (documentation and docstrings only, no behaviour change):
+  - `docs/ops/migrations.md`, `docs/ops/install.md`, `docs/ops/quickstart.md`,
+    D18 in `docs/limitations.md` and `scripts/README.md` no longer say the
+    `v1.0.0` dump predates `0007` and `0008`. The release upgraded its source
+    from `0006` to `0008` before dumping it (`alembic_revision` in
+    `dataset/manifest.json`), so the bootstrap's `alembic upgrade head` after
+    a restore is a no-op today.
+  - `scripts/README.md` and the docstring of `scripts/build_scores.py` describe
+    the per-mission `DELETE … WHERE mission = $1` in a transaction instead of a
+    `TRUNCATE`; `scripts/README.md` no longer lists the removed
+    `build_dossier_v1_example.py`.
+  - The usage example in `src/shared/db.py` awaits `get_pool()`, which is a
+    coroutine, instead of using it as a context manager.
+  - `webapp/README.md` points at `docs/product/frontend.md`.
+
 ### Reproducible setup on the public corpus (2026-10)
 
 A third party can now clone the repository and, with one command and no
