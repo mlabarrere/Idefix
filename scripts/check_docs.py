@@ -1363,20 +1363,20 @@ class Rule:
     summary: str
 
 
-# Warn-mode rules are listed in docs/STYLE.md ("Rules in warn mode"); keep the
-# two in step. PR 5 flips every rule to blocking.
+# Every rule is blocking. A new rule may start in WARN mode; list it in
+# docs/STYLE.md ("Rules in warn mode") until main passes it.
 RULES: dict[str, Rule] = {
     "links": Rule(BLOCKING, check_links, "relative links and images resolve"),
-    "anchors": Rule(WARN, check_anchors, "#anchors exist (GitHub slugs, <a id>)"),
-    "file-line": Rule(WARN, check_file_line, "no bare file:line or unpinned #L links"),
-    "symbols": Rule(WARN, check_symbols, "path::symbol names a real definition"),
-    "symbol-paths": Rule(WARN, check_symbol_paths, "path::symbol uses the full path"),
-    "flags": Rule(WARN, check_flags, "quoted script flags exist in add_argument"),
-    "spelling": Rule(WARN, check_spelling, "Oxford British spelling"),
+    "anchors": Rule(BLOCKING, check_anchors, "#anchors exist (GitHub slugs, <a id>)"),
+    "file-line": Rule(BLOCKING, check_file_line, "no bare file:line or unpinned #L links"),
+    "symbols": Rule(BLOCKING, check_symbols, "path::symbol names a real definition"),
+    "symbol-paths": Rule(BLOCKING, check_symbol_paths, "path::symbol uses the full path"),
+    "flags": Rule(BLOCKING, check_flags, "quoted script flags exist in add_argument"),
+    "spelling": Rule(BLOCKING, check_spelling, "Oxford British spelling"),
     "checkpoints": Rule(BLOCKING, check_checkpoints, "fact markers match their source"),
     "alembic-head": Rule(BLOCKING, check_alembic_head, "quoted Alembic head is the head"),
-    "version": Rule(WARN, check_version, "one version across the release files"),
-    "methodology-hash": Rule(WARN, check_methodology_hash, "CHANGELOG records the hash"),
+    "version": Rule(BLOCKING, check_version, "one version across the release files"),
+    "methodology-hash": Rule(BLOCKING, check_methodology_hash, "CHANGELOG records the hash"),
     "numbers": Rule(BLOCKING, check_numbers, "experiment figures have an artefact"),
     "archive": Rule(BLOCKING, check_archive, "archive/ is never cited as a result"),
 }
