@@ -1,21 +1,27 @@
 ---
-name: Demande de fonctionnalité
-about: Proposer une évolution
+name: Feature request
+about: Suggest an improvement or a new capability
 title: "[feat] "
 labels: enhancement
+assignees: ""
 ---
 
-## Besoin
-<!-- Quel problème cette fonctionnalité résout-elle ? Pour qui ? -->
+## Problem
 
-## Mission / composant concerné
-<!-- pipeline, scoring, graphe, webapp, mission spécifique… -->
+<!-- What problem would this solve, and for whom? -->
 
-## Solution proposée
-<!-- Décrivez le comportement souhaité. -->
+## Affected area
 
-## Alternatives envisagées
-<!-- Autres approches et pourquoi elles ont été écartées. -->
+<!-- A mission (russosphere, france_ukraine, gan, dircom_minarm) or a component (pipeline, scoring, graph, webapp, documentation). -->
 
-## Impact méthodologique
-<!-- Cette évolution touche-t-elle METHODOLOGY.md / la validité scientifique ? -->
+## Proposed solution
+
+<!-- Describe the behaviour you would like. -->
+
+## Alternatives considered
+
+<!-- Other approaches, and why you set them aside. -->
+
+## Methodological impact
+
+<!-- Does this touch METHODOLOGY.md or the scientific validity of the results? If so, how? -->

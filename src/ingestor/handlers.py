@@ -1,12 +1,19 @@
 """Ingestor handlers — backfill, live polling, channel upsert."""
 
+from __future__ import annotations
+
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 import asyncpg
 import structlog
 
 from src.ingestor import queries
-from src.ingestor.client import TelegramClient
+
+if TYPE_CHECKING:
+    # Annotation only: importing client.py loads hydrogram (the optional "collect"
+    # extra). The message parsers below are tested without it.
+    from src.ingestor.client import TelegramClient
 
 log = structlog.get_logger(__name__)
 
