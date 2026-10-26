@@ -8,8 +8,8 @@ includes personal data of private individuals (the `comments` table).
 
 | File | Role | Size | SHA-256 |
 |---|---|---|---|
-| `idefix-corpus-v1.0.0.dump` | PostgreSQL 17 database, `pg_dump` custom format, alembic `0008` | 45 352 794 bytes | `c2da11bbcce3f055b7f8e687e5febbbdf47bab22e82761b25abc1497c34db825` |
-| `idefix-annotations-v1.0.0.tar.gz` | annotation material, extracted into `data/` | 173 339 bytes | `116dbb6f14122f5c67e8300e606367aab2ac2f6abc1eaac62a532527f4a205c2` |
+| `idefix-corpus-v1.0.0.dump` | PostgreSQL 17 database, `pg_dump` custom format, alembic `0008` | 45,352,794 bytes | `c2da11bbcce3f055b7f8e687e5febbbdf47bab22e82761b25abc1497c34db825` |
+| `idefix-annotations-v1.0.0.tar.gz` | annotation material, extracted into `data/` | 173,339 bytes | `116dbb6f14122f5c67e8300e606367aab2ac2f6abc1eaac62a532527f4a205c2` |
 
 Both are assets of the GitHub release
 [`dataset-v1.0.0`](https://github.com/mlabarrere/Idefix/releases/tag/dataset-v1.0.0).
@@ -19,7 +19,7 @@ list of what was done to the source (`sanitization`).
 
 ## Folder layout
 
-```
+```text
 dataset/
 ├── manifest.json   pinned description of the release (tracked)
 ├── DATASHEET.md    datasheet (Gebru et al.): composition, collection, uses, licence
@@ -32,9 +32,12 @@ dataset/
 The bootstrap does everything — download, verify, restore, pipeline, webapp:
 
 ```bash
-uv run python scripts/bootstrap.py            # all steps
-uv run python scripts/bootstrap.py fetch      # only download + verify + extract
+uv run --extra embed python scripts/bootstrap.py    # all steps
+uv run python scripts/bootstrap.py fetch            # only download, verify and extract
 ```
+
+Without the `embed` extra, the `check` step stops unless you pass
+`--skip-embeddings`.
 
 `fetch` reads `manifest.json`, downloads each file into `dataset/downloads/`
 (resumable; a file already present with the right SHA-256 is kept), checks size
@@ -43,8 +46,10 @@ overwrites a local file that differs). Two alternatives:
 
 - `--dataset-dir PATH` copies the files from a local folder instead of
   downloading them (offline machine, pre-fetched copies);
-- `IDEFIX_DATASET_BASE_URL=https://mirror.example/idefix` fetches
-  `<base>/<file name>` from a mirror. The SHA-256 of the manifest still applies.
+- the environment variable `IDEFIX_DATASET_BASE_URL` (for example
+  `https://mirror.example/idefix`) fetches each file from that base URL
+  instead, under its release file name. The SHA-256 of the manifest still
+  applies.
 
 The `db` step then restores the dump into the local PostgreSQL of
 `docker-compose.yml`, only when that database is empty.

@@ -24,7 +24,7 @@ release database; how to fetch and verify the files is in
 
 **Why was the dataset created?** Idéfix studies how content spreads across
 public Telegram channels relevant to France — forwards, shared media, shared
-links, co-commenting — to describe observable diffusion structures (who
+links — to describe observable diffusion structures (who
 seeded, who relayed, how fast). The method is in the repository
 [`docs/`](../docs/README.md). The dataset exists so that third parties can
 rerun that offline pipeline on the same corpus, check the published method
@@ -38,44 +38,44 @@ with a single dedicated Telegram account used read-only.
 ## Composition
 
 **What are the instances?** Public Telegram channels, the posts they published,
-and comments posted under those posts in the channels' public linked discussion
+and comments posted in the channels' public linked discussion
 groups — plus the tables an earlier run of the pipeline derived from them.
 
 | Table | Rows | What a row is |
 |---|---:|---|
-| `channels` | 3 699 | a public channel: id, username, title, member count, bio, collection tier, `extra` JSON |
-| `messages` | 166 188 | a post of a channel: text, timestamp, forward origin, views, forwards, media type and media id |
-| `comments` | 9 241 | a comment in a channel's public linked discussion group: commenter id, commenter username, text, timestamp |
-| `edges` | 16 275 | a derived channel-to-channel (or channel-to-domain) relation |
-| `channel_scores` | 7 313 | a derived per-channel, per-mission suspicion score with its evidence payload |
+| `channels` | 3,699 | a public channel: id, username, title, member count, bio, collection tier, `extra` JSON |
+| `messages` | 166,188 | a post of a channel: text, timestamp, forward origin, views, forwards, media type and media id |
+| `comments` | 9,241 | a comment in a channel's public linked discussion group: the broadcast channel's id, the comment's message id in the group, commenter id, commenter username, text, timestamp |
+| `edges` | 16,275 | a derived channel-to-channel (or channel-to-domain) relation |
+| `channel_scores` | 7,313 | a derived per-channel, per-mission suspicion score with its evidence payload |
 | `scores_run_meta` | 2 | the envelope of one scoring run per mission |
 | `episodes` | 0 | (empty in the source) |
 | `evidence_dossiers` | 0 | (empty in the source) |
 | `channel_llm_scores` | 0 | created empty by migration `0007` |
 
-**Channels.** 3 699 rows, by collection tier: 3 516 `discovered` (seen as the
+**Channels.** 3,699 rows, by collection tier: 3,516 `discovered` (seen as the
 origin of a forward), 154 `cold` and 29 `warm`. Posts were backfilled for 687
-of them (661 discovered, 26 warm, no cold). 3 492 have a username, 3 554 a
+of them (661 discovered, 26 warm, no cold). 3,492 have a username, 3,554 a
 title, 534 a bio and 380 a member count. `extra` is set on those 687 channels
 and holds three keys written by the pipeline: `fr_score` and `msg_sampled`
 (`scripts/tag_france.py`, all 687) and `gan_targeting` (`scripts/tag_gan.py`,
 685). The pipeline recomputes all three offline.
 
-**Messages.** 166 188 posts from 687 channels: 123 492 with text, 28 386
-forwards, 125 407 with media (110 170 carry a Telegram media id in
+**Messages.** 166,188 posts from 687 channels: 123,492 with text, 28,386
+forwards, 125,407 with media (110,170 carry a Telegram media id in
 `media_hash`). Collection was capped per channel (median 300 posts, maximum
-600), so most channels are covered by their most recent posts only: 104 387
-posts date from May or June 2026 and 22 373 from before 2026. `language`,
+600), so most channels are covered by their most recent posts only: 104,387
+posts date from May or June 2026 and 22,373 from before 2026. `language`,
 `urls` and `raw_content` are NULL on every row; `is_deleted` is false on every
 row.
 
-**Comments — personal data.** 9 241 comments under posts of 55 channels,
-written by 2 644 distinct Telegram accounts (`commenter_id`, every row); 5 618
-rows carry a `commenter_username` (1 562 distinct); 8 399 have text. Comment
+**Comments — personal data.** 9,241 comments in the discussion groups of 55 channels,
+written by 2,644 distinct Telegram accounts (`commenter_id`, every row); 5,618
+rows carry a `commenter_username` (1,562 distinct); 8,399 have text. Comment
 timestamps run from 2025-06-16 to 2026-06-06; they were collected on 2026-06-05
 and 2026-06-06. None of these accounts is a channel of the corpus, and no
 commenter id appears as a forward origin. These are **private individuals**:
-even without the username, channel + post + timestamp locates a comment in the
+even without the username, the channel, the comment's message id and its timestamp locate it in the
 public thread, so the table cannot be considered pseudonymous.
 
 The project's own pipeline republishes part of this table. Its
@@ -83,14 +83,16 @@ The project's own pipeline republishes part of this table. Its
 channel, the commenter id, commenter username and comment count of its most
 frequent commenters, without comment text, into the analyst bundle file
 `commenters.json`, and the analyst interface lists them in the channel drawer.
-Any bundle generated from this release therefore carries commenter usernames.
+The stage reads the whole table whatever the mission, so every mission's
+bundle carries the commenters of every channel. Any bundle generated from this
+release therefore carries commenter usernames.
 
 **Derived tables.** `edges`, `channel_scores` and `scores_run_meta` are the
 output of the pipeline run that produced the snapshot (`gan` scored on
-2026-06-09, `russosphere` on 2026-06-10). Edge types: `FORWARD` 6 889,
-`CITES_DOMAIN` 2 832, `CO_HASHTAG` 1 701, `MENTIONS` 1 606, `MEDIA_REUSE`
-1 330, `CO_FORWARD` 1 062, `CO_URL` 564, `CO_URL_EXACT` 291. Scores: 3 699 for
-`russosphere`, 3 614 for `gan`. They are machine-generated, were never human
+2026-06-09, `russosphere` on 2026-06-10). Edge types: `FORWARD` 6,889,
+`CITES_DOMAIN` 2,832, `CO_HASHTAG` 1,701, `MENTIONS` 1,606, `MEDIA_REUSE`
+1,330, `CO_FORWARD` 1,062, `CO_URL` 564, `CO_URL_EXACT` 291. Scores: 3,699 for
+`russosphere`, 3,614 for `gan`. They are machine-generated, were never human
 reviewed, and are **not** labels: running the pipeline overwrites them, and
 results must be cited from a fresh run, not from these tables.
 
@@ -110,7 +112,7 @@ results must be cited from a fresh run, not from these tables.
   labelling protocol (in French), `annotations/.gitkeep`;
 - `claims/claims_fr.jsonl` — 15 seed claims from French fact-checkers.
 
-The protocol and README name the maintainer ("Micky") as the human arbiter.
+The protocol and README name the maintainer ('Micky') as the human arbiter.
 Post texts in the archive are copies of posts of the database.
 
 **Is it a sample?** Yes, and not a random one: see the biases under
@@ -145,7 +147,7 @@ discipline; public channels only (governance:
    `discovered` (catalogue source `forward_origin`). `scripts/snowball_crawl.py`
    then backfilled bounded waves of the most promising frontier channels,
    ranked by their proximity to France-relevant channels already collected
-   (a lexical `fr_score` of at least 0.15 marks a "France seed"). The data
+   (a lexical `fr_score` of at least 0.15 marks a 'France seed'). The data
    does not record which crawl added which channel: `catalogue_source` only
    marks forward origins.
 3. **Enrichment.** `scripts/enrich_recrawl.py` re-read collected channels to add
@@ -158,7 +160,7 @@ discipline; public channels only (governance:
   not connected to them by forwards are absent.
 - *Snowball bias*: discovery follows forwards, so channels that forward or get
   forwarded a lot are over-represented and quiet or isolated ones missed; the
-  frontier was deliberately steered toward France-relevant channels.
+  frontier was deliberately steered towards France-relevant channels.
 - *Lexical steering*: France relevance was a keyword score, which favours
   French-language channels; this bias is documented in
   [`docs/limitations.md`](../docs/limitations.md).
@@ -228,9 +230,9 @@ the repository.
   ground truth, or as a list of disinformation actors: they are stale,
   machine-generated and unreviewed;
 - target candidates, press or platforms with the outputs — the project's
-  outputs are reserved for designated institutional recipients (README §11,
-  "Arm-only");
-- train models whose purpose is to recognise or score individuals.
+  outputs are reserved for designated institutional recipients ([repository README](../README.md#11-governance) §11,
+  'Arm-only');
+- train models whose purpose is to recognize or score individuals.
 
 **Possible harms.** Exposure of commenters; reputational harm to channels from
 uncalibrated scores; amplification of disinformation by redistributing it.
@@ -285,5 +287,5 @@ Proposed default:
    names retention bounds (13/36 months), an access journal and deletion
    propagation, which cannot hold once the table is public. A data-protection
    impact assessment and a contact/removal process should precede publication.
-3. **Shipping the derived scores publicly** conflicts with the "Arm-only"
-   output rule of the governance (README §11 records the exception).
+3. **Shipping the derived scores publicly** conflicts with the 'Arm-only'
+   output rule of the governance ([repository README](../README.md#11-governance) §11 records the exception).

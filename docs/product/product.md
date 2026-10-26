@@ -36,32 +36,42 @@ possible. Idéfix does the reading and hands an analyst a queue.
 ### A prioritized examination queue
 
 Each channel receives a **suspicion score** built from families of signals,
-combined as per-family p-values under Stouffer's method with
-Benjamini-Hochberg FDR control.
+combined as per-family p-values by Stouffer's method, with Benjamini–Hochberg
+control of the false discovery rate (FDR) across channels.
 
 | Family | Signal | Caveat |
 |---|---|---|
 | **(b) Cascade role** | Structural position in the forward graph — hub, cross-community bridge, seeding source | Corpus-relative, not comparable across runs |
-| **(c) Coordination** | Time-windowed co-forwarding, shared URLs, shared hashtags | **No null model.** Near-binary in practice |
+| **(c) Coordination** | Time-windowed co-forwarding, shared domains and exact URLs, shared hashtags, reused media | **No null model.** Near-binary in practice |
 | **(d) Forward influence** | Out-degree and out-strength on the aggregate forward graph | **Not** cross-episode, despite its name in the code |
-| **(f) Semantic coherence** | Distance to an organic-French baseline, proximity to known adversary channels | Opt-in; anchors are a handful of hardcoded handles |
+| **(f) Semantic coherence** | Distance to an organic-French baseline, proximity to known adversary channels | **Computed, not scored**: it reaches neither the score nor the gate ([D19](../limitations.md#d19)) |
 
-**Multi-source rule:** a channel is only flagged when **at least 2 distinct
-families** trigger. A single signal is insufficient by construction. Note that
-family (c) can trigger on two edge types alone, which weakens the rule in
-practice — [`../limitations.md`](../limitations.md) D5.
+**Multi-source rule:** a channel meets the gate, and is labelled T2, only when
+**at least two distinct families** trigger. A single signal is insufficient by
+construction. Two caveats weaken the rule in practice: family (c) can trigger
+on two edge types alone ([D5](../limitations.md#d5)), and the severity
+modulation applies whether or not the gate is met
+([D21](../limitations.md#d21)). A channel is **flagged** in a separate sense:
+Benjamini–Hochberg control rejects it at the mission's `alpha`.
 
-### Explainable episode dossiers
+### Episodes and one scoring dossier
 
-For each detected propagation episode:
+Episode discovery (`scripts/mine_episodes.py`) lists RU → FR channel pairs with
+the pivots that link them and a tier from the count of pivot types. Each
+episode gets an index entry in the bundle, without scores.
 
-- the channels involved, with the score decomposed per family
-- the propagation chronology with observed delays
-- traceability to verifiable structural evidence
-- the declared tier (T1 or T2) and its justification
+Only one episode gets a scoring dossier: the `russosphere` registry episode
+`dugin_cluster` (`scripts/build_dossier.py::main`), a cluster selected around
+channels with `fr_score` below a threshold
+(`scripts/build_dossier.py::select_dugin_cluster`). It holds the cluster's
+strongest value for families (b), (c) and (d), with (a) and (e) stubbed at 0;
+a 24-bucket timeline of forward counts; the dossier gate's detail; and an
+attribution tier hard-coded to T2 ([D16](../limitations.md#d16)). The analyst
+interface does not display it.
 
-Every component of every score is preserved in the output, so an analyst can
-justify a ranking from the dossier alone, without re-running the pipeline.
+Per-channel scores are where the evidence is complete: every component of a
+channel's score is preserved in its bundle file, so an analyst can justify a
+ranking from it without re-running the pipeline.
 
 ### An interactive community galaxy
 
@@ -84,25 +94,30 @@ not a classifier. They are a navigation aid, not evidence.
 
 ## Architecture, in two halves
 
-```
+```text
 OFFLINE PIPELINE (Python)
-  MTProto collection -> normalization -> edges -> scores -> JSON export
+  MTProto collection -> normalization -> edges -> scores -> JSON bundles
            |
 ANALYST INTERFACE (React, static)
-  reads JSON bundles -> galaxy -> dossiers -> no backend at consultation time
+  reads JSON bundles -> galaxy -> channel drawer -> no backend at consultation time
 ```
 
-The two halves are **strictly disjoint**: the webapp never touches the database
-and never calls Telegram. It reads precomputed JSON only, so an analyst can work
-a mission while collection is idle.
+The two halves are **strictly disjoint** at consultation time: the browser
+never touches the database and never calls Telegram. It reads precomputed JSON
+only, so an analyst can work a mission while collection is idle. One build-time
+exception: `npm run build` first runs `webapp/scripts/pull-snapshots.mjs` and
+`webapp/scripts/pull-bundle.mjs`, which download bundles from Supabase when
+`SUPABASE_URL` and `SUPABASE_KEY` are set.
 
-Bundles are **not published in this repository** — they are corpus-specific by
-construction. Generate them with `scripts/export_static.py`.
+Bundles are **not published in this repository**: they are corpus-specific by
+construction. Generate them with `scripts/pipeline.py`; several of its stages
+write into the bundle, `scripts/export_static.py` among them.
 
 ## Missions
 
-The engine is theme-agnostic. A mission is a configuration file — source
-universe, lexicon, weights, dashboard — never a code fork.
+The engine is theme-agnostic. A mission is a configuration (a Python package
+under `src/missions/` holding one `MissionDefinition`: source universe,
+lexicon, weights, dashboard), never a code fork.
 
 | Mission | Object | Status |
 |---|---|---|
@@ -124,15 +139,16 @@ family set persisted for audit. A T3 claim in any output is a reportable defect.
 
 ## Governance and limits
 
-### The load-bearing limitation, declared in every export
+### The load-bearing limitation, declared in every bundle
 
 > **Telegram only.** An operation reaching France mainly through other
 > platforms, without a Telegram stage, **will not be detected.** What is measured
 > is a footprint observable on Telegram, never the total footprint of a
 > phenomenon.
 
-A mandatory field of every exported bundle, and permanently visible in the
-analyst interface.
+A field of every bundle manifest. The analyst interface no longer displays it:
+the coverage banner was removed, and only the `gan` footprint view shows a
+caveat of its own ([D31](../limitations.md#d31)).
 
 ### Arm-only
 
@@ -156,9 +172,12 @@ usernames. Secrets are scrubbed by key and by value from the static export.
 
 ### Published methodology
 
-[`METHODOLOGY.md`](../../METHODOLOGY.md) is the versioned cover page; its
-SHA-256 hash ships in every export, so a revision is detectable in the chain of
-custody. It must be public **before** any production detection output.
+[`METHODOLOGY.md`](../../METHODOLOGY.md) is the versioned cover page of the
+method. It must be public **before** any production detection output. Bundles
+carry a static methodology version string, and no output carries a hash of the
+methodology ([D20](../limitations.md#d20)); the hash the dossier schema defines
+would ignore `docs/method/` in any case ([D23](../limitations.md#d23)). A
+methodology revision is therefore not detectable from an output.
 
 ## Further reading
 
