@@ -7,7 +7,7 @@ Idéfix is a **theme-agnostic Telegram engine** plus **several analytical
 missions**. A mission is a **configuration** (six profiles and a relevance
 scorer), never a code fork.
 
-## Missions
+## 🧩 Missions
 
 Each mission is a package under `src/missions/`:
 
@@ -31,20 +31,26 @@ defaulting to `russosphere`
 **Adding a mission means creating a package and its `MISSION`.** No engine
 change is needed.
 
-## Per-mission pipeline
+## 🔧 Per-mission pipeline
 
 `scripts/pipeline.py` runs the offline stages in this order, shown here for the
 `russosphere` mission
 (`uv run python scripts/pipeline.py --list` prints it with each stage's scope):
 
-```text
-raw data (the public dataset restore, or your own collection)
-  -> build_edges -> tag_france -> tag_gan          (once, for the whole database)
-  -> build_scores --mission russosphere
-  -> build_dossier (russosphere)
-  -> analyze_communities -> analyze_communities_embed -> precompute_galaxy_layout
-  -> analyze_porosity, mine_episodes, build_gan_footprint (russosphere)
-  -> build_commenters -> export_static --mission russosphere -> build_stories --mission russosphere
+```mermaid
+flowchart TD
+    raw["Raw data: the public dataset restore, or your own collection"]
+    subgraph once["Once, for the whole database"]
+        edges[build_edges] --> france[tag_france] --> gantag[tag_gan]
+    end
+    subgraph mission["Per mission: russosphere"]
+        scores[build_scores] --> dossier[build_dossier]
+        dossier --> comm[analyze_communities] --> embed[analyze_communities_embed] --> layout[precompute_galaxy_layout]
+        layout --> porosity[analyze_porosity] --> episodes[mine_episodes] --> footprint[build_gan_footprint]
+        footprint --> commenters[build_commenters] --> export[export_static] --> stories[build_stories]
+    end
+    raw --> edges
+    gantag --> scores
 ```
 
 `--mission all` runs every implemented mission; each stage runs for all of them
@@ -70,7 +76,7 @@ disclosure precision, propagation, and adverse attention), scoped by
 > order of magnitude. Treat `gan` T2 counts as uninterpretable
 > ([D15](../limitations.md#d15)).
 
-## Scope and secrets
+## 🔒 Scope and secrets
 
 - **Telegram only.** Every `gan` score is named `telegram_*` as a deliberate
   perimeter lock: it measures the footprint observable on Telegram, never the
@@ -84,7 +90,7 @@ disclosure precision, propagation, and adverse attention), scoped by
   designated institutional recipients. Tiers **T1 and T2** only; T3 is out of
   scope.
 
-## Scoring
+## 📊 Scoring
 
 The scorer lives in `src/scorer/`.
 
@@ -109,7 +115,9 @@ The scorer lives in `src/scorer/`.
 
 Full treatment: [`../method/03-suspicion-score.md`](../method/03-suspicion-score.md).
 
-## Analyst interface
+<a id="analyst-interface"></a>
+
+## 🧩 Analyst interface
 
 `webapp/` is React, Vite, TypeScript, Tailwind CSS, and Radix: a static build
 with no backend. It opens on the `russosphere` galaxy and offers a mission
@@ -118,7 +126,7 @@ each mission's coverage caveat (`webapp/src/app/AppShell.tsx`). See
 [`../../webapp/README.md`](../../webapp/README.md) and
 [`../product/frontend.md`](../product/frontend.md).
 
-## Validation
+## 🧪 Validation
 
 Run the tests, then build and type-check the interface:
 

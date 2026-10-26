@@ -1,4 +1,4 @@
-# Validation lab — external gold and organic corpora
+# Validation lab: external gold and organic corpora
 
 The validation lab is the set of data contracts that would close the two gaps
 blocking Experiments 2 and 3:
@@ -18,7 +18,7 @@ Executable schemas: `src/validation_lab/schema.py`.
 > gitignored, so a fresh clone has no `data/eval/templates/`
 > ([D26](../limitations.md#d26)). Build a file from the schema instead.
 
-## External gold episode
+## 📊 External gold episode
 
 A JSON file conforming to `ExternalGoldEpisode`. It must document:
 
@@ -39,7 +39,7 @@ are never mistaken for real gold.
 from the same priors as the scorer cannot falsify it. The only gold assembled so
 far was hypothetical, which is why Experiment 2 is blocked rather than weak.
 
-## Organic control corpus
+## 📊 Organic control corpus
 
 A JSON file conforming to `OrganicControlCorpus`, containing **non-hostile
 coordinated groups**: newsrooms, institutions, activist networks, sports
@@ -62,7 +62,7 @@ With no real corpus present the script writes an inconclusive report rather than
 inventing a verdict. That is the correct behaviour and the reason Experiment 3
 is reported as blocked rather than passing.
 
-## Validity guards
+## 🧪 Validity guards
 
 - A gold episode with `excluded_from_scorer_inputs = false` is invalid.
 - A gold episode with no `seed` channel is invalid.
@@ -70,7 +70,7 @@ is reported as blocked rather than passing.
 - An organic corpus with no group is invalid.
 - An organic group with a single channel is invalid.
 
-## Current wiring
+## 🧩 Current wiring
 
 - `scripts/eval_episode_recovery.py` reads `gold_episode_*.json` in
   `ExternalGoldEpisode` v1 format. When a file fails that validation, for any
@@ -86,7 +86,7 @@ is reported as blocked rather than passing.
 absent from a clean clone ([D12](../limitations.md#d12)). Both write their
 reports under `data/eval/` ([D25](../limitations.md#d25)).
 
-## Next increment
+## 🧭 Next increment
 
 1. Produce at least one **real** organic control corpus. This unblocks
    Experiment 3 and, with it, every global performance figure.

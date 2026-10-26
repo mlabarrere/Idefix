@@ -1,10 +1,22 @@
-# Idéfix — product view
+# Idéfix: product view
 
 The functional picture: what the system delivers, to whom, and what it refuses
 to do. For how it works, see [`../method/`](../method/). For what bounds every
 claim here, see [`../limitations.md`](../limitations.md).
 
-## What Idéfix is
+## 🧭 Contents
+
+- [What Idéfix is](#-what-idéfix-is)
+- [The problem](#-the-problem)
+- [What it produces](#-what-it-produces)
+- [What it does not do](#-what-it-does-not-do)
+- [Architecture, in two halves](#-architecture-in-two-halves)
+- [Missions](#-missions)
+- [Tiers](#-tiers)
+- [Governance and limits](#-governance-and-limits)
+- [Further reading](#-further-reading)
+
+## 🧭 What Idéfix is
 
 A **propagation and coordination analysis system for Telegram**. It maps how
 material spreads through networks of public channels, identifies channels that
@@ -12,8 +24,8 @@ play a structural role in that spread, and produces ranked, explainable case
 files for human analysts.
 
 **It is not a fake-news detector.** It never judges whether a message is true.
-It describes *observable structures* — who forwards what, how fast, alongside
-whom — and never issues a verdict.
+It describes *observable structures*—who forwards what, how fast, alongside
+whom—and never issues a verdict.
 
 **It is not a validated manipulation detector either.** Whether a high rank
 means coordinated manipulation, rather than prominence inside an adversarial
@@ -21,7 +33,7 @@ media ecosystem, is an open question this project has not answered. The
 experiment that would settle it needs a corpus of *organic* coordination as a
 negative class, and none exists.
 
-## The problem
+## 🧭 The problem
 
 Coordinated influence operations on Telegram leave structural traces: a small
 number of channels are consistently early, relays repropagate material into
@@ -31,7 +43,7 @@ Those traces are observable in the public forward graph without analysing
 content or knowing anyone's intent. Reading thousands of channels by hand is not
 possible. Idéfix does the reading and hands an analyst a queue.
 
-## What it produces
+## 📊 What it produces
 
 ### A prioritized examination queue
 
@@ -41,7 +53,7 @@ control of the false discovery rate (FDR) across channels.
 
 | Family | Signal | Caveat |
 |---|---|---|
-| **(b) Cascade role** | Structural position in the forward graph — hub, cross-community bridge, seeding source | Corpus-relative, not comparable across runs |
+| **(b) Cascade role** | Structural position in the forward graph—hub, cross-community bridge, seeding source | Corpus-relative, not comparable across runs |
 | **(c) Coordination** | Time-windowed co-forwarding, shared domains and exact URLs, shared hashtags, reused media | **No null model.** Near-binary in practice |
 | **(d) Forward influence** | Out-degree and out-strength on the aggregate forward graph | **Not** cross-episode, despite its name in the code |
 | **(f) Semantic coherence** | Distance to an organic-French baseline, proximity to known adversary channels | **Computed, not scored**: it reaches neither the score nor the gate ([D19](../limitations.md#d19)) |
@@ -81,18 +93,18 @@ dated narrative scenarios, and the per-channel score breakdown on click.
 Community topic labels come from a hand-written regex vote over channel names,
 not a classifier. They are a navigation aid, not evidence.
 
-## What it does not do
+## 🧭 What it does not do
 
 | Out of scope | Reason |
 |---|---|
 | Judge whether a message is true or false | Structural analysis only |
 | Observe platforms other than Telegram | Telegram-only coverage, declared in every export |
-| Attribute to a sponsor (T3) | Crosses into investigation — out of scope by construction |
+| Attribute to a sponsor (T3) | Crosses into investigation—out of scope by construction |
 | Act on platforms (reporting, takedown) | Arm-only: output goes to designated institutional recipients |
 | Analyse private messages or closed groups | MTProto read-only, public channels only |
-| Deanonymize members | Channel member lists are never collected. Commenters in public linked discussion groups are: their identifier, username and text are stored (`comments` table) and published in dataset `v1.0.0`, and the identifiers and usernames of each channel's most frequent commenters are written into the analyst bundle and shown in the interface — see [`DATASHEET.md`](../../dataset/DATASHEET.md) |
+| Deanonymize members | Channel member lists are never collected. Commenters in public linked discussion groups are: their identifier, username and text are stored (`comments` table) and published in dataset `v1.0.0`, and the identifiers and usernames of each channel's most frequent commenters are written into the analyst bundle and shown in the interface—see [`DATASHEET.md`](../../dataset/DATASHEET.md) |
 
-## Architecture, in two halves
+## 🧩 Architecture, in two halves
 
 ```text
 OFFLINE PIPELINE (Python)
@@ -113,7 +125,7 @@ Bundles are **not published in this repository**: they are corpus-specific by
 construction. Generate them with `scripts/pipeline.py`; several of its stages
 write into the bundle, `scripts/export_static.py` among them.
 
-## Missions
+## 🧩 Missions
 
 The engine is theme-agnostic. A mission is a configuration (a Python package
 under `src/missions/` holding one `MissionDefinition`: source universe,
@@ -123,21 +135,21 @@ lexicon, weights, dashboard), never a code fork.
 |---|---|---|
 | `russosphere` | Coordinated disinformation targeting the image, integrity or sovereignty of France | Active |
 | `france_ukraine` | Narratives targeting France in the Ukraine conflict | Active |
-| `gan` | Telegram-observable informational footprint of the Carrier Strike Group (OPSEC objective) | Active, but gate calibration is **not reconciled** with `russosphere` — its T2 counts are not interpretable |
-| `dircom_minarm` | Reuse and distortion of official French MoD communication | Packaged, `implemented=False` — refuses live selection |
+| `gan` | Telegram-observable informational footprint of the Carrier Strike Group (OPSEC objective) | Active, but gate calibration is **not reconciled** with `russosphere`—its T2 counts are not interpretable |
+| `dircom_minarm` | Reuse and distortion of official French MoD communication | Packaged, `implemented=False`—refuses live selection |
 
-## Tiers
+## 🧭 Tiers
 
 | Tier | Definition |
 |---|---|
-| **T1** | Observable diffusion structure — the primary deliverable |
+| **T1** | Observable diffusion structure—the primary deliverable |
 | **T2** | Behavioural recurrence: the multi-source gate is met (at least 2 families triggered) |
-| **T3** | Real-world attribution to a person, organization or sponsor — **out of scope** |
+| **T3** | Real-world attribution to a person, organization or sponsor—**out of scope** |
 
 Assignment is mechanical: gate met implies T2, otherwise T1, with the triggered
 family set persisted for audit. A T3 claim in any output is a reportable defect.
 
-## Governance and limits
+## 🔒 Governance and limits
 
 ### The load-bearing limitation, declared in every bundle
 
@@ -179,7 +191,7 @@ methodology ([D20](../limitations.md#d20)); the hash the dossier schema defines
 would ignore `docs/method/` in any case ([D23](../limitations.md#d23)). A
 methodology revision is therefore not detectable from an output.
 
-## Further reading
+## 📚 Further reading
 
 - **Install:** [`docs/ops/install.md`](../ops/install.md)
 - **Quickstart:** [`docs/ops/quickstart.md`](../ops/quickstart.md)

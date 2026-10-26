@@ -3,7 +3,7 @@
 Operational reference for the PostgreSQL schema. Alembic is the **source of
 truth** for it. The script that created the original schema, `init_db.py`, is
 no longer in the repository; it appears below only because databases it created
-need stamping ([§4](#4-existing-database-with-no-alembic_version-table)).
+need stamping ([below](#stamp-existing-database)).
 
 The latest revision is `0008`, and the public corpus (dataset `v1.0.0`) is
 already at `0008`: the release process took a snapshot at `0006`, applied the
@@ -17,7 +17,30 @@ behind.
 
 Scope: the data layer only. Nothing here contacts Telegram.
 
-## 1. Conventions
+Which command to run depends on the state of the database:
+
+```mermaid
+flowchart TD
+    start{Does the database hold tables?}
+    start -- "No: fresh database" --> upgrade["alembic upgrade head"]
+    start -- Yes --> version{Is there an alembic_version table?}
+    version -- "No: created by init_db.py" --> stamp["alembic stamp 0001"] --> upgrade
+    version -- "Yes: restored corpus or earlier run" --> upgrade
+    upgrade --> head["alembic current reports the head"]
+```
+
+## 🧭 Contents
+
+- [Conventions](#conventions)
+- [Revisions](#-revisions)
+- [Fresh database](#-fresh-database)
+- [Existing database with no `alembic_version` table](#stamp-existing-database)
+- [Creating a migration](#-creating-a-migration)
+- [The `edges` table](#-the-edges-table-revision-0002)
+
+<a id="conventions"></a>
+
+## 📝 Conventions
 
 - `DATABASE_URL` carries the `+asyncpg` suffix, for example
   `postgresql+asyncpg://idefix:idefix@localhost:5433/idefix` for the local
@@ -54,7 +77,7 @@ $env:DATABASE_URL = "postgresql+asyncpg://idefix:idefix@localhost:5433/idefix"
 export DATABASE_URL=postgresql+asyncpg://idefix:idefix@localhost:5433/idefix
 ```
 
-## 2. Revisions
+## 🧩 Revisions
 
 | Rev. | Name | Content |
 |---|---|---|
@@ -87,7 +110,7 @@ uv run alembic heads
 > export. This is why the analyst interface can be a static bundle with no
 > backend at all.
 
-## 3. Fresh database
+## 🚀 Fresh database
 
 ```bash
 uv run alembic upgrade head
@@ -106,7 +129,9 @@ INFO  [alembic.runtime.migration] Will assume transactional DDL.
 0008 (head)
 ```
 
-## 4. Existing database with no `alembic_version` table
+<a id="stamp-existing-database"></a>
+
+## 🔧 Existing database with no `alembic_version` table
 
 If `init_db.py` created the schema, do **not** let Alembic run `0001`, which
 would try to recreate populated tables. Stamp the baseline instead, then apply
@@ -121,7 +146,7 @@ uv run alembic upgrade head
 Afterwards, `alembic current` reports `0008 (head)` and the populated tables are
 intact.
 
-## 5. Creating a migration
+## 🔧 Creating a migration
 
 ```bash
 uv run alembic revision --rev-id 0009 -m "my_migration"
@@ -129,12 +154,12 @@ uv run alembic revision --rev-id 0009 -m "my_migration"
 
 Edit the new `alembic/versions/0009_my_migration.py`, and fill `upgrade()` and
 `downgrade()` with `op.execute(...)` calls, **one SQL statement per call** (see
-[§1](#1-conventions)). Always provide a working `downgrade()`. Keep it
+[Conventions](#conventions)). Always provide a working `downgrade()`. Keep it
 additive where you can: the bootstrap runs `alembic upgrade head` after every
 restore, so a new revision is applied to a freshly restored corpus
 automatically.
 
-## 6. The `edges` table (revision `0002`)
+## 🧩 The `edges` table (revision `0002`)
 
 The persistent projection of the channel-centric multiplex graph. An edge
 targets **either** another channel (`dst_channel_id`) **or** a web domain

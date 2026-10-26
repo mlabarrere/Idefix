@@ -1,19 +1,19 @@
-# Experiment 1 — Centrality ablation
+# Experiment 1: Centrality ablation
 
 **Status:** `NOT YET RUN` (the public corpus exists; the harness cannot yet read it, [D12](../limitations.md#d12))
 **Script:** `scripts/eval_ablation_centrality.py`
 **Artefact:** `results/ablation_centrality.json` (the script writes `data/eval/ablation_centrality.json` today, [D25](../limitations.md#d25))
 
-## Question
+## 🧭 Question
 
 Is the suspicion score just a graph-centrality measure wearing a different name?
 
-## Hypothesis
+## 🧪 Hypothesis
 
 The score carries signal that is **separable** from raw prominence measures. If
 it does not, the pipeline is an expensive way to compute in-degree.
 
-## Falsification criterion
+## 🧪 Falsification criterion
 
 Fixed in the script (`scripts/eval_ablation_centrality.py::FALSIFY_SPEARMAN`,
 `scripts/eval_ablation_centrality.py::FALSIFY_JACCARD`). The hypothesis is
@@ -32,7 +32,7 @@ works. On the current scoring path the script reads family (b) as stored in the
 channel record, which is the rigorous significance `1 - p`, not the raw
 composite.
 
-## Method
+## 🧪 Method
 
 Rank all scored channels by suspicion and by each baseline. Report Spearman rank
 correlation over the full population, and Jaccard overlap of the top-50 sets.
@@ -40,7 +40,7 @@ Both are label-free: this experiment needs **no gold data**, which is why it is
 the only one not blocked by the annotation gaps of
 [`../limitations.md`](../limitations.md).
 
-## Command
+## 🔧 Command
 
 The script takes no arguments ([D24](../limitations.md#d24)); it reads
 `data/channels.json` and `data/graph.json`, which only
@@ -52,7 +52,7 @@ uv run python scripts/prep_eval_inputs.py --mission russosphere
 uv run python scripts/eval_ablation_centrality.py
 ```
 
-## What a pass would establish — and what it would not
+## 📊 What a pass would establish, and what it would not
 
 A pass establishes only that the score is **not a relabelled centrality**. It is
 a necessary condition, not evidence of validity.
@@ -69,7 +69,7 @@ Two caveats specific to this experiment:
   rank ordering is too. The experiment tests one corpus at a time and its result
   does not transfer.
 
-## History
+## 📝 History
 
 A June 2026 run reported a pass. That artefact is quarantined in
 `archive/2026-06-russosphere/` and **may not be cited**: the database it read

@@ -4,7 +4,9 @@ The demo is **fully static**: the interface reads a precomputed bundle. While
 you present, nothing needs the database or a Python server, and nothing calls
 Telegram.
 
-## 0. Before the demo: generate the bundle
+<a id="generate-the-bundle"></a>
+
+## 🚀 Before the demo: generate the bundle
 
 The analyst bundles are **not** in the repository: they are specific to a
 corpus and a run, and committing them would publish numbers nobody could
@@ -43,7 +45,7 @@ npm run preview
 Check it once in the browser you will present from, at
 <http://localhost:5173> (dev server) or <http://localhost:4173> (preview).
 
-## 1. The thread, in about five minutes
+## 🧭 The thread, in about five minutes
 
 1. **The galaxy.** The interface opens on the `russosphere` galaxy: community
    nebulae reconstructed from a single legitimate seed channel. Hover for
@@ -62,7 +64,7 @@ Check it once in the browser you will present from, at
    the sidebar, to show that the engine is a configuration, not a fork. Each
    mission carries its own caveat.
 
-## 2. What to say
+## 🧭 What to say
 
 - 'We do not judge content. We **reconstruct diffusion structure**.'
 - 'Every number unfolds to its evidence: the score is **explainable**, not a
@@ -71,7 +73,7 @@ Check it once in the browser you will present from, at
   caveat is on every screen.'
 - 'T1 and T2 only. Attributing a campaign to a sponsor (T3) is out of scope.'
 
-## 3. What to say if asked about validation
+## 🧪 What to say if asked about validation
 
 Do not overclaim. The honest position is short, and it is in
 [the limitations](../limitations.md):
@@ -89,11 +91,11 @@ Do not overclaim. The honest position is short, and it is in
   moved has not been measured; the ablation protocol that measures it can now
   run on the public corpus.
 
-## 4. If something breaks
+## 🩺 If something breaks
 
 | Symptom | Fix |
 |---|---|
-| Blank page or empty states | The bundle is missing: re-run [§0](#0-before-the-demo-generate-the-bundle) ([details](./troubleshooting.md#blank-page)) |
+| Blank page or empty states | The bundle is missing: re-run [Before the demo](#generate-the-bundle) ([details](./troubleshooting.md#blank-page)) |
 | `npm run dev` fails with `vite` not found | Run `npm ci` in `webapp/` first |
 | Port 5173 is taken | Vite picks the next free port; open the `Local:` URL it prints ([details](./troubleshooting.md#webapp-port)) |
 
