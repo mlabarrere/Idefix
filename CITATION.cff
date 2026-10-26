@@ -6,8 +6,8 @@ message: >-
 title: "Idéfix: propagation and coordination analysis for Telegram public channels"
 abstract: >-
   A demonstrator that maps observable diffusion and coordination structure
-  across public Telegram channels and produces a ranked, explainable and
-  auditable examination queue for human analysts. It never judges whether a
+  across public Telegram channels and produces a ranked, explainable,
+  and auditable examination queue for human analysts. It never judges whether a
   message is true, and it is not a validated manipulation detector.
 type: software
 authors:
@@ -37,7 +37,7 @@ references:
       A complete snapshot of the database Idéfix collected (a PostgreSQL 17
       dump): channels and posts of public Telegram channels, comments from
       their public linked discussion groups, including the commenters'
-      identifiers, usernames and text, and the derived tables of an earlier
+      identifiers, usernames, and text, and the derived tables of an earlier
       pipeline run, which scripts/pipeline.py recomputes.
     url: "https://github.com/mlabarrere/Idefix/releases/tag/dataset-v1.0.0"
     repository-code: "https://github.com/mlabarrere/Idefix"
