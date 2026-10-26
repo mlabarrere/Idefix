@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+title: "Fixture"
+version: 0.4.1
+references:
+  - type: data
+    version: "1.0.0"
