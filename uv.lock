@@ -499,13 +499,12 @@ nvtx = [
 
 [[package]]
 name = "disinfo-trace"
-version = "0.1.0"
+version = "0.4.1"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },
     { name = "apscheduler" },
     { name = "asyncpg" },
-    { name = "hydrogram" },
     { name = "networkx" },
     { name = "pydantic" },
     { name = "python-dotenv" },
@@ -514,10 +513,13 @@ dependencies = [
     { name = "sqlalchemy", extra = ["asyncio"] },
     { name = "statsmodels" },
     { name = "structlog" },
-    { name = "tgcrypto" },
 ]
 
 [package.optional-dependencies]
+collect = [
+    { name = "hydrogram" },
+    { name = "tgcrypto" },
+]
 dev = [
     { name = "gitpython" },
     { name = "mypy" },
@@ -551,7 +553,7 @@ requires-dist = [
     { name = "asyncpg", specifier = ">=0.29.0" },
     { name = "gitpython", marker = "extra == 'dev'", specifier = ">=3.1.58" },
     { name = "httpx", marker = "extra == 'llm'", specifier = ">=0.27" },
-    { name = "hydrogram", specifier = ">=0.1.4" },
+    { name = "hydrogram", marker = "extra == 'collect'", specifier = ">=0.1.4" },
     { name = "mistralai", marker = "extra == 'llm'", specifier = ">=1.2,<2" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "networkx", specifier = ">=3.3" },
@@ -571,11 +573,11 @@ requires-dist = [
     { name = "statsmodels", specifier = ">=0.14" },
     { name = "streamlit", marker = "extra == 'session'", specifier = ">=1.35" },
     { name = "structlog", specifier = ">=24.1" },
-    { name = "tgcrypto", specifier = ">=1.2" },
+    { name = "tgcrypto", marker = "extra == 'collect'", specifier = ">=1.2" },
     { name = "torch", marker = "extra == 'ml'", specifier = ">=2.3.0" },
     { name = "torch-geometric", marker = "extra == 'ml'", specifier = ">=2.5" },
 ]
-provides-extras = ["session", "ml", "embed", "llm", "dev"]
+provides-extras = ["collect", "session", "ml", "embed", "llm", "dev"]
 
 [[package]]
 name = "distlib"
