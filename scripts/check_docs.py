@@ -56,7 +56,7 @@ def strip_code(text: str) -> str:
 
 def markdown_files() -> list[Path]:
     out = [p for p in DOCS.rglob("*.md")]
-    out += [ROOT / "README.md", ROOT / "METHODOLOGY.md"]
+    out += [ROOT / "README.md", ROOT / "METHODOLOGY.md", ROOT / "ONBOARDING.md"]
     out += [p for p in ARCHIVE.rglob("*.md")]
     return [p for p in out if p.exists()]
 

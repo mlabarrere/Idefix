@@ -44,7 +44,9 @@ conclusion from an output.
 
 **Start here:** [`docs/`](./docs/) — method, experiments, limitations,
 references. [`METHODOLOGY.md`](./METHODOLOGY.md) is the versioned cover page
-whose hash ships in every export.
+whose hash ships in every export. New contributor? Read
+[`ONBOARDING.md`](./ONBOARDING.md): setup, the database in depth, and where to
+improve the project.
 
 ---
 

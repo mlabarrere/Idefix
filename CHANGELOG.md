@@ -8,6 +8,15 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ## [Unreleased]
 
+### Onboarding guide (2026-10-26)
+
+#### Added
+- `ONBOARDING.md`: a single tutorial for new contributors, from the
+  one-command setup to the database in depth (schema, read-only exploration,
+  Alembic migrations with a worked example, corpus enrichment, dataset
+  releases), with an improvement backlog and good first issues. Linked from
+  `README.md`, and covered by the dead-link check of `scripts/check_docs.py`.
+
 ### Reproducible setup on the public corpus (2026-10)
 
 A third party can now clone the repository and, with one command and no
