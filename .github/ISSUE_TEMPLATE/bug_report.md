@@ -1,28 +1,45 @@
 ---
-name: Rapport de bug
-about: Signaler un dysfonctionnement
+name: Bug report
+about: Report something that does not work as documented
 title: "[bug] "
 labels: bug
+assignees: ""
 ---
 
+<!--
+Do not paste secrets (keys, tokens, session strings) or personal data
+(commenter identifiers, usernames, or comment texts from the comments table).
+Report security problems privately:
+https://github.com/mlabarrere/Idefix/security/advisories/new
+-->
+
 ## Description
-<!-- Décrivez le problème de façon claire et concise. -->
 
-## Mission concernée
-<!-- russosphere / france_ukraine / gan / dircom_minarm / pipeline / webapp -->
+<!-- What is wrong? Be clear and concise. -->
 
-## Reproduction
+## Affected area
+
+<!-- A mission (russosphere, france_ukraine, gan, dircom_minarm) or a component (bootstrap, pipeline, a script, webapp, documentation). -->
+
+## Steps to reproduce
+
 1.
 2.
 3.
 
-## Comportement attendu
-<!-- Ce qui aurait dû se passer. -->
+## Expected behaviour
 
-## Comportement observé
-<!-- Ce qui se passe réellement. Joignez logs/traceback (SANS secret). -->
+<!-- What should have happened? -->
 
-## Environnement
-- OS :
-- Python (`python --version`) :
-- Commande lancée :
+## Actual behaviour
+
+<!-- What happened instead? Attach the log or traceback, with no secrets and no personal data. -->
+
+## Environment
+
+- Operating system:
+- Python (`python --version`):
+- uv (`uv --version`):
+- Node.js, if the web app is involved (`node --version`):
+- Commit (`git rev-parse --short HEAD`):
+- Command run:

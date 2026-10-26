@@ -8,10 +8,13 @@ from __future__ import annotations
 
 import json
 
-import httpx
 import pytest
 
 from src.llm.mistral import MistralClient, MistralError
+
+# Extra optionnel ``llm`` : sans lui, le module est ignoré (la CI l'installe).
+httpx = pytest.importorskip("httpx")
+pytest.importorskip("mistralai")
 
 
 def _chat_response(content: dict, *, ptok=120, ctok=30) -> httpx.Response:

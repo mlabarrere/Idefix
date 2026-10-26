@@ -2,27 +2,56 @@
 Telegram session generator — browser UI, single persistent MTProto session.
 
 Run:
-    streamlit run scripts/session_web.py --server.port 8502
+    make session
+    # equivalent:
+    uv run --extra session --extra collect \
+        streamlit run scripts/session_web.py --server.port 8502
 Then open: http://localhost:8502
+
+Reads TELEGRAM_API_ID / TELEGRAM_API_HASH (legacy aliases TG_API_ID / TG_API_HASH)
+and writes TELEGRAM_SESSION_STRING / TELEGRAM_PHONE_NUMBER into .env.
 """
 
 import asyncio
-import os
+import importlib.util
 import re
+import sys
 import threading
 from pathlib import Path
 
-import streamlit as st
-from dotenv import load_dotenv
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+import streamlit as st  # noqa: E402
+from dotenv import load_dotenv  # noqa: E402
+
+from src.ingestor.session import resolve_session_env  # noqa: E402
 
 load_dotenv()
 
 st.set_page_config(page_title="Telegram Auth", page_icon="🔑", layout="centered")
 st.title("🔑 Telegram — Génération de session")
 
-ENV_PATH = Path(__file__).parent.parent / ".env"
-API_ID   = int(os.environ.get("TG_API_ID", 0))
-API_HASH = os.environ.get("TG_API_HASH", "")
+ENV_PATH = ROOT / ".env"
+_ENV = resolve_session_env()  # TELEGRAM_* first, then the legacy TG_* aliases
+API_ID   = int(_ENV["api_id"] or 0)
+API_HASH = _ENV["api_hash"] or ""
+
+if importlib.util.find_spec("hydrogram") is None:
+    st.error(
+        "Hydrogram n'est pas installé (extra `collect`). Lancer : `make session`, ou "
+        "`uv run --extra session --extra collect streamlit run scripts/session_web.py "
+        "--server.port 8502`."
+    )
+    st.stop()
+if not API_ID or not API_HASH:
+    st.error(
+        "TELEGRAM_API_ID et TELEGRAM_API_HASH (alias TG_API_ID / TG_API_HASH) doivent "
+        "être définis, par exemple dans `.env` — à obtenir sur https://my.telegram.org, "
+        "puis relancer."
+    )
+    st.stop()
 
 
 # ── Persistent async runtime ─────────────────────────────────────────────────
@@ -53,10 +82,11 @@ def _get_runtime() -> _AsyncRuntime:
 
 
 def update_env(key: str, value: str) -> None:
-    content = ENV_PATH.read_text(encoding="utf-8")
+    # A fresh clone may have no .env yet (the API id/hash can come from the shell).
+    content = ENV_PATH.read_text(encoding="utf-8") if ENV_PATH.is_file() else ""
     pattern = rf"^{re.escape(key)}=.*$"
     if re.search(pattern, content, re.MULTILINE):
-        content = re.sub(pattern, f"{key}={value}", content, flags=re.MULTILINE)
+        content = re.sub(pattern, lambda _: f"{key}={value}", content, flags=re.MULTILINE)
     else:
         content += f"\n{key}={value}\n"
     ENV_PATH.write_text(content, encoding="utf-8")
@@ -72,7 +102,7 @@ rt = _get_runtime()
 # ── STEP 1 : phone ────────────────────────────────────────────────────────────
 if st.session_state.step == "phone":
     st.subheader("Étape 1 / 2 — Numéro de téléphone")
-    phone = st.text_input("Numéro Telegram", value=os.environ.get("TG_PHONE", ""),
+    phone = st.text_input("Numéro Telegram", value=_ENV["phone"] or "",
                           placeholder="+33612345678")
 
     if st.button("📨 Envoyer le code", type="primary", use_container_width=True):
@@ -140,17 +170,22 @@ elif st.session_state.step == "code":
                     except Exception as e:
                         st.error(f"Erreur : {e}")
                         if "PHONE_CODE_EXPIRED" in str(e):
-                            st.info("Le code a expiré. Clique 'Renvoyer un code' pour en recevoir un nouveau.")
+                            st.info("Le code a expiré. Clique 'Renvoyer un code' pour en "
+                                    "recevoir un nouveau.")
 
     with col2:
         if st.button("🔄 Renvoyer un code", use_container_width=True):
             # Disconnect existing client cleanly before retrying
             async def _disconnect():
                 if rt.client:
-                    try: await rt.client.disconnect()
-                    except: pass
-            try: rt.run(_disconnect(), timeout=5)
-            except: pass
+                    try:
+                        await rt.client.disconnect()
+                    except Exception:
+                        pass
+            try:
+                rt.run(_disconnect(), timeout=5)
+            except Exception:
+                pass
             st.session_state.step = "phone"
             st.rerun()
 
@@ -158,13 +193,20 @@ elif st.session_state.step == "code":
 # ── STEP 3 : done ─────────────────────────────────────────────────────────────
 elif st.session_state.step == "done":
     st.subheader("✅ Connexion réussie !")
-    update_env("TG_SESSION_STRING", rt.session_string)
-    update_env("TG_PHONE", rt.phone)
-    st.success("**TG_SESSION_STRING** et **TG_PHONE** écrits dans `.env` automatiquement.")
-    st.code(rt.session_string[:80] + "...", language=None)
+    update_env("TELEGRAM_SESSION_STRING", rt.session_string)
+    update_env("TELEGRAM_PHONE_NUMBER", rt.phone)
+    st.success(
+        "**TELEGRAM_SESSION_STRING** et **TELEGRAM_PHONE_NUMBER** écrits dans `.env` "
+        "automatiquement."
+    )
+    st.warning("La chaîne de session est un secret (accès en lecture au compte) : "
+               "ne jamais la committer ni la partager.")
+    # The FULL string (copy button), so it can also be pasted into another .env.
+    st.code(rt.session_string, language=None, wrap_lines=True)
     st.divider()
     st.subheader("Prochaine étape")
-    st.code("python scripts/backfill.py --channel @Vbachir --limit 200", language="bash")
+    st.code("uv run --extra collect python scripts/backfill.py --channel @Vbachir --limit 200",
+            language="bash")
     if st.button("🔄 Nouvelle session"):
         for k in ["step", "auth_rt"]:
             st.session_state.pop(k, None)
