@@ -1,4 +1,4 @@
-# 2 — Graph model
+# 2. Graph model
 
 **Status:** implemented. Every statement below is traceable to
 `src/graph/edges.py` and `src/graph/loader.py`.
@@ -8,6 +8,8 @@ first-class nodes in the scoring model. The graph is a channel-centric multiplex
 rebuilt in memory (NetworkX / igraph) from a relational store on every run —
 there is no graph database.
 
+<a id="s2-1"></a>
+
 ## 2.1 Nodes
 
 | Node | Source |
@@ -15,13 +17,15 @@ there is no graph database.
 | `Channel` | `channels` table, keyed by `channel_id` (stable across handle rebrands) |
 | `Domain` | registrable host of a cited URL, excluding platform hosts and shorteners |
 
+<a id="s2-2"></a>
+
 ## 2.2 Edge types
 
 `derive_all_edges` (`src/graph/edges.py::derive_all_edges`) derives eight edge
 types: three directed and five undirected, time-windowed coordination types.
 Two further undirected types, `TEXT_SIM` and `TRANSLATION`, are derived
 separately by `derive_text_sim_edges`, only when an embedder is supplied
-(§2.3). The loader also recognizes a legacy `COPYPASTA` type
+([§2.3](#s2-3)). The loader also recognizes a legacy `COPYPASTA` type
 (`src/graph/loader.py::edge_family`) that no current deriver emits.
 
 | Type | Direction | Derived from | Code |
@@ -50,6 +54,8 @@ This is a coincidence filter, not a coordination test. It establishes that two
 channels touched the same object within three days. Nothing in the routine
 estimates how surprising that is.
 
+<a id="s2-3"></a>
+
 ## 2.3 What is materialized in practice
 
 Two points differ from what earlier versions of this page said:
@@ -75,10 +81,14 @@ Their thresholds—`src/graph/edges.py::TEXT_SIM_THRESHOLD` (0.715) and
 `src/graph/edges.py::TRANSLATION_THRESHOLD` (0.85)—were taken from VIGINUM's D3lta (its
 rewording and translation cut-offs). **They are model-specific values applied
 to a different model** (multilingual MiniLM-L12-v2) and have never been
-calibrated for it. The source comment says so. Treat any output of these two
-types as uncalibrated.
+calibrated for it. The source comment says so.
 
-## 2.4 Known defect — `CO_HASHTAG`
+> [!WARNING]
+> Treat any output of these two types as uncalibrated.
+
+<a id="s2-4"></a>
+
+## 2.4 Known defect: `CO_HASHTAG`
 
 `CO_HASHTAG` makes any two channels whose first use of `#Ukraine` fell within
 72 hours of each other coordination partners. On a topical corpus it links many
@@ -86,9 +96,11 @@ channels that share nothing but a topical hashtag.
 
 This matters beyond noise, because score family (c) triggers on **two distinct
 edge types alone**, independently of timing tightness (see
-`03-suspicion-score.md` §3.3). `CO_HASHTAG` plus any one other coordination
+[`03-suspicion-score.md` §3.3](./03-suspicion-score.md#s3-3)). `CO_HASHTAG` plus any one other coordination
 type is therefore enough to trigger (c), which is one of the two families the
 multi-source gate needs. Recorded as [D5](../limitations.md#d5).
+
+<a id="s2-5"></a>
 
 ## 2.5 Priors attached at load time
 

@@ -13,7 +13,7 @@ Machine-readable form: [`references.bib`](./references.bib).
 
 ---
 
-## Community detection and graph structure
+## 📚 Community detection and graph structure
 
 **Traag, V. A., Waltman, L., & van Eck, N. J. (2019).** From Louvain to Leiden:
 guaranteeing well-connected communities. *Scientific Reports*, 9, 5233.
@@ -51,7 +51,7 @@ Narrative Flows: Identifying Intervention Targets for Disinformation on
 Telegram. arXiv:[2411.05922](https://arxiv.org/abs/2411.05922)
 → *Used:* family (b), the Bridge Score composite, `src/scorer/cascade_role.py`.
 
-## Cluster and partition quality
+## 📚 Cluster and partition quality
 
 **Rousseeuw, P. J. (1987).** Silhouettes: a graphical aid to the interpretation
 and validation of cluster analysis. *Journal of Computational and Applied
@@ -71,12 +71,12 @@ Classification*, 2(1), 193–218.
 → *Used:* the adjusted Rand index (ARI) between the analytics and embedding
 partitions (`src/embed/community.py::_partition_agreement`).
 
-## Statistics and significance
+## 📚 Statistics and significance
 
 **Benjamini, Y., & Hochberg, Y. (1995).** Controlling the false discovery rate:
 a practical and powerful approach to multiple testing. *Journal of the Royal
 Statistical Society, Series B*, 57(1), 289–300.
-→ *Used:* FDR control across channels,
+→ *Used:* false discovery rate (FDR) control across channels,
 `src/scorer/significance.py::benjamini_hochberg` (via `statsmodels`). Its
 rejection set is what the documentation calls *flagged*.
 
@@ -108,7 +108,7 @@ things. *The American Journal of Psychology*, 15(1), 72–101.
 → *Used:* rank correlation in the ablation protocols
 (`scripts/_eval_common.py::spearman`).
 
-## NLP and embeddings
+## 📚 Natural language processing and embeddings
 
 **Spärck Jones, K. (1972).** A statistical interpretation of term specificity and
 its application in retrieval. *Journal of Documentation*, 28(1), 11–21.
@@ -130,7 +130,7 @@ Transformers. *NeurIPS 2020.* arXiv:[2002.10957](https://arxiv.org/abs/2002.1095
 encoders has been run; the parameter-sensitivity protocol plans one
 ([`exp-parameter-sensitivity.md`](../experiments/exp-parameter-sensitivity.md)).
 
-## Coordinated inauthentic behaviour
+## 📚 Coordinated inauthentic behaviour
 
 **Pacheco, D., Hui, P.-M., Torres-Lugo, C., Truong, B. T., Flammini, A., &
 Menczer, F. (2021).** Uncovering Coordinated Networks on Social Media: Methods
@@ -138,7 +138,7 @@ and Case Studies. *Proceedings of the International AAAI Conference on Web and
 Social Media*, 15(1), 455–466.
 doi:[10.1609/icwsm.v15i1.18075](https://doi.org/10.1609/icwsm.v15i1.18075)
 → *Framing:* coordination detected from shared behavioural artefacts within a
-time window — the family of methods that `02-graph-model.md` §2.2 belongs to.
+time window — the family of methods that [`02-graph-model.md` §2.2](../method/02-graph-model.md#s2-2) belongs to.
 
 **Giglietto, F., Righetti, N., Rossi, L., & Marino, G. (2020).** It takes a
 village to manipulate the media: coordinated link sharing behavior during 2018
@@ -152,7 +152,7 @@ Coordinated Behavior on Social Media in 2019 UK General Election. *Proceedings
 of the International AAAI Conference on Web and Social Media*, 15, 443–454.
 → *Framing:* thresholding and validation of coordination networks.
 
-## Cited as provenance of a constant, not as an implemented method
+## 📚 Cited as provenance of a constant, not as an implemented method
 
 **VIGINUM — D3lta.** Text-similarity detection (copypasta, rewording,
 translation) published as open source by VIGINUM, the French service for
@@ -164,7 +164,7 @@ are applied to a different embedding model and have never been calibrated for
 it**; see [D13](../limitations.md#d13). The D3lta method itself is *not*
 implemented here.
 
-## Related work, not implemented
+## 📚 Related work, not implemented
 
 **Kalkbrenner, L., Solopova, V., Zeiler, S., Nickel, R., & Kolossa, D. (2025).**
 MisinfoTeleGraph: Network-driven Misinformation Detection for German Telegram
