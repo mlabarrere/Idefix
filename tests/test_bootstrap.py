@@ -464,7 +464,9 @@ def test_compose_command_is_pinned_and_never_reads_dotenv(docker):
     assert bs.compose_cmd("up", "--detach") == [*COMPOSE, "up", "--detach"]
 
 
-def test_pg_restore_command():
+def test_pg_restore_command(monkeypatch):
+    # The command is built, never run: do not require Docker on the runner.
+    monkeypatch.setattr(bs, "docker_exe", lambda: "docker")
     cmd = bs.restore_cmd(make_file("idefix-corpus-v1.0.0.dump"))
     assert cmd[cmd.index("exec") :] == [
         "exec", "-T", "db", "pg_restore", "--no-owner", "--no-privileges",
