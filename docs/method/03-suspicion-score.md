@@ -4,7 +4,7 @@
 `rigor.py`, `significance.py` and the per-family modules.
 
 The score is a **rank ordering for triage**, not a probability of manipulation.
-It answers "which channels should an analyst read first", and every ranking it
+It answers 'which channels should an analyst read first', and every ranking it
 produces must be justifiable from the channel's own evidence block.
 
 ## 3.1 Score families
@@ -15,7 +15,7 @@ produces must be justifiable from the channel's own evidence block.
 | (b) | `cascade_role` | Active, with null model | §3.2 |
 | (c) | `coordination` | Active, **no null model** | §3.3 |
 | (d) | `recidivism` | Active, with null model | §3.4 |
-| (e) | `genai_origin` | **Not wired.** Always N/A | `e_res = None`, hardcoded |
+| (e) | `genai_origin` | **Not wired.** Always N/A | `e_res = None`, hard-coded |
 | (f) | `embedding_signals` | **Computed, not scored** ([D19](../limitations.md#d19)) | `05-semantic-family.md` |
 
 Families (a) and (e) have never produced a value. They are named here because
@@ -56,11 +56,13 @@ exports, corpora or time**. Do not treat `bridge_norm` as a measurement.
 In production, `bridge_norm` does not reach the combined score. The rigorous
 path (`src/scorer/rigor.py::compute_family_significance`) tests the raw
 statistic `bridge_raw` against the null model of §3.6 and replaces the family's
-value with its significance, `1 - p`; the family triggers when `p < alpha`. The
-max-normalized `bridge_norm` survives only in the evidence block and in the
-dossier builder.
+value with its significance, `1 - p`; the family triggers when `p < alpha`, the
+result is not degenerate, and the channel has an archetype
+(`channel_suspicion.py::_family_triggered`). The max-normalized `bridge_norm`
+no longer reaches the score or the bundle, but it still decides the archetype
+(`cascade_role.py::classify_archetype`) and feeds the dossier builder.
 
-Archetype assignment (`cascade_role.py::classify_archetype`) is a hardcoded priority cascade over
+Archetype assignment (`cascade_role.py::classify_archetype`) is a hard-coded priority cascade over
 `reactivator` / `cross-channel-bridge` / `forward-hub` / `seeding-source`. Note
 that the terminal `else` branch returns `forward-hub`, the same label as an
 earlier branch with a different structural condition — two distinct situations
@@ -107,12 +109,15 @@ value = 0.6*(out_strength / max_out_strength) + 0.4*(out_degree / max_out_degree
 ```
 
 **There is no cross-episode component.** Earlier documentation called this family
-"cross-episode recidivism"; the module's own docstring corrects it. With no
+'cross-episode recidivism'; the module's own docstring corrects it. With no
 populated episode table, it measures out-degree and out-strength on a single
 aggregate forward graph, max-normalized — and so inherits the same
 non-comparability as §3.2. Read it as *forward influence*, which is what it is.
-As for (b), the production path replaces this value with its significance
-against the null model (`1 - p`, triggered when `p < alpha`).
+In production this composite does not reach the score either: the rigorous
+path tests raw out-strength alone against the null model
+(`rigor.py::compute_family_significance`) and replaces the value with its
+significance (`1 - p`, triggered when `p < alpha`), so the out-degree term and
+the `0.6 / 0.4` split play no part in the ranking.
 
 ## 3.5 Combination — Stouffer under Benjamini–Hochberg
 
@@ -143,13 +148,14 @@ family values.
 **One defect in this combination remains open.**
 
 *Independence is violated.* Stouffer assumes independent p-values. Families (b)
-and (d) are computed on the same forward graph, against the **same null ensemble**
-and the **same bootstrap draws** (`rigor.py::compute_family_significance`). They
-are strongly correlated, so the combined p-value is anticonservative—it
-overstates significance ([D3](../limitations.md#d3)).
+and (d) are computed on the same forward graph and tested against the **same
+null ensemble** (`rigor.py::compute_family_significance`); only their bootstrap
+intervals are drawn separately. They are strongly correlated, so the combined
+p-value is anticonservative: it overstates significance
+([D3](../limitations.md#d3)).
 
 The family weights themselves have **no derivation**. The source comment asserts
-that "each share is justifiable"; no justification is recorded anywhere. Treat
+that 'each share is justifiable'; no justification is recorded anywhere. Treat
 them as five free parameters.
 
 ## 3.6 The null model
@@ -183,10 +189,11 @@ bounds through the same Stouffer combination.
 so it keeps a fixed band—`value +/- 0.10` when two or more edge types reinforce
 it, `+/- 0.20` otherwise (`coordination.py::score_coordination_edges`)—and
 those bounds do enter the Stouffer bound calculation. Every other family, and
-every family before rigorous enrichment, ships the hard-coded `value +/- 0.15`
-band of `cascade_role.py::score_cascade_role`, `recidivism.py::score_recidivism`,
-`telegram_footprint.py::_result` and
-`embedding_signals.py::score_embedding_coherence`. The docstring of
+every family before rigorous enrichment, ships a hard-coded band:
+`value +/- 0.15` in `cascade_role.py::score_cascade_role`,
+`recidivism.py::score_recidivism` and `telegram_footprint.py::_result`, and
+`value +/- 0.10` in `embedding_signals.py::score_embedding_coherence`. The
+docstring of
 `src/scorer/significance.py` calls these 'bandes +/-0.15 factices'
 ([D6](../limitations.md#d6)).
 A published interval on a non-(b)/(d) family is a formatting convention, not an

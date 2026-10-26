@@ -15,7 +15,7 @@ things, and have different consequences.
 | Computed by | `src/normalizer/targeting.py::score_targeting` | `scripts/tag_france.py::main` |
 | Definition | Weighted composite of lexicon breadth, depth and adversary-domain citation | `matching_messages / total_messages` for one French-keyword regex |
 | Range | [0,1], per channel, max over sampled messages | [0,1], a raw density |
-| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | Not the score. It decides the side of each episode and which channels can enter episodes (`scripts/mine_episodes.py`), drives the porosity view (`missions/spec.py::DashboardProfile`, `porosity_side_signal`), and anchors the snowball crawl (`missions/spec.py::SourceUniverse`, `snowball_anchor_signal`) |
+| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | Not the score. It decides the side of each episode and which channels can enter episodes (`scripts/mine_episodes.py`), drives the porosity view (`scripts/analyze_porosity.py`), and ranks the snowball frontier (`scripts/snowball_crawl.py`). The mission profile names these signals (`porosity_side_signal` and `snowball_anchor_signal` in `src/missions/spec.py`), but both scripts read `fr_score` directly |
 | Status | Uncalibrated but principled | Fed the credibility prior until 2026-09—[D1](../limitations.md#d1), fixed |
 
 The 'Used for' row is the important one. `fr_score` was documented for a long
@@ -45,9 +45,9 @@ score = breadth_weight*breadth + depth_weight*depth + domain_weight*domain_signa
 For the `russosphere` mission (`france_targeting.py::_FRANCE_WEIGHTS`): 5
 categories, `breadth_weight = 0.55`, `depth_weight = 0.30`,
 `domain_weight = 0.15`, `depth_saturation = 4.0`. The `gan` mission uses
-`0.40 / 0.45 / 0.15` with no recorded calibration for either set. **Counting
-`depth_saturation`, these are eight free parameters** (three weights and one
-saturation per mission).
+`0.40 / 0.45 / 0.15`, and `france_ukraine` and `dircom_minarm` carry their own
+`TargetingProfile` too. None of these sets has a recorded calibration: each is
+three weights and one saturation, **four free parameters per mission**.
 
 Matching is **regex keyword counting**, not semantics: accent folding, plus a
 bounded Cyrillic inflectional suffix so that Russian declensions of a keyword
@@ -56,8 +56,8 @@ matched in the same message. A channel's score is the **maximum** over its most
 recent sampled messages (up to 500), so one strongly on-topic message is enough
 to score the channel.
 
-There is no model here. Read `targeting_score` as "how densely and how broadly
-this channel's text hits a hand-written word list".
+There is no model here. Read `targeting_score` as 'how densely and how broadly
+this channel's text hits a hand-written word list'.
 
 ## 4.3 The claim-proximity seam is dead code
 

@@ -12,13 +12,16 @@ output, and conflating tiers is a reportable defect.
 | **T3** — Real-world attribution | A person, organization, state, sponsor | Off-platform corroboration | **Out of scope. Never claimed** |
 
 Tier assignment is mechanical: for a channel, gate met implies T2, otherwise
-T1 (`channel_suspicion.py::compute_channel_queue`); no episode aggregation
-enters it. The triggered family set is persisted as `gate_families`, so any
-assignment can be audited from the stored record. Episodes carry their own
-tier, from the count of distinct pivot types (`06-episodes-and-communities.md`
-§6.1).
+T1 (`src/scorer/channel_suspicion.py::compute_channel_queue`); no episode
+aggregation enters it. The triggered family set is persisted as
+`gate_families`, so any assignment can be audited from the stored record.
+Episodes carry their own tier, from the count of distinct pivot types
+(`06-episodes-and-communities.md` §6.1). The pipeline's one dossier,
+`dugin_cluster.json`, does not follow either rule: `scripts/build_dossier.py::main`
+hard-codes its attribution tier to T2, whatever its own gate decides
+([D16](../limitations.md#d16)).
 
-**"First-visible seeding channel" means first visible *within the Telegram
+**'First-visible seeding channel' means first visible *within the Telegram
 corpus*.** It never means originator. The corpus is a partial projection of a
 partial platform; earliest-observed is a statement about the observation window,
 not about causation.
@@ -28,37 +31,45 @@ rests on independent corroboration. The gate counts *distinct families*, but
 family (c) triggers on two coordination edge types alone, and one of those types
 (`CO_HASHTAG`) is close to noise on a topical corpus. Episode-level tiering has
 the same shape: it counts pivot types. Until family (c) has a null model and
-`CO_HASHTAG` is reconsidered, T2 should be read as "two distinct signal types
+`CO_HASHTAG` is reconsidered, T2 should be read as 'two distinct signal types
 fired', which is weaker than what the label suggests. Tracked as
 [D2](../limitations.md#d2) and [D5](../limitations.md#d5).
 
-A separate T1–T5 *severity* ladder exists alongside the attribution tiers.
-`src/scorer/base.py::ScoreSummary` maps signals to severity T1–T5 and holds a
-third gate rule ('at least three signals from at least two families' for T4 and
-T5); it is imported by the dossier builder (`src/dossier/builder.py`) and by
-`src/scorer/__init__.py`, so it is live code, not a dead stub. The dossier
-schema keeps the two scales apart: `attribution_tier` accepts only T1 or T2 and
-rejects T3, while `severity_tier` accepts T1 to T5
-(`src/shared/dossier.py`). Read a dossier's severity tier as evidence severity,
-never as attribution. The contradiction between dossier gates is recorded as
-[D16](../limitations.md#d16).
+A separate T1–T5 *severity* ladder exists alongside the attribution tiers. The
+pipeline's dossier gets its severity from `scripts/build_dossier.py::main`,
+which maps the strongest of families (b), (c) and (d) to T1–T5 without
+consulting any gate. A second mapping, `src/scorer/base.py::ScoreSummary`,
+grades the five original families the same way; its comment asks for 'at least
+three signals from at least two families' before T4 or T5, but its
+`multi_source_rule_met` counts two families and `overall_severity` ignores it
+anyway. Its only consumer, `src/dossier/builder.py::build_dossier`, has no
+caller in the pipeline. The dossier schema keeps the two scales apart:
+`attribution_tier` accepts only T1 or T2 and rejects T3, while `severity_tier`
+accepts T1 to T5 (`src/shared/dossier.py::DossierSchema`). Read a dossier's
+severity tier as evidence severity, never as attribution. The contradictions
+between the dossier gates are recorded as [D16](../limitations.md#d16).
 
 ## 7.2 Output discipline
 
 - **Arm-only.** Outputs go to designated institutional recipients. Never to
   platforms, never to the public, never to candidates or press.
 - **Mandatory coverage callout.** The single-platform-blindness disclosure of
-  `01-problem-and-scope.md` §1.3 is a validated field of every exported bundle.
+  `01-problem-and-scope.md` §1.3 is written into every bundle manifest, from the
+  mission's callout or a default
+  (`scripts/export_static.py::build_export_metadata`).
 - **Evidence-first.** Every component of every channel's score is preserved in
   the output — weights, per-family values, p-values, trigger status, boost
   detail — so that an analyst can justify any ranking from the dossier alone
   without re-running the pipeline.
 - **Chain of custody.** Each bundle carries timestamps, stable identifiers, and
   a methodology version string. That string is fixed in the code
-  (`scripts/export_static.py::METHODOLOGY_VERSION`), not derived from the
-  methodology document; only dossier outputs carry a hash of `METHODOLOGY.md`,
-  and that hash ignores `docs/method/`. A methodology revision is therefore
-  **not** reliably detectable from a bundle ([D20](../limitations.md#d20)).
+  (`scripts/export_static.py::METHODOLOGY_VERSION`, overridable by the
+  `IDEFIX_METHODOLOGY_VERSION` environment variable), not derived from the
+  methodology document. A hash of `METHODOLOGY.md` exists only in the dossier
+  schema, and no file the pipeline writes carries it
+  ([D20](../limitations.md#d20)); it would ignore `docs/method/` in any case
+  ([D23](../limitations.md#d23)). A methodology revision is therefore **not**
+  detectable from an output.
 - **Tiered vocabulary** is mandatory in every output; a T3 claim is a reportable
   defect.
 
@@ -95,12 +106,14 @@ private channels are invisible entirely.
 
 ## 7.4 Governance commitments
 
-- The methodology is published before any live detection output ships. Bundles
-  are meant to embed its hash; today they embed a fixed version string instead
-  ([D20](../limitations.md#d20)).
-- **No T2 label without at least 2 distinct triggered families**—enforced
-  structurally by the gate, not by review. Severity is **not** bound by the
-  same rule: the severity factor applies whether or not the gate is met
+- The methodology is published before any live detection output ships. Outputs
+  are meant to embed its hash; today bundles embed a fixed version string
+  instead, and no output embeds the hash ([D20](../limitations.md#d20)).
+- **No channel is labelled T2 without at least two distinct triggered
+  families**, enforced structurally by the gate, not by review. The rule does
+  not reach the dossier, whose tier is hard-coded
+  ([D16](../limitations.md#d16)), and severity is **not** bound by it: the
+  severity factor applies whether or not the gate is met
   ([D21](../limitations.md#d21)).
 - The validation state ships **with** the methodology and is updated whenever the
   falsification battery is re-run. Claims are bounded by the weakest relevant

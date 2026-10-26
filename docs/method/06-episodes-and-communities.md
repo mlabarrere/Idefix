@@ -6,16 +6,18 @@
 
 ## 6.1 Episode discovery
 
-An **episode** is a relation between one Russian-side origin channel and one
-French-side receiving channel (`mine_episodes.py::group_by_pair`): every pivot
-in which material from the first reappears in the second is grouped under that
-pair. An RU origin is required, and no time window is applied. Discovery pivots
+An **episode** is a relation between one Russian-side channel and one
+French-side channel (`mine_episodes.py::group_by_pair`): every raw pivot is
+keyed on the first RU seeder and the first FR receiver it lists, and the
+pivots that share that pair form one episode. An RU side is required, and no
+time window is applied. Discovery pivots
 on three shared artefacts: reused media (`file_unique_id`,
 `mine_episodes.py::media_pivots`), exact-match URLs
 (`mine_episodes.py::url_pivots`), and forward republication
 (`mine_episodes.py::forward_pivots`). The URL pivot reads `messages.urls`, which
-is NULL on every row of the public corpus, so it never fires there
-([D25](../limitations.md#d25)).
+the collector never fills (`src/ingestor/queries.py::insert_message` writes it
+as NULL), so it never fires on any corpus this code collects
+([D29](../limitations.md#d29)).
 
 Each episode is labelled by the top-5 TF-IDF terms of its vocabulary, against a
 hand-written multilingual stop list of 56 distinct words
@@ -50,7 +52,9 @@ labelled honestly. It is a legibility choice, and it changes the partition.
 
 Two tracks are run and compared:
 
-- **analytics** — the link graph (forwards, mentions, co-citations)
+- **analytics** — the whole multiplex graph of `02-graph-model.md`, folded into
+  one undirected weighted graph (`src/graph/loader.py::to_igraph`): forwards,
+  mentions, every coordination type and the cited-domain nodes
 - **embeddings** — the same graph plus the `EMB_SIM` edges of
   `05-semantic-family.md` §5.5
 

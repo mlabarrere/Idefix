@@ -61,12 +61,15 @@ Two points differ from what earlier versions of this page said:
   [`dataset/DATASHEET.md`](../../dataset/DATASHEET.md)). The comments in
   `graph/edges.py` that say the field is NULL corpus-wide are out of date.
 - **`TEXT_SIM` and `TRANSLATION`** are only derived when an embedder is
-  explicitly injected (`edges.py::derive_and_upsert_edges` with `embedder=…`);
-  `derive_all_edges` does not include them. The scan is O(N²) and capped at
-  `edges.py::MAX_TEXT_SIM_MESSAGES` (3,000 messages). `TRANSLATION` also needs
-  a language on both messages, and `messages.language` is NULL on every row of
-  the public corpus, so `TRANSLATION` can never fire there
-  ([D25](../limitations.md#d25)).
+  explicitly injected (`edges.py::derive_and_upsert_edges` with `embedder=…`,
+  which `scripts/build_edges.py --embed` does); `derive_all_edges` does not
+  include them, and the pipeline runs `build_edges` without `--embed`, so it
+  never derives them. The scan is O(N²) and capped at
+  `edges.py::MAX_TEXT_SIM_MESSAGES`. `TRANSLATION` also needs a language on
+  both messages, and the collector never records one
+  (`src/ingestor/handlers.py::_parse_message` writes `language` as NULL), so
+  `TRANSLATION` cannot fire on any corpus this code collects, the public one
+  included ([D29](../limitations.md#d29)).
 
 Their thresholds—`edges.py::TEXT_SIM_THRESHOLD` (0.715) and
 `edges.py::TRANSLATION_THRESHOLD` (0.85)—were taken from VIGINUM's D3lta (its
@@ -77,14 +80,15 @@ types as uncalibrated.
 
 ## 2.4 Known defect — `CO_HASHTAG`
 
-`CO_HASHTAG` makes any two channels that used `#Ukraine` within 72 hours
-coordination partners. On a topical corpus this is close to a complete graph over
-active channels.
+`CO_HASHTAG` makes any two channels whose first use of `#Ukraine` fell within
+72 hours of each other coordination partners. On a topical corpus it links many
+channels that share nothing but a topical hashtag.
 
-This matters beyond noise, because score family (c) reaches a triggering value
-from **two distinct edge types alone**, independently of timing tightness
-(see `03-suspicion-score.md` §3.3). `CO_HASHTAG` can therefore push a channel
-through the multi-source gate on its own. Recorded as [D5](../limitations.md#d5).
+This matters beyond noise, because score family (c) triggers on **two distinct
+edge types alone**, independently of timing tightness (see
+`03-suspicion-score.md` §3.3). `CO_HASHTAG` plus any one other coordination
+type is therefore enough to trigger (c), which is one of the two families the
+multi-source gate needs. Recorded as [D5](../limitations.md#d5).
 
 ## 2.5 Priors attached at load time
 
@@ -93,8 +97,12 @@ through the multi-source gate on its own. Recorded as [D5](../limitations.md#d5)
 adversary linkage: a channel is `suspect` when its `CITES_DOMAIN` edges reach
 the adversary catalogue, or when it is itself catalogued. The second condition
 never applies in production, because the list of catalogued channels is never
-passed outside the tests ([D26](../limitations.md#d26)). The prior was
-previously derived from French-keyword density, which was a defect, now fixed
+passed outside the tests. The prior is evidence-based on the scoring path only:
+`scripts/analyze_communities.py`, `scripts/analyze_communities_embed.py` and the
+`graph.json` written by `scripts/export_static.py` build the graph without the
+adversary catalogue, so every node there is `other`
+([D30](../limitations.md#d30)). The prior was previously derived from
+French-keyword density, which was a defect, now fixed
 ([D1](../limitations.md#d1)).
 
 `engagement` (`loader.py::fetch_channel_rows`) is `SUM(views) + SUM(forwards)`.
