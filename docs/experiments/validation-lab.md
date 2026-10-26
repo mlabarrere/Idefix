@@ -8,10 +8,15 @@ blocking Experiments 2 and 3:
    positives.
 
 Both gaps require human annotation. This document specifies the shape of the
-data; producing it is the work. See [`../limitations.md`](../limitations.md)
-L4 and L5.
+data; producing it is the work. See [L4](../limitations.md#l4) and
+[L5](../limitations.md#l5).
 
 Executable schemas: `src/validation_lab/schema.py`.
+
+> [!NOTE]
+> The templates named below are not in the repository: `data/eval/` is
+> gitignored, so a fresh clone has no `data/eval/templates/`
+> ([D26](../limitations.md#d26)). Build a file from the schema instead.
 
 ## External gold episode
 
@@ -68,14 +73,18 @@ is reported as blocked rather than passing.
 ## Current wiring
 
 - `scripts/eval_episode_recovery.py` reads `gold_episode_*.json` in
-  `ExternalGoldEpisode` v1 format, falling back to the legacy
-  `{episode, seeds, relays}` shape. **Note the defect in this script** —
+  `ExternalGoldEpisode` v1 format. When a file fails that validation, for any
+  reason, the script re-reads it in the legacy `{episode, seeds, relays}`
+  shape, so the validity guards above do not protect legacy files; and its
+  conversion drops gold channels identified by `channel_id` alone
+  (`src/validation_lab/schema.py::ExternalGoldEpisode.legacy_eval_payload`). See
   [`exp2-episode-recovery.md`](./exp2-episode-recovery.md).
 - `scripts/eval_organic_control.py` reads `organic_control_*.json` in
   `OrganicControlCorpus` v1 format.
 
-Both scripts also depend on evaluation inputs that are absent from a clean
-clone ([`../limitations.md`](../limitations.md) D12).
+`scripts/eval_episode_recovery.py` also depends on evaluation inputs that are
+absent from a clean clone ([D12](../limitations.md#d12)). Both write their
+reports under `data/eval/` ([D25](../limitations.md#d25)).
 
 ## Next increment
 

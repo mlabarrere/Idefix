@@ -40,8 +40,10 @@ detected. What is measured is a *Telegram-observable* footprint, never the total
 footprint of a phenomenon.
 
 This is not a caveat appended for modesty. It is a structural property of the
-data source, and it is a mandatory, validated field of every exported bundle.
-The full standing-limits register is `docs/limitations.md`.
+data source, and every bundle manifest carries it: the export writes the
+mission's coverage callout, or a default one when the mission sets none
+(`scripts/export_static.py::build_export_metadata`). The full standing-limits
+register is [`docs/limitations.md`](../limitations.md).
 
 ## 1.4 Unit of analysis
 
@@ -49,11 +51,11 @@ The **channel**, not the message. Channels are followed by numeric `channel_id`,
 which is stable across handle rebrands. The scorer is meant to mark confidence
 in a channel as degraded once it has not been polled for 14 days
 (`STALE_DAYS`), but that status can never trigger today: the channel query does
-not select `last_polled_at` ([D24](../limitations.md#d24)).
+not select `last_polled_at` ([D28](../limitations.md#d28)).
 
 The choice is deliberate: per-message weak labelling against fact-check corpora
 was piloted and abandoned because the resulting gold was approximately 97%
-"true" and therefore uninformative. Supervision, if it ever arrives, will be at
+'true' and therefore uninformative. Supervision, if it ever arrives, will be at
 channel level.
 
 ## 1.5 One engine, N missions
@@ -77,10 +79,10 @@ footprint. None of those families has a null model; they all use the
 `p = 1 - value` fallback of `03-suspicion-score.md` §3.3. It combines nine
 families—(b), (c), (d) and six `telegram_*` families; (a) and (e) carry zero
 weight—and only (b) and (d) have a null model, so seven of its nine combined
-'p-values' are not p-values. Its gate calibration has never
-been reconciled with `russosphere`, and the two missions have produced T2 volumes
-differing by more than an order of magnitude. Treat `gan` T2 counts as
-uninterpretable until the gates are harmonized.
+'p-values' are not p-values. Its gate has never been calibrated against
+that of `russosphere`, so T2 counts are not comparable across the two missions.
+Treat `gan` T2 counts as uninterpretable until the gates are harmonized
+([D15](../limitations.md#d15)).
 
 ## 1.6 Reading order
 

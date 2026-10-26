@@ -1,6 +1,6 @@
 # Documentation
 
-Everything this project claims, and the evidence for it. Organised as a paper:
+Everything this project claims, and the evidence for it. Organized as a paper:
 method, experiments, limitations, references.
 
 **If you read one file, read [`limitations.md`](./limitations.md).** It is the
@@ -9,12 +9,13 @@ and have not yet fixed.
 
 ## Method
 
-What the system actually computes, traceable to `file:line` throughout.
+What the system actually computes, traceable throughout to code references that
+name a path and a symbol, such as `src/scorer/rigor.py::compute_family_significance`.
 
 | | |
 |---|---|
 | [01 — Problem and scope](./method/01-problem-and-scope.md) | What this is, what it is not, the single-platform limit, the mission model |
-| [02 — Graph model](./method/02-graph-model.md) | Nodes, the nine edge families, the windowing rule |
+| [02 — Graph model](./method/02-graph-model.md) | Nodes, the edge types, the windowing rule |
 | [03 — Suspicion score](./method/03-suspicion-score.md) | Families (a)–(f), the Stouffer/BH combiner, the null model, the gate |
 | [04 — Thematic relevance](./method/04-thematic-relevance.md) | The targeting engine, and the `targeting_score` / `fr_score` distinction |
 | [05 — Semantic family](./method/05-semantic-family.md) | Family (f) and embedding-based communities |
@@ -33,7 +34,7 @@ against it yet.
 | [Exp 1 — Centrality ablation](./experiments/exp1-centrality-ablation.md) | Is the score just centrality? |
 | [Exp 2 — Episode recovery](./experiments/exp2-episode-recovery.md) | Blocked: no real external gold |
 | [Exp 3 — Hostile vs organic](./experiments/exp3-hostile-vs-organic.md) | Blocked: no negative class |
-| [Exp f — Embedding discrimination](./experiments/expf-embedding-discrimination.md) | Script must be fixed first |
+| [Exp f — Embedding discrimination](./experiments/expf-embedding-discrimination.md) | Does the representation behind family (f) separate organic from scored channels? |
 | [Language-prior ablation](./experiments/exp-language-prior-ablation.md) | How much of the ranking is language? |
 | [Parameter sensitivity](./experiments/exp-parameter-sensitivity.md) | Do the free parameters carry the results? |
 | [Validation lab contracts](./experiments/validation-lab.md) | Schemas for external gold and organic corpora |
@@ -88,8 +89,10 @@ for why.
   [`reference/glossary.md`](./reference/glossary.md) preserves French
   institutional terms in their official form (VIGINUM / EU usage —
   *manipulations de l'information*, *ingérences numériques étrangères*), with
-  translations. Not "fake news".
-- **Numbers.** No figure appears in prose without a matching artefact under
-  `experiments/results/`. This is enforced in CI.
-- **Claims.** Every methodological statement resolves to a `file:line` reference
-  or an artefact. Anything else is a defect and belongs in `limitations.md`.
+  translations. Not 'fake news'.
+- **Numbers.** No figure appears in experiment prose without a matching
+  artefact under `experiments/results/`. CI enforces this for
+  `experiments/*.md` (`scripts/check_docs.py::check_numbers`).
+- **Claims.** Every methodological statement resolves to a code reference
+  (a path and a symbol) or an artefact. Anything else is a defect and
+  belongs in `limitations.md`.

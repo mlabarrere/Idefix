@@ -1,11 +1,13 @@
 # References
 
-Every entry below was **resolved against Crossref or arXiv** and its authors,
-year, venue, volume and pages verified. Entries that could not be verified, or
-that grounded no implemented method, were removed.
+Every journal, conference and preprint entry below was **resolved against
+Crossref or arXiv** and its authors, year, venue, volume and pages verified.
+Entries that could not be verified were removed. The VIGINUM D3lta entry is a
+software release, cited for the provenance of two constants.
 
-Each entry states **where it is used**. A reference that grounds nothing in the
-code is not listed as if it did.
+Each entry states **where it is used**, or says that it frames the method
+without being implemented. A reference that grounds nothing in the code is not
+listed as if it did.
 
 Machine-readable form: [`references.bib`](./references.bib).
 
@@ -16,19 +18,22 @@ Machine-readable form: [`references.bib`](./references.bib).
 **Traag, V. A., Waltman, L., & van Eck, N. J. (2019).** From Louvain to Leiden:
 guaranteeing well-connected communities. *Scientific Reports*, 9, 5233.
 doi:[10.1038/s41598-019-41695-z](https://doi.org/10.1038/s41598-019-41695-z)
-→ *Used:* the community-detection algorithm, `scripts/analyze_communities.py`.
-Note that the resolution parameter is set by inspection, not by the paper — see
-`../limitations.md` D14.
+→ *Used:* the community-detection algorithm,
+`scripts/analyze_communities.py::detect_communities`. Note that the resolution
+parameter is set by inspection, not by the paper; see
+[D14](../limitations.md#d14).
 
 **Blondel, V. D., Guillaume, J.-L., Lambiotte, R., & Lefebvre, E. (2008).** Fast
 unfolding of communities in large networks. *Journal of Statistical Mechanics*,
 2008(10), P10008.
 doi:[10.1088/1742-5468/2008/10/P10008](https://doi.org/10.1088/1742-5468/2008/10/P10008)
-→ *Used:* `scripts/detect_clusters.py` (`community_multilevel`).
+→ *Used:* `scripts/detect_clusters.py` (`community_multilevel`), an
+exploratory script outside the pipeline.
 
 **Newman, M. E. J., & Girvan, M. (2004).** Finding and evaluating community
 structure in networks. *Physical Review E*, 69(2), 026113.
 doi:[10.1103/PhysRevE.69.026113](https://doi.org/10.1103/PhysRevE.69.026113)
+→ *Framing:* the modularity objective that Leiden optimizes.
 
 **Newman, M. E. J. (2006).** Modularity and community structure in networks.
 *PNAS*, 103(23), 8577–8582.
@@ -37,8 +42,9 @@ doi:[10.1073/pnas.0601602103](https://doi.org/10.1073/pnas.0601602103)
 
 **Bonacich, P. (1972).** Factoring and weighting approaches to status scores and
 clique identification. *The Journal of Mathematical Sociology*, 2(1), 113–120.
-→ *Used:* the eigenvector-centrality term of family (b). In practice that term
-is numerically negligible at corpus scale — `../limitations.md` D9.
+→ *Used:* the eigenvector-centrality term of family (b). That term is not
+negligible: it dominates the Bridge Score on large corpora; see
+[D9](../limitations.md#d9).
 
 **Shah, D., Ranka, H., Ng, L. H. X., & Mehta, S. (2024).** Bridging Nodes and
 Narrative Flows: Identifying Intervention Targets for Disinformation on
@@ -50,41 +56,48 @@ Telegram. arXiv:[2411.05922](https://arxiv.org/abs/2411.05922)
 **Rousseeuw, P. J. (1987).** Silhouettes: a graphical aid to the interpretation
 and validation of cluster analysis. *Journal of Computational and Applied
 Mathematics*, 20, 53–65.
-→ *Used:* silhouette scores in the community comparison.
+→ *Used:* silhouette scores in the community comparison
+(`src/embed/community.py::_silhouette`).
 
 **Danon, L., Díaz-Guilera, A., Duch, J., & Arenas, A. (2005).** Comparing
 community structure identification. *Journal of Statistical Mechanics*,
 2005(09), P09008.
 doi:[10.1088/1742-5468/2005/09/P09008](https://doi.org/10.1088/1742-5468/2005/09/P09008)
-→ *Used:* NMI between the analytics and embedding partitions.
+→ *Used:* normalized mutual information (NMI) between the analytics and
+embedding partitions (`src/embed/community.py::_partition_agreement`).
 
 **Hubert, L., & Arabie, P. (1985).** Comparing partitions. *Journal of
 Classification*, 2(1), 193–218.
-→ *Used:* ARI between the analytics and embedding partitions.
+→ *Used:* the adjusted Rand index (ARI) between the analytics and embedding
+partitions (`src/embed/community.py::_partition_agreement`).
 
 ## Statistics and significance
 
 **Benjamini, Y., & Hochberg, Y. (1995).** Controlling the false discovery rate:
 a practical and powerful approach to multiple testing. *Journal of the Royal
 Statistical Society, Series B*, 57(1), 289–300.
-→ *Used:* FDR control across channels, `src/scorer/significance.py:197-211`
-(via `statsmodels`).
+→ *Used:* FDR control across channels,
+`src/scorer/significance.py::benjamini_hochberg` (via `statsmodels`). Its
+rejection set is what the documentation calls *flagged*.
 
 **Stouffer, S. A., Suchman, E. A., DeVinney, L. C., Star, S. A., & Williams,
 R. M. (1949).** *The American Soldier, Vol. 1: Adjustment During Army Life.*
 Princeton University Press.
-→ *Used:* weighted p-value combination, `significance.py:180-194`. Note the
-independence assumption is violated in the current pipeline —
-`../limitations.md` D3.
+→ *Used:* weighted p-value combination,
+`src/scorer/significance.py::stouffer_combine`. Note that the independence
+assumption is violated in the current pipeline; see
+[D3](../limitations.md#d3).
 
 **Efron, B. (1979).** Bootstrap methods: another look at the jackknife. *The
 Annals of Statistics*, 7(1), 1–26.
-→ *Used:* confidence intervals for families (b) and (d). Currently run at
-`n_bootstrap = 100`, which is too low — `../limitations.md` D7.
+→ *Used:* confidence intervals for families (b) and (d)
+(`src/scorer/significance.py::bootstrap_all_nodes`), run at
+`n_bootstrap = 1000` since [D7](../limitations.md#d7) was fixed.
 
 **Good, P. (2000).** *Permutation Tests: A Practical Guide to Resampling Methods
 for Testing Hypotheses.* Springer.
-→ *Used:* the randomized-endpoint null model, `significance.py:42-75`.
+→ *Used:* the randomized-endpoint null model,
+`src/scorer/significance.py::randomize_endpoints`.
 
 **Fawcett, T. (2006).** An introduction to ROC analysis. *Pattern Recognition
 Letters*, 27(8), 861–874.
@@ -92,13 +105,16 @@ Letters*, 27(8), 861–874.
 
 **Spearman, C. (1904).** The proof and measurement of association between two
 things. *The American Journal of Psychology*, 15(1), 72–101.
-→ *Used:* rank correlation in the ablation protocols.
+→ *Used:* rank correlation in the ablation protocols
+(`scripts/_eval_common.py::spearman`).
 
 ## NLP and embeddings
 
 **Spärck Jones, K. (1972).** A statistical interpretation of term specificity and
 its application in retrieval. *Journal of Documentation*, 28(1), 11–21.
-→ *Used:* TF-IDF labelling of communities and episodes.
+→ *Used:* TF-IDF labelling of episodes
+(`scripts/mine_episodes.py::label_topics`). Community labels use an IDF
+weighting over regex themes instead (`scripts/analyze_communities.py::TAXONOMY`).
 
 **Reimers, N., & Gurevych, I. (2019).** Sentence-BERT: Sentence Embeddings using
 Siamese BERT-Networks. *EMNLP-IJCNLP 2019.*
@@ -111,7 +127,8 @@ Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained
 Transformers. *NeurIPS 2020.* arXiv:[2002.10957](https://arxiv.org/abs/2002.10957)
 → *Used:* the deployed encoder,
 `paraphrase-multilingual-MiniLM-L12-v2`. No ablation against alternative
-encoders has been run — `../limitations.md` D14.
+encoders has been run; the parameter-sensitivity protocol plans one
+([`exp-parameter-sensitivity.md`](../experiments/exp-parameter-sensitivity.md)).
 
 ## Coordinated inauthentic behaviour
 
@@ -141,9 +158,10 @@ of the International AAAI Conference on Web and Social Media*, 15, 443–454.
 translation) published as open source by VIGINUM, the French service for
 vigilance and protection against foreign digital interference.
 → *Provenance only:* the constants `TEXT_SIM_THRESHOLD = 0.715` and
-`TRANSLATION_THRESHOLD = 0.85` (`src/graph/edges.py:454-455`) were taken from
-this work. **They are applied to a different embedding model and have never been
-calibrated for it** — `../limitations.md` D13. The D3lta method itself is *not*
+`TRANSLATION_THRESHOLD = 0.85` (`src/graph/edges.py::TEXT_SIM_THRESHOLD`,
+`src/graph/edges.py::TRANSLATION_THRESHOLD`) were taken from this work. **They
+are applied to a different embedding model and have never been calibrated for
+it**; see [D13](../limitations.md#d13). The D3lta method itself is *not*
 implemented here.
 
 ## Related work, not implemented

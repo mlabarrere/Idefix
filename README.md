@@ -19,6 +19,16 @@ adversarial media ecosystem is an open question this project has not answered.
 Read [`docs/limitations.md`](./docs/limitations.md) before drawing any
 conclusion from an output.
 
+> [!CAUTION]
+> **Personal data.** Idéfix collects, and dataset `v1.0.0` publishes, the
+> Telegram user ID, username and comment text of private individuals who
+> commented in the public discussion groups linked to collected channels (the
+> `comments` table). The pipeline also writes the IDs and usernames of each
+> channel's most frequent commenters into the analyst bundle
+> (`commenters.json`, by `scripts/build_commenters.py`), and the analyst
+> interface displays them. Read the [datasheet's terms of use](./dataset/DATASHEET.md#uses)
+> before you download the corpus or deploy a bundle anywhere others can reach it.
+
 > ### Reproducibility status
 >
 > **The corpus is public; the results are not regenerated yet.**
@@ -33,18 +43,19 @@ conclusion from an output.
 >   with one command ([§5](#5-run-it-on-the-public-corpus)). No Telegram
 >   account is needed. The snapshot also carries the derived tables of an
 >   earlier pipeline run; the bootstrap recomputes them, and only regenerated
->   numbers may be cited ([D18](./docs/limitations.md)).
+>   numbers may be cited ([D18](./docs/limitations.md#d18)).
 > - [`docs/experiments/`](./docs/experiments/) contains falsification
 >   protocols. `docs/experiments/results/` stays empty until each figure is
 >   regenerated from that corpus.
 > - The figures from the June 2026 runs stay quarantined under
 >   [`archive/`](./archive/) and may not be cited: they came from an earlier
 >   pipeline, and recomputing on the public corpus is not expected to reproduce
->   them ([D18](./docs/limitations.md)).
+>   them ([D18](./docs/limitations.md#d18)).
 
 **Start here:** [`docs/`](./docs/) — method, experiments, limitations,
-references. [`METHODOLOGY.md`](./METHODOLOGY.md) is the versioned cover page
-whose hash ships in every export. New contributor? Read
+references. [`METHODOLOGY.md`](./METHODOLOGY.md) is the versioned cover page of
+the method. Bundles carry a static methodology version string, not a hash of it
+([D20](./docs/limitations.md#d20)). New contributor? Read
 [`ONBOARDING.md`](./ONBOARDING.md): setup, the database in depth, and where to
 improve the project.
 
@@ -61,7 +72,7 @@ seeds, lexicons, relevance signals and weights.
 |---|---|---|
 | `russosphere` | `True` | Coordinated disinformation targeting the image, integrity or sovereignty of France |
 | `france_ukraine` | `True` | Narratives targeting France in the Ukraine conflict |
-| `gan` | `True` | Telegram-observable informational footprint of the French Carrier Strike Group (OPSEC objective). Gate calibration **not reconciled** with `russosphere` — see [`limitations.md`](./docs/limitations.md) D15 |
+| `gan` | `True` | Telegram-observable informational footprint of the French Carrier Strike Group (OPSEC objective). Gate calibration **not reconciled** with `russosphere` — see [D15](./docs/limitations.md#d15) |
 | `dircom_minarm` | `False` | Reuse and distortion of official French MoD communication. Packaged, refuses live selection until a crawl populates it |
 
 **Load-bearing constraint:** thematic relevance and adversary linkage modulate
@@ -79,15 +90,15 @@ The pipeline reads raw channels and posts from PostgreSQL. They get there in
 one of two ways: restored from the public dataset (the default, no credentials),
 or collected from Telegram with your own account (optional).
 
-```
+```text
 ┌──────────────────────────── RAW DATA (one of) ─────────────────────────────┐
 │  public dataset v1.0.0 ─▶ pg_restore     │  your own collection (MTProto)  │
 │  scripts/bootstrap.py, no credentials    │  optional, Telegram account     │
 └─────────────────────────────────────┬──────────────────────────────────────┘
                                       ▼   PostgreSQL 17: channels, messages
 ┌──────────────── OFFLINE PIPELINE (Python, scripts/pipeline.py) ────────────┐
-│  build_edges ─▶ build_scores ─▶ analyze_communities ─▶ export_static       │
-│    (graph)      (Stouffer/BH)       (Leiden)             (JSON)            │
+│  build_edges ─▶ build_scores ─▶ analyze_communities ─▶ … ─▶ export_static  │
+│    (graph)      (Stouffer/BH)       (Leiden)                  (JSON)       │
 └─────────────────────────────────────┬──────────────────────────────────────┘
                                       ▼
 ┌──────────────────── ANALYST INTERFACE (React, static) ─────────────────────┐
@@ -96,9 +107,9 @@ or collected from Telegram with your own account (optional).
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-```
+```text
 Idefix/
-├── METHODOLOGY.md      versioned cover page (hash shipped in every export)
+├── METHODOLOGY.md      versioned cover page of the method
 ├── docs/               method · experiments · limitations · references · ops
 ├── dataset/            public corpus: manifest (SHA-256 pins), datasheet, README
 │   └── downloads/      fetched artefacts land here (gitignored)
@@ -123,7 +134,8 @@ Idefix/
 **Bundles are not published in this repository.** They are corpus- and
 run-specific by construction, so shipping them would publish numbers nobody can
 regenerate. The bootstrap produces them locally from the public corpus
-(`scripts/export_static.py` is the stage that writes them).
+(`scripts/pipeline.py` runs every stage that writes them,
+`scripts/export_static.py` among them).
 
 ## 3. Stack
 
@@ -133,7 +145,7 @@ regenerate. The bootstrap produces them locally from the public corpus
 | Ingestion (optional) | MTProto (Telegram) | **Public channels only**, one dedicated read-only account, `FLOOD_WAIT` discipline |
 | Storage | PostgreSQL 17 | Messages, edges, scores. Docker Compose locally (`docker-compose.yml`); any PostgreSQL 17, e.g. Supabase, otherwise |
 | Graph | NetworkX `MultiDiGraph` + igraph/Leiden | Rebuilt **in memory, on demand**. No graph-database server |
-| Scoring | Pure Python, no network calls | Per-family p-values, Stouffer combination, Benjamini-Hochberg FDR control |
+| Scoring | Pure Python, no network calls | Per-family p-values, Stouffer combination, Benjamini–Hochberg FDR control |
 | Embeddings | `sentence-transformers`, local | `paraphrase-multilingual-MiniLM-L12-v2` (384-dim, FR/RU/EN), deterministic offline cache |
 | Communities | Leiden, two tracks | **analytics** (link graph) and **embeddings** (plus semantic edges) |
 | Frontend | React 18 + Vite + TypeScript | Strict mode, Cytoscape, Radix, Tailwind v4. **100% static build** |
@@ -149,14 +161,19 @@ treatment, including the defects, in
 | Family | Status | Method |
 |---|---|---|
 | **b** · Cascade role | Active, **with null model** | Bridge-Score composite on the forward graph |
-| **c** · Coordination | Active, **no null model** | Windowed coordination edges. Its p-value is a placeholder — [D2](./docs/limitations.md) |
+| **c** · Coordination | Active, **no null model** | Windowed coordination edges. Its p-value is a placeholder — [D2](./docs/limitations.md#d2) |
 | **d** · Forward influence | Active, **with null model** | Out-degree and out-strength on the aggregate forward graph. **Not** cross-episode |
-| **f** · Semantic coherence | Active, opt-in | Distance to an organic-FR baseline, proximity to known adversary channels |
+| **f** · Semantic coherence | **Computed, not scored** | Distance to an organic-FR baseline, proximity to known adversary channels. Off in the pipeline; even when computed, it reaches neither the score nor the gate — [D19](./docs/limitations.md#d19) |
 | a · Claim proximity · e · GenAI origin | **Never wired** | Injection seams. They have never produced a value |
 
-**Multi-source gate:** a channel crosses only when **at least 2 distinct
-families** trigger. The triggered set is persisted (`channel_scores.gate_families`,
-migration `0008`), so tier assignment is auditable from the stored record.
+**Multi-source gate:** a channel meets the gate when **at least two distinct
+families** trigger, and only then is it T2. The triggered set is persisted
+(`channel_scores.gate_families`, Alembic revision `0008`), so tier assignment is
+auditable from the stored record. The gate decides the tier only: the severity
+modulation applies to every channel, whether or not it meets the gate
+([D21](./docs/limitations.md#d21)). Separately, a channel is **flagged** when
+Benjamini–Hochberg control rejects it at the mission's `alpha`; flagging changes
+neither the score, nor the gate, nor the tier.
 
 ## 5. Run it on the public corpus
 
@@ -194,7 +211,7 @@ What the bootstrap does, in order (each step is also a subcommand —
    is left untouched — no restore, no migration; if its schema is behind, the
    bootstrap prints the `alembic upgrade head` command to run.
 4. **pipeline** — runs every offline stage for every mission with
-   `scripts/pipeline.py`: edges, scores, episodes, communities, bundles. No
+   `scripts/pipeline.py`: edges, scores, communities, episodes, bundles. No
    Telegram contact and no paid API.
 5. **webapp** — installs the frontend dependencies if needed and starts the
    Vite dev server on <http://localhost:5173>.
@@ -226,7 +243,7 @@ redo one mission or one stage:
 ```bash
 uv run --extra embed python scripts/pipeline.py --mission russosphere --list   # print the stages
 uv run --extra embed python scripts/pipeline.py --mission russosphere          # run them all
-uv run --extra embed python scripts/pipeline.py --mission gan --from <stage>   # resume
+uv run --extra embed python scripts/pipeline.py --mission gan --from export_static   # resume
 uv run python scripts/pipeline.py --mission all --skip-embeddings
 make pipeline MISSION=russosphere                                              # via the bootstrap
 ```
@@ -236,12 +253,15 @@ make pipeline MISSION=russosphere                                              #
 prints per-stage timings. `bootstrap.py pipeline` (and `make pipeline`) runs it
 with the local `DATABASE_URL` already set.
 
-The stages are the individual scripts under [`scripts/`](./scripts/README.md) —
-in outline `build_edges` → `tag_france` / `tag_gan` → `build_scores` →
-`mine_episodes` → `analyze_communities` (and its embedding variant) →
-`analyze_porosity` → `export_static` → `build_stories`. `--list` prints the
-authoritative order. Every stage is mission-scoped and idempotent and only
-reads and writes PostgreSQL and local files.
+The stages are the individual scripts under [`scripts/`](./scripts/README.md),
+declared once, in order, in `scripts/pipeline.py::STAGES`: `build_edges`,
+`tag_france` and `tag_gan` (run once for the whole database), then
+`build_scores`, `build_dossier`, `analyze_communities`,
+`analyze_communities_embed`, `precompute_galaxy_layout`, `analyze_porosity`,
+`mine_episodes`, `build_gan_footprint`, `build_commenters`, `export_static` and
+`build_stories`. Some apply to `russosphere` only; `--list` prints the
+authoritative order and scope. Every stage is idempotent and only reads and
+writes PostgreSQL and local files.
 
 Run outside the bootstrap, the scripts take `DATABASE_URL` from the environment
 or from `.env`, and an explicit environment variable wins. `.env.example`
@@ -249,7 +269,10 @@ points at the local database; so does:
 
 ```bash
 export DATABASE_URL=postgresql+asyncpg://idefix:idefix@localhost:5433/idefix
-# PowerShell: $env:DATABASE_URL="postgresql+asyncpg://idefix:idefix@localhost:5433/idefix"
+```
+
+```powershell
+$env:DATABASE_URL = "postgresql+asyncpg://idefix:idefix@localhost:5433/idefix"
 ```
 
 ### Evaluation
@@ -257,7 +280,7 @@ export DATABASE_URL=postgresql+asyncpg://idefix:idefix@localhost:5433/idefix
 Protocols, falsification criteria and current status:
 [`docs/experiments/`](./docs/experiments/). The public corpus makes the
 experiments runnable in principle, but the evaluation harness still cannot run
-from a clean clone ([D12](./docs/limitations.md)) — read the protocol page
+from a clean clone ([D12](./docs/limitations.md#d12)) — read the protocol page
 before running one.
 
 ## 7. Analyst interface
@@ -272,7 +295,7 @@ npm run build      # static dist/
 ```
 
 The webapp reads JSON bundles from `webapp/public/data/<mission>/`, produced by
-the pipeline's `export_static` and `build_stories` stages. Those bundles are
+the pipeline's stages, from `build_dossier` to `build_stories`. Those bundles are
 **not** in the repository — the pipeline generates them. The browser never
 touches the database.
 
@@ -295,6 +318,8 @@ contacts Telegram.
   [`docs/ops/install.md`](./docs/ops/install.md#optional-collect-your-own-data-from-telegram).
 - **Target database.** Collection scripts write wherever `DATABASE_URL`
   points — the local Compose database with the `.env.example` default (see §6).
+- **Dependencies.** The Telegram client is in the `collect` extra, so run the
+  collection scripts with `uv run --extra collect python …`.
 - **Entry points** (MTProto, read-only, public channels, one serialized
   session — never run two at once):
 
@@ -302,7 +327,7 @@ contacts Telegram.
   |---|---|
   | `scripts/backfill.py --channel @name --limit 500` | One channel's history (`make backfill CH=@name`) |
   | `scripts/backfill_seeds.py [@channel ...]` | The hop-0 seed set, in one session |
-  | `scripts/snowball_crawl.py [--waves N] [--dry-run]` | Bounded snowball frontier: the most-forwarded channels not yet collected |
+  | `scripts/snowball_crawl.py [--waves N] [--dry-run]` | Bounded snowball frontier: uncollected forward origins, ranked by the French-keyword density of the channels that relay them |
   | `scripts/crawl_france_ukraine.py [--dry-run]` | Bounded France–Ukraine campaign in russophone networks |
   | `scripts/paced_backfill.py` | Paced long-running backfill of catalogued but empty channels (`make crawl`) |
   | `scripts/enrich_recrawl.py` | Media hashes, channel bios, and **commenters of linked public groups — personal data**, see §11 |
@@ -319,11 +344,11 @@ it are not comparable with results from the public corpus.
 uv run --extra dev python -m pytest        # offline: no database, no network
 cd webapp && npx tsc --noEmit              # strict frontend typecheck
 cd webapp && npx tsx scripts/check-i18n-parity.ts
-uv run python scripts/check_docs.py        # documentation integrity
+uv run --no-project python scripts/check_docs.py   # documentation integrity
 ```
 
 Coverage is uneven: the rigorous path (`rigor.py`) has no dedicated test file
-([D17](./docs/limitations.md)).
+([D17](./docs/limitations.md#d17)).
 
 ## 10. The load-bearing limitation
 
@@ -332,7 +357,8 @@ Coverage is uneven: the rigorous path (`rigor.py`) has no dedicated test file
 > without a Telegram stage, **will not be detected.** What is measured is a
 > footprint *observable on Telegram*, never the total footprint of a phenomenon.
 
-This is a mandatory, validated field of every exported bundle. The complete
+Every bundle manifest carries it, although the analyst interface no longer
+displays it ([D31](./docs/limitations.md#d31)). The complete
 register of limits and known defects is
 [`docs/limitations.md`](./docs/limitations.md).
 
@@ -342,14 +368,18 @@ register of limits and known defects is
   platforms, the public, candidates or press.
 - **Tiered vocabulary** (T1/T2/T3) rather than true/false. Any T3 claim
   (real-world attribution) is out of scope and a reportable defect.
-- **Structural corroboration.** No T2 label and no escalated severity without at
-  least 2 independent families triggered.
+- **Structural corroboration.** No T2 label without at least two distinct
+  triggered families: the gate enforces it. Severity is not bound by the same
+  rule; the severity factor applies whether or not the gate is met
+  ([D21](./docs/limitations.md#d21)).
 - **ToS-respecting collection.** Public channels only, no scraping outside the
   terms of service, no deanonymization. Channel member lists are not collected.
   `scripts/enrich_recrawl.py` does collect the identifiers, usernames and text
   of **commenters** in public linked discussion groups (`comments` table) —
-  personal data of private individuals. Secrets are scrubbed by key and by
-  value from every export.
+  personal data of private individuals. The `build_commenters` pipeline stage
+  copies the IDs and usernames of each channel's most frequent commenters,
+  without their text, into the analyst bundle, where the channel drawer shows
+  them. Secrets are scrubbed by key and by value from the static export.
 - **What the public dataset publishes.** The complete database snapshot:
   channel metadata and channel posts (public broadcast content); the
   `comments` table, **including commenter identifiers, usernames and text**;
