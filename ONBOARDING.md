@@ -1159,7 +1159,7 @@ flowchart LR
 - **Security issues**, and anything touching personal data, go through the
   private channel of [`SECURITY.md`](./SECURITY.md) — never a public issue.
 
-The French-language reference is [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+The full reference is [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ---
 
