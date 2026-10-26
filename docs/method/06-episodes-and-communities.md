@@ -6,33 +6,42 @@
 
 ## 6.1 Episode discovery
 
-An **episode** is a set of channels propagating the same material over a bounded
-window. Discovery pivots on three shared artefacts: reused media
-(`file_unique_id`), exact-match URLs, and forward republication.
+An **episode** is a relation between one Russian-side origin channel and one
+French-side receiving channel (`mine_episodes.py::group_by_pair`): every pivot
+in which material from the first reappears in the second is grouped under that
+pair. An RU origin is required, and no time window is applied. Discovery pivots
+on three shared artefacts: reused media (`file_unique_id`,
+`mine_episodes.py::media_pivots`), exact-match URLs
+(`mine_episodes.py::url_pivots`), and forward republication
+(`mine_episodes.py::forward_pivots`). The URL pivot reads `messages.urls`, which
+is NULL on every row of the public corpus, so it never fires there
+([D25](../limitations.md#d25)).
 
-Each candidate cluster is labelled by the top-5 TF-IDF terms of its vocabulary,
-against a hand-written 40-word multilingual stop list
-(`mine_episodes.py:75-81, 271-286`).
+Each episode is labelled by the top-5 TF-IDF terms of its vocabulary, against a
+hand-written multilingual stop list of 56 distinct words
+(`mine_episodes.py::_STOP`, `mine_episodes.py::label_topics`).
 
 **Tier assignment is a count of pivot types**, not a test: `tier = "T2"` when
 corroboration `>= 2`, where corroboration is the number of distinct pivot types
-observed (`:348`). Two channels sharing a URL *and* a forward is enough. This is
+observed (`mine_episodes.py::finalize`). Two channels sharing a URL *and* a forward is enough. This is
 the same structural weakness as family (c): distinct signal *types* are treated
 as independent corroboration without anything establishing that they are.
 
-The `side` attribution (`FR` if `fr_score >= 0.15` else `RU`, `:63,112`) is the
-same keyword-density threshold discussed in `04-thematic-relevance.md` §4.1 and
-carries the same defect.
+The `side` attribution (`FR` if `fr_score >= 0.15` else `RU`,
+`mine_episodes.py::FR_SIDE_MIN` and `mine_episodes.py::load_sides`) is the same
+keyword-density measure discussed in `04-thematic-relevance.md` §4.1. It no
+longer reaches the score, but it decides which side of an episode a channel
+sits on, and so which channels can appear in episodes at all.
 
-The semantic enrichment block (`:410-419`) computes intra-cluster cohesion and
-distance to a baseline — but the baseline it uses is "all FR texts across all
-episodes", i.e. **the corpus explains itself**. The source labels this a
-simplification (`:387`). It is not comparable to the external organic baseline of
+The semantic enrichment block (`mine_episodes.py::calculate_embeddings`)
+computes intra-cluster cohesion and distance to a baseline—but the baseline it
+uses is 'all FR texts across all episodes', that is, **the corpus explains
+itself**. The source labels this a simplification. It is not comparable to the external organic baseline of
 `05-semantic-family.md` and should not be reported as one.
 
 ## 6.2 Community detection
 
-Leiden via igraph (`analyze_communities.py:293-313`), `objective_function =
+Leiden via igraph (`analyze_communities.py::detect_communities`), `objective_function =
 "modularity"`, `n_iterations = -1`, **`resolution = 1.6`**.
 
 The resolution was not selected by any criterion. The source docstring is candid:
@@ -48,41 +57,45 @@ Two tracks are run and compared:
 ### The trade-off, stated correctly
 
 The `EMB_SIM` edges connect channels that *write* alike. Those edges cut across
-the communities defined by *who forwards whom*. Consequently, moving from the
-analytics track to the embeddings track raises semantic cohesion and lowers
-Newman modularity — because modularity is computed on the link graph, which the
-semantic edges deliberately cross.
+the communities defined by *who forwards whom*, so moving from the analytics
+track to the embeddings track is expected to raise semantic cohesion.
 
-Falling modularity is therefore **not** a regression: maximizing semantic
-cohesion and maximizing structural modularity are different objectives, and
-gaining on one costs the other. Reporting the modularity drop as a degradation
-would be a framing error.
+The two modularity figures are **not comparable**. Each track's modularity is
+computed on the graph that track partitioned
+(`scripts/analyze_communities_embed.py` calls `detect_communities` on the link
+graph plus the `EMB_SIM` edges): the analytics figure is modularity of the link
+graph, the embeddings figure is modularity of a different, denser graph. A
+difference between them is neither a regression nor an improvement, and
+reporting it as either would be a framing error. Maximizing semantic cohesion
+and maximizing structural modularity are different objectives in any case.
 
 This is a statement about what the two metrics measure. It is not a result.
 Whether the semantic track adds non-redundant signal on any given corpus is an
 empirical question, and the protocol for answering it is in
-`docs/experiments/`. Numbers previously quoted here came from a corpus that no
-longer exists; they are quarantined and may not be cited — see
+`docs/experiments/`. Numbers previously quoted here came from a decommissioned
+database; they are quarantined and may not be cited—see
 `archive/2026-06-russosphere/README.md`.
 
 ## 6.3 Topic labelling is a regex vote
 
-Community topic labels come from **28 hand-written tuples** of
-`(theme, handle-regex, domain-regex)` (`analyze_communities.py:105-202`), scored
+Community topic labels come from **27 hand-written tuples** of
+`(theme, handle-regex, domain-regex)` (`analyze_communities.py::TAXONOMY`), scored
 by `coverage * idf` where coverage is the fraction of channels in the community
 whose handle or title matches, plus `0.10` if a characteristic domain is present,
 and `idf = log((N+1)/(1+df))`. Thresholds: `MIN_COVER = 0.12`,
-`MIN_SCORE = 0.18`, `COMPOSITE = 0.80` (`:207-209`).
+`MIN_SCORE = 0.18`, `COMPOSITE = 0.80` (`analyze_communities.py::MIN_COVER`,
+`MIN_SCORE`, `COMPOSITE`).
 
 This is a keyword vote over channel names, not a classifier, and its coverage is
-bounded by whatever the 28 patterns happen to capture. Labels are a navigation
+bounded by whatever the 27 patterns happen to capture. Labels are a navigation
 aid for an analyst; they are not evidence.
 
 ## 6.4 Bridges
 
 `nx.betweenness_centrality(h, weight=None, normalized=True)` on the channel
-projection (`:353`). Note `weight=None`: the call **discards the edge weights the
-projection just computed** at `:327-331`. Bridge rankings are therefore
+projection (`analyze_communities.py::build_snapshot`). Note `weight=None`: the
+call **discards the edge weights the projection just computed** in
+`analyze_communities.py::channel_projection`. Bridge rankings are therefore
 unweighted betweenness, whatever the underlying forward volumes.
 
 ## 6.5 Layout

@@ -8,12 +8,15 @@ output, and conflating tiers is a reportable defect.
 | Tier | Claim | Evidence | Stance |
 |---|---|---|---|
 | **T1** — Observable diffusion | First-visible seeding channel, forward hubs, fan-out shape | MTProto public-channel data plus graph reconstruction | **Primary deliverable** |
-| **T2** — Behavioural recurrence | Same channels or motifs recurring, multi-family corroboration | Multi-episode aggregation plus the multi-source gate | **Secondary deliverable** |
+| **T2** — Behavioural recurrence | Same channels or motifs recurring, multi-family corroboration | For a channel: the multi-source gate (at least two distinct triggered families). For an episode: at least two distinct pivot types | **Secondary deliverable** |
 | **T3** — Real-world attribution | A person, organization, state, sponsor | Off-platform corroboration | **Out of scope. Never claimed** |
 
-Tier assignment is mechanical: gate met implies T2, otherwise T1
-(`channel_suspicion.py:874`). The triggered family set is persisted as
-`gate_families`, so any assignment can be audited from the stored record.
+Tier assignment is mechanical: for a channel, gate met implies T2, otherwise
+T1 (`channel_suspicion.py::compute_channel_queue`); no episode aggregation
+enters it. The triggered family set is persisted as `gate_families`, so any
+assignment can be audited from the stored record. Episodes carry their own
+tier, from the count of distinct pivot types (`06-episodes-and-communities.md`
+§6.1).
 
 **"First-visible seeding channel" means first visible *within the Telegram
 corpus*.** It never means originator. The corpus is a partial projection of a
@@ -26,13 +29,19 @@ family (c) triggers on two coordination edge types alone, and one of those types
 (`CO_HASHTAG`) is close to noise on a topical corpus. Episode-level tiering has
 the same shape: it counts pivot types. Until family (c) has a null model and
 `CO_HASHTAG` is reconsidered, T2 should be read as "two distinct signal types
-fired", which is weaker than what the label suggests. Tracked in
-`docs/limitations.md`.
+fired', which is weaker than what the label suggests. Tracked as
+[D2](../limitations.md#d2) and [D5](../limitations.md#d5).
 
-A separate T1–T5 *severity* ladder appears in `src/scorer/base.py`. That module
-is a dead v0 stub whose families all return 0.0; its ladder contradicts the
-T1/T2-only doctrine enforced elsewhere (`src/shared/dossier.py:91-96` raises on
-T3). Ignore it. It is scheduled for removal.
+A separate T1–T5 *severity* ladder exists alongside the attribution tiers.
+`src/scorer/base.py::ScoreSummary` maps signals to severity T1–T5 and holds a
+third gate rule ('at least three signals from at least two families' for T4 and
+T5); it is imported by the dossier builder (`src/dossier/builder.py`) and by
+`src/scorer/__init__.py`, so it is live code, not a dead stub. The dossier
+schema keeps the two scales apart: `attribution_tier` accepts only T1 or T2 and
+rejects T3, while `severity_tier` accepts T1 to T5
+(`src/shared/dossier.py`). Read a dossier's severity tier as evidence severity,
+never as attribution. The contradiction between dossier gates is recorded as
+[D16](../limitations.md#d16).
 
 ## 7.2 Output discipline
 
@@ -44,9 +53,12 @@ T3). Ignore it. It is scheduled for removal.
   the output — weights, per-family values, p-values, trigger status, boost
   detail — so that an analyst can justify any ranking from the dossier alone
   without re-running the pipeline.
-- **Chain of custody.** Each bundle carries a hash of the methodology document,
-  timestamps and stable identifiers, so a methodology revision is detectable
-  after the fact.
+- **Chain of custody.** Each bundle carries timestamps, stable identifiers, and
+  a methodology version string. That string is fixed in the code
+  (`scripts/export_static.py::METHODOLOGY_VERSION`), not derived from the
+  methodology document; only dossier outputs carry a hash of `METHODOLOGY.md`,
+  and that hash ignores `docs/method/`. A methodology revision is therefore
+  **not** reliably detectable from a bundle ([D20](../limitations.md#d20)).
 - **Tiered vocabulary** is mandatory in every output; a T3 claim is a reportable
   defect.
 
@@ -63,8 +75,15 @@ dataset (`v1.0.0`, a complete database snapshot) **includes** that table; its
 terms of use are in `dataset/DATASHEET.md`. Telegram session and API
 credentials are scrubbed by key and by value from every export.
 
-Deletion detection runs by polling diff, with latency of roughly 15 minutes on
-hot channels. No platform firehose exists.
+Migration `0003` records the constraints that apply to the `comments` table:
+public groups only, data minimization, retention bounds of 13 and 36 months
+with an access journal, and deletion propagation. Those are recorded intentions;
+no code in the repository enforces the retention bounds or propagates
+deletions.
+
+**Deletion detection is not implemented.** No code sets `messages.is_deleted`,
+so a message deleted on Telegram after collection stays in the corpus as if it
+were live ([D22](../limitations.md#d22)). No platform firehose exists.
 
 Two further collection blind spots are permanent and accepted: channels under a
 French legal block are invisible to an EU-anchored collector account, and
@@ -72,18 +91,23 @@ private channels are invisible entirely.
 
 ## 7.4 Governance commitments
 
-- The methodology is published before any live detection output ships, and
-  bundles embed its hash.
-- **No T2 label and no escalated severity without at least 2 triggered
-  families** — enforced structurally by the gate, not by review.
+- The methodology is published before any live detection output ships. Bundles
+  are meant to embed its hash; today they embed a fixed version string instead
+  ([D20](../limitations.md#d20)).
+- **No T2 label without at least 2 distinct triggered families**—enforced
+  structurally by the gate, not by review. Severity is **not** bound by the
+  same rule: the severity factor applies whether or not the gate is met
+  ([D21](../limitations.md#d21)).
 - The validation state ships **with** the methodology and is updated whenever the
   falsification battery is re-run. Claims are bounded by the weakest relevant
   experiment.
 - A **symmetric transparency ratio** — the share of the full scored population
   linked to documented adversary infrastructure versus organic — is computed on
-  every full scoring run and published with the bundle. Its interpretation is
-  currently limited by the language bias of `04-thematic-relevance.md` §4.1,
-  since the "suspect" side of the ratio is partly a language partition.
+  every full scoring run and published with the bundle. Until September 2026
+  its 'suspect' side was partly a language partition; since the fix to the
+  credibility prior ([D1](../limitations.md#d1)) it rests on documented
+  adversary linkage, so its interpretation is bounded by the coverage of the
+  adversary catalogue instead.
 
 ## 7.5 Standing claim
 

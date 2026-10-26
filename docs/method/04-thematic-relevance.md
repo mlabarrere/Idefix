@@ -10,21 +10,23 @@ things, and have different consequences.
 
 ## 4.1 Two quantities, not one
 
-| | `targeting_score` | `fr_score` |
+| Property | `targeting_score` | `fr_score` |
 |---|---|---|
-| Computed by | `src/normalizer/targeting.py:183-193` | `scripts/tag_france.py:35` |
+| Computed by | `src/normalizer/targeting.py::score_targeting` | `scripts/tag_france.py::main` |
 | Definition | Weighted composite of lexicon breadth, depth and adversary-domain citation | `matching_messages / total_messages` for one French-keyword regex |
 | Range | [0,1], per channel, max over sampled messages | [0,1], a raw density |
-| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | Display only |
-| Status | Uncalibrated but principled | Was a defect until 2026-09 — `docs/limitations.md` D1 |
+| Used for | Bounded severity modulation (`03-suspicion-score.md` §3.8) | Not the score. It decides the side of each episode and which channels can enter episodes (`scripts/mine_episodes.py`), drives the porosity view (`missions/spec.py::DashboardProfile`, `porosity_side_signal`), and anchors the snowball crawl (`missions/spec.py::SourceUniverse`, `snowball_anchor_signal`) |
+| Status | Uncalibrated but principled | Fed the credibility prior until 2026-09—[D1](../limitations.md#d1), fixed |
 
-The second row is the important one. `fr_score` was documented for a long time
-as "a display field only, never used as a filter or anchor", while in fact being
-the threshold that decided whether a channel was labelled `suspect` — a label
-feeding the largest severity modulator. The claim was false when written. The
-code was changed in September 2026 so that it is now true: `credibility_prior`
-is derived from documented adversary linkage, and language is no longer an
-input anywhere in the score.
+The 'Used for' row is the important one. `fr_score` was documented for a long
+time as 'a display field only, never used as a filter or anchor', while in fact
+being the threshold that decided whether a channel was labelled `suspect`—a
+label feeding the largest severity modulator. The claim was false when written.
+The code was changed in September 2026: `credibility_prior` is now derived from
+documented adversary linkage, and language is no longer an input anywhere in
+the score. `fr_score` is still not a display field, though: outside the score,
+it filters and orients episodes, the porosity view, and the snowball crawl, as
+the table says.
 
 ## 4.2 The targeting engine
 
@@ -32,7 +34,7 @@ A mission supplies a `TargetingProfile`: an anchor lexicon grouped into
 categories, a set of contextual terms, and a list of adversary domains. The
 engine is generic; only the data is thematic.
 
-```
+```text
 breadth       = distinct_categories_matched / n_categories
 depth         = total_hits / (total_hits + depth_saturation)
 domain_signal = 1.0 if any adversary domain is cited else 0.0
@@ -40,10 +42,12 @@ domain_signal = 1.0 if any adversary domain is cited else 0.0
 score = breadth_weight*breadth + depth_weight*depth + domain_weight*domain_signal
 ```
 
-For the `russosphere` mission (`france_targeting.py:136-141`): 5 categories,
-`breadth_weight = 0.55`, `depth_weight = 0.30`, `domain_weight = 0.15`,
-`depth_saturation = 4.0`. The `gan` mission uses `0.40 / 0.45 / 0.15` with no
-recorded calibration for either set. **These are six free parameters.**
+For the `russosphere` mission (`france_targeting.py::_FRANCE_WEIGHTS`): 5
+categories, `breadth_weight = 0.55`, `depth_weight = 0.30`,
+`domain_weight = 0.15`, `depth_saturation = 4.0`. The `gan` mission uses
+`0.40 / 0.45 / 0.15` with no recorded calibration for either set. **Counting
+`depth_saturation`, these are eight free parameters** (three weights and one
+saturation per mission).
 
 Matching is **regex keyword counting**, not semantics: accent folding, plus a
 bounded Cyrillic inflectional suffix so that Russian declensions of a keyword
@@ -57,10 +61,10 @@ this channel's text hits a hand-written word list".
 
 ## 4.3 The claim-proximity seam is dead code
 
-`targeting.py:199` implements a soft-OR that would raise the score when a
-claim-proximity value is supplied:
+`targeting.py::score_targeting` implements a soft-OR that would raise the score
+when a claim-proximity value is supplied:
 
-```
+```text
 score = score + (1 - score) * claim_proximity
 ```
 
@@ -74,5 +78,6 @@ Thematic relevance enters the score only through the bounded multiplicative
 modulator of `03-suspicion-score.md` §3.8. A channel with zero base suspicion
 stays at zero regardless of how strongly it is on-theme, so legitimate press
 writing about France is not promoted by relevance alone. That guarantee is
-structural, and it survives the defect of §4.1 — which distorts *which* channels
-are boosted, not *whether* an unsuspicious channel can be boosted from zero.
+structural, and it held even while the defect of §4.1 was open: that defect
+distorted *which* channels were boosted, not *whether* an unsuspicious channel
+could be boosted from zero.
