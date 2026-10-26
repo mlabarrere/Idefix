@@ -30,13 +30,22 @@ jobs:
         run: uv run pytest tests/ --cov=src --cov-report=term-missing
 
   docs:
-    # Guards the failure modes of the 2026-09 documentation audit: dead links in
-    # the index, numbers in prose with no backing artefact, and citations of the
-    # quarantined archive. See scripts/check_docs.py.
+    # Guards the failure modes of the 2026-09 and 2026-10 documentation audits:
+    # dead links and anchors, bare file:line references, symbols and script
+    # flags that no longer exist, facts that drifted from their source, numbers
+    # with no backing artefact, and citations of the quarantined archive.
+    # Blocking rules fail the job; warn-mode rules (docs/STYLE.md) only report.
+    # See scripts/check_docs.py.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The checker's regression test exports an old commit with
+          # `git archive`; a shallow clone would skip it.
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v3
       - run: uv python install 3.14
       - name: Documentation integrity
-        run: uv run --no-project python scripts/check_docs.py
+        run: uv run --no-project python scripts/check_docs.py --summary
+      - name: Checker tests
+        run: uv run --no-project --with pytest python -m pytest tests/test_check_docs.py -q

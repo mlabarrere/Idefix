@@ -502,12 +502,12 @@ interactive terminal it redraws those lines in place.
 
 | Table | Rows |
 |---|---|
-| `channels` | 3,699 |
-| `messages` | 166,188 |
-| `comments` | 9,241 |
-| `edges` | 16,275 |
-| `channel_scores` | 7,313 |
-| `scores_run_meta` | 2 |
+| `channels` | <!-- fact:manifest.row_counts.channels -->3,699<!-- /fact --> |
+| `messages` | <!-- fact:manifest.row_counts.messages -->166,188<!-- /fact --> |
+| `comments` | <!-- fact:manifest.row_counts.comments -->9,241<!-- /fact --> |
+| `edges` | <!-- fact:manifest.row_counts.edges -->16,275<!-- /fact --> |
+| `channel_scores` | <!-- fact:manifest.row_counts.channel_scores -->7,313<!-- /fact --> |
+| `scores_run_meta` | <!-- fact:manifest.row_counts.scores_run_meta -->2<!-- /fact --> |
 | `channel_llm_scores`, `episodes`, `evidence_dossiers` | 0 |
 
 To count the three source tables yourself at any time:
