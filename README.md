@@ -19,6 +19,16 @@ adversarial media ecosystem is an open question this project has not answered.
 Read [`docs/limitations.md`](./docs/limitations.md) before drawing any
 conclusion from an output.
 
+> [!CAUTION]
+> **Personal data.** Idéfix collects, and dataset `v1.0.0` publishes, the
+> Telegram user ID, username and comment text of private individuals who
+> commented in the public discussion groups linked to collected channels (the
+> `comments` table). The pipeline also writes the IDs and usernames of each
+> channel's most frequent commenters into the analyst bundle
+> (`commenters.json`, by `scripts/build_commenters.py`), and the analyst
+> interface displays them. Read the [datasheet's terms of use](./dataset/DATASHEET.md#uses)
+> before you download the corpus or deploy a bundle anywhere others can reach it.
+
 > ### Reproducibility status
 >
 > **The corpus is public; the results are not regenerated yet.**
@@ -346,8 +356,10 @@ register of limits and known defects is
   terms of service, no deanonymization. Channel member lists are not collected.
   `scripts/enrich_recrawl.py` does collect the identifiers, usernames and text
   of **commenters** in public linked discussion groups (`comments` table) —
-  personal data of private individuals. Secrets are scrubbed by key and by
-  value from every export.
+  personal data of private individuals. The `build_commenters` pipeline stage
+  copies the IDs and usernames of each channel's most frequent commenters,
+  without their text, into the analyst bundle, where the channel drawer shows
+  them. Secrets are scrubbed by key and by value from the static export.
 - **What the public dataset publishes.** The complete database snapshot:
   channel metadata and channel posts (public broadcast content); the
   `comments` table, **including commenter identifiers, usernames and text**;

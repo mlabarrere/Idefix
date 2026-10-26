@@ -78,6 +78,13 @@ commenter id appears as a forward origin. These are **private individuals**:
 even without the username, channel + post + timestamp locates a comment in the
 public thread, so the table cannot be considered pseudonymous.
 
+The project's own pipeline republishes part of this table. Its
+`build_commenters` stage (`scripts/build_commenters.py`) writes, for each
+channel, the commenter id, commenter username and comment count of its most
+frequent commenters, without comment text, into the analyst bundle file
+`commenters.json`, and the analyst interface lists them in the channel drawer.
+Any bundle generated from this release therefore carries commenter usernames.
+
 **Derived tables.** `edges`, `channel_scores` and `scores_run_meta` are the
 output of the pipeline run that produced the snapshot (`gan` scored on
 2026-06-09, `russosphere` on 2026-06-10). Edge types: `FORWARD` 6 889,
@@ -212,7 +219,9 @@ the repository.
   Telegram account to a real person (deanonymization is excluded by the
   project's governance);
 - republish commenter identifiers, usernames or comment text, or redistribute
-  the `comments` table outside the terms you received it under;
+  the `comments` table outside the terms you received it under — this
+  includes deploying an analyst bundle where others can reach it, since its
+  `commenters.json` carries commenter identifiers and usernames;
 - claim a real-world attribution (state sponsorship, who operates a channel):
   that is tier T3, out of scope and a reportable defect;
 - present the shipped `channel_scores`, `edges` or LLM verdicts as facts, as

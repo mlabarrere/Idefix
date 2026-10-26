@@ -72,8 +72,12 @@ Channel member lists are not collected. Commenters are: the enrichment pass
 people who commented in public discussion groups linked to collected channels
 (`comments` table). Those are personal data of private individuals. The public
 dataset (`v1.0.0`, a complete database snapshot) **includes** that table; its
-terms of use are in `dataset/DATASHEET.md`. Telegram session and API
-credentials are scrubbed by key and by value from every export.
+terms of use are in `dataset/DATASHEET.md`. The pipeline republishes part of
+it: the `build_commenters` stage (`scripts/build_commenters.py`) writes the
+identifiers, usernames and comment counts of each channel's most frequent
+commenters, without their text, into the analyst bundle (`commenters.json`),
+and the channel drawer displays them. Telegram session and API credentials are
+scrubbed by key and by value from the static export.
 
 Migration `0003` records the constraints that apply to the `comments` table:
 public groups only, data minimization, retention bounds of 13 and 36 months

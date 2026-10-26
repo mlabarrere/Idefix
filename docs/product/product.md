@@ -80,7 +80,7 @@ not a classifier. They are a navigation aid, not evidence.
 | Attribute to a sponsor (T3) | Crosses into investigation — out of scope by construction |
 | Act on platforms (reporting, takedown) | Arm-only: output goes to designated institutional recipients |
 | Analyse private messages or closed groups | MTProto read-only, public channels only |
-| Deanonymize members | Channel member lists are never collected. Commenters in public linked discussion groups are: their identifier, username and text are stored (`comments` table) and published in dataset `v1.0.0` — see [`DATASHEET.md`](../../dataset/DATASHEET.md) |
+| Deanonymize members | Channel member lists are never collected. Commenters in public linked discussion groups are: their identifier, username and text are stored (`comments` table) and published in dataset `v1.0.0`, and the identifiers and usernames of each channel's most frequent commenters are written into the analyst bundle and shown in the interface — see [`DATASHEET.md`](../../dataset/DATASHEET.md) |
 
 ## Architecture, in two halves
 
@@ -147,8 +147,12 @@ Commenters are: `scripts/enrich_recrawl.py` stores the identifier, username and
 text of people who commented in public discussion groups linked to collected
 channels (`comments` table). Those are personal data of private individuals,
 and the public dataset (`v1.0.0`) includes that table; its terms of use are in
-[`DATASHEET.md`](../../dataset/DATASHEET.md). Secrets are scrubbed by key and
-by value from every export.
+[`DATASHEET.md`](../../dataset/DATASHEET.md). The pipeline also republishes part
+of it: `scripts/build_commenters.py` writes, for each channel, the identifiers,
+usernames and comment counts of its most frequent commenters (not their text)
+into the bundle file `commenters.json`, and the channel drawer displays them.
+A bundle deployed where others can reach it therefore publishes those
+usernames. Secrets are scrubbed by key and by value from the static export.
 
 ### Published methodology
 
