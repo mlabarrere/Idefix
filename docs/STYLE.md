@@ -298,18 +298,10 @@ or warn (reported, never fatal).
 
 <a id="warn-mode-rules"></a>
 
-These rules report findings without failing CI, because documents on `main`
-do not pass them yet. A rule moves to blocking as soon as `main` passes it,
-and PR 5 of the documentation pass makes every rule blocking. Keep this table
-in step with `RULES` in `scripts/check_docs.py`; a test compares them.
+Every rule is blocking: none is in warn mode. A new rule may start in warn mode
+while documents on `main` do not pass it yet; list it in this table until it
+does, and keep the table in step with `RULES` in `scripts/check_docs.py`. A
+test compares them.
 
 | Rule | What still fails |
 |---|---|
-| `anchors` | Links to defect anchors such as `limitations.md#d19`, before the defects carry explicit `<a id>` anchors |
-| `file-line` | Bare `file:line` references in the experiments, the limitations, and the references |
-| `symbols` | References to a file name that more than one file shares |
-| `symbol-paths` | Short paths in the method chapters |
-| `flags` | Protocol commands for scripts that do not exist or have no `argparse` parser |
-| `spelling` | US spellings and the files still in French |
-| `version` | Versions that differ between the release files |
-| `methodology-hash` | `CHANGELOG.md` records no `METHODOLOGY.md` hash yet |
