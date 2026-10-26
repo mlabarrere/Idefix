@@ -138,8 +138,8 @@ missions are the packages under `src/missions/` (`russosphere`,
 | [`build_commenters.py`](#build_commenterspy) | Pipeline | none | no |
 | [`export_static.py`](#export_staticpy) | Pipeline | none | no |
 | [`build_stories.py`](#build_storiespy) | Pipeline | none | no |
-| [`classify_channels_llm.py`](#classify_channels_llmpy) | Classification tracks | `llm` (not for `--dry-run`) | no |
-| [`label_communities_llm.py`](#label_communities_llmpy) | Classification tracks | `llm` (not for `--dry-run`) | no |
+| [`classify_channels_llm.py`](#classify_channels_llmpy) | Classification tracks | `llm` | no |
+| [`label_communities_llm.py`](#label_communities_llmpy) | Classification tracks | `llm` | no |
 | [`classify_channels_embed.py`](#classify_channels_embedpy) | Classification tracks | `embed` | no |
 | [`calibrate_text_sim.py`](#calibrate_text_simpy) | Classification tracks | `embed` | no |
 | [`build_label_batch.py`](#build_label_batchpy) | Labelling | none | no |
@@ -866,12 +866,14 @@ classification (`is_gan_footprint`, `is_france_ukraine`, `actor_type`,
 `themes`, `confidence`, `rationale`). Results are cached offline, so re-runs
 are free.
 
-- **Extras:** `llm` and `MISTRAL_API_KEY`; `--dry-run` needs neither.
+- **Extras:** `llm`, even for `--dry-run`: the Mistral client is opened, and
+  its SDK imported, before the dry-run check. `MISTRAL_API_KEY` is needed only
+  without `--dry-run`.
 - **Reads:** `channels` and `messages`.
 - **Writes:** `channel_llm_scores` (upsert).
 
 ```bash
-uv run python scripts/classify_channels_llm.py --mission gan --limit 50 --dry-run
+uv run --extra llm python scripts/classify_channels_llm.py --mission gan --limit 50 --dry-run
 ```
 
 ```bash
@@ -903,7 +905,9 @@ modified. Labels and rationales pass through
 `src/labeling/aggregate.py::_redact_providers`, so no provider name reaches an
 export.
 
-- **Extras:** `llm` and `MISTRAL_API_KEY`; `--dry-run` needs neither.
+- **Extras:** `llm`, even for `--dry-run`: the Mistral client is opened, and
+  its SDK imported, before the dry-run check. `MISTRAL_API_KEY` is needed only
+  without `--dry-run`.
 - **Reads:** `webapp/public/data/<mission>/<mission>_snapshot.json` and
   `channel_llm_scores`. `analyze_communities.py` names its snapshot
   `russosphere_snapshot.json` in every mission directory, so the input exists
@@ -911,7 +915,7 @@ export.
 - **Writes:** `webapp/public/data/<mission>/<mission>_llm_snapshot.json`.
 
 ```bash
-uv run python scripts/label_communities_llm.py --mission russosphere --top-n 6 --dry-run
+uv run --extra llm python scripts/label_communities_llm.py --mission russosphere --top-n 6 --dry-run
 ```
 
 | Flag | Default | Effect |
