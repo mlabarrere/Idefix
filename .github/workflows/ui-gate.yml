@@ -132,4 +132,6 @@ jobs:
     steps:
       # Placeholder only. Phase 3 will enable Dockerized Playwright visual
       # regression here (deterministic browser, mobile viewports, snapshot diff).
+      # No checkout in this job, so the workflow default (webapp/) does not exist.
       - run: echo "visual regression is stubbed — enabled in Phase 3 (Dockerized Playwright)."
+        working-directory: .

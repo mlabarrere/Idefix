@@ -8,7 +8,8 @@
 # Data — gitignored sauf .gitkeep
 data/annotations/*
 data/catalogue/*
-data/claims/
+data/claims/*
+!data/claims/claims_fr.jsonl
 data/dossiers/*
 data/exports/*
 data/graphs/*
