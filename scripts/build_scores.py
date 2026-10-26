@@ -9,16 +9,16 @@ l'API ne serve) :
 Calcule UNE fois, hors du chemin de requête, ce que l'API recomputait à la volée
 (france_targeting sur tous les messages + projection forward + eigenvector +
 coordination + récidivisme), et l'écrit dans :
-  * ``channel_scores`` : 1 ligne / canal (``suspicion`` indexée pour le top_k,
+  * ``channel_scores`` : 1 ligne / (mission, canal) (``suspicion`` indexée pour le top_k,
     ``archetype`` pour le voisinage, ``payload`` = objet canal exact du contrat) ;
-  * ``scores_run_meta`` : 1 ligne (enveloppe : coverage_callout, symmetric_ratio).
+  * ``scores_run_meta`` : 1 ligne / mission (enveloppe : coverage_callout, symmetric_ratio).
 
 L'API (``build_channel_queue``) lit ensuite ce précalculé (quasi instantané) et
 ne recalcule en LIVE que si la table est vide. Réutilise ``compute_channel_queue``
 via ``_build_channel_queue_live(top_k=None)`` (= univers complet, sans troncature).
 
-Lecture/écriture PostgreSQL uniquement — AUCUN appel Telegram. Idempotent
-(TRUNCATE + réécriture atomique par run).
+Lecture/écriture PostgreSQL uniquement — AUCUN appel Telegram. Idempotent par
+mission (``DELETE … WHERE mission = $1`` + réécriture, dans une transaction).
 
 Usage :
     python scripts/build_scores.py

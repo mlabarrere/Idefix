@@ -38,7 +38,7 @@ re-run one alone (`uv run python scripts/bootstrap.py db`, for instance):
 |---|---|---|
 | 1 | `check` | Python 3.14, Docker daemon and Compose v2, Node and npm, a free database port, the `embed` extra, a valid manifest. Prints a fix for each failure |
 | 2 | `fetch` | Reads `dataset/manifest.json`, downloads each file into `dataset/downloads/`, verifies size and SHA-256, unpacks the archives it lists |
-| 3 | `db` | Starts the Compose service `db` and waits until healthy. **If the database is empty**: restores the snapshot, then runs `alembic upgrade head` (the additive migrations after the snapshot's revision). A database that already holds data is left untouched — no restore, no migration |
+| 3 | `db` | Starts the Compose service `db` and waits until healthy. **If the database is empty**: restores the snapshot, then runs `alembic upgrade head` (a no-op for `v1.0.0`, which is already at the head revision `0008`; it applies any revision added after the release). A database that already holds data is left untouched — no restore, no migration |
 | 4 | `pipeline` | `scripts/pipeline.py --mission all` against that database: every offline stage, no Telegram, no paid API. Recomputes the derived tables the snapshot carries from an earlier run. Within `all`, it runs only on a database the bootstrap restored itself, until one run has completed |
 | 5 | `webapp` | `npm ci` when `node_modules` is missing or stale, then `npm run dev` |
 

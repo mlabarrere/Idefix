@@ -42,7 +42,7 @@ Sans données, l'app affiche des **états vides propres** (et la commande à lan
 
 ## État (2026-06-10)
 
-**Single-screen « galaxie narrative »** (cf. `docs/frontend.md`) :
+**Single-screen « galaxie narrative »** (cf. `docs/product/frontend.md`) :
 - **Galaxie** = écran d'accueil de mission : nébuleuses-communautés, bloom au
   clic, domaines multi-liés, filtres, recherche fly-to ;
 - **StoryBar** : dropdown d'histoires + **phases nommées avec dates** ; une phase

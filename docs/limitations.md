@@ -344,9 +344,12 @@ Dataset `v1.0.0` is the **complete** database snapshot named as
 (`channels`, `messages`, `comments`), it holds the derived tables as they stood
 when it was taken — `edges`, `channel_scores`, `scores_run_meta` — and the
 `channels.extra` keys written by the tagging stages (`fr_score`,
-`gan_targeting`). Nothing was emptied. The snapshot predates schema revisions
-`0007` and `0008`; the bootstrap applies those two additive migrations, so the
-restored `channel_scores` rows have no `gate_families` until scores are
+`gan_targeting`). Nothing was emptied. The source was taken at schema
+revision `0006`; the release applied the two additive migrations `0007` and
+`0008` before dumping it (`dataset/README.md`, "What was done to the source"),
+so the restored database is already at head and the bootstrap's
+`alembic upgrade head` is a no-op. `channel_llm_scores` is empty, and the
+restored `channel_scores` rows have `gate_families` NULL until scores are
 recomputed.
 
 Those derived values come from an **earlier pipeline run**: before the D1, D4

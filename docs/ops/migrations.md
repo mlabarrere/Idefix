@@ -5,11 +5,16 @@ truth**. The script that created the original schema, `init_db.py`, is no
 longer in the repository; it is mentioned below only because databases it
 created need stamping (§4).
 
-The public corpus (dataset `v1.0.0`) is a snapshot taken before revisions
-`0007` and `0008`. Right after restoring it into an empty database, the
-bootstrap runs `alembic upgrade head`, which applies those additive revisions.
-On a database that already holds data the bootstrap migrates nothing; it
-prints the `alembic upgrade head` command if the schema is behind.
+The public corpus (dataset `v1.0.0`) is already at the head revision, `0008`:
+its source snapshot was taken at `0006`, and the release applied the additive
+revisions `0007` and `0008` before dumping it (`alembic_revision` and
+`sanitization` in
+[`../../dataset/manifest.json`](../../dataset/manifest.json)). Right after
+restoring it into an empty database, the bootstrap still runs
+`alembic upgrade head`; today that is a no-op, and it will apply any revision
+added after `0008`. On a database that already holds data the bootstrap
+migrates nothing; it prints the `alembic upgrade head` command if the schema
+is behind.
 
 Scope: data layer only. No Telegram or MTProto contact.
 

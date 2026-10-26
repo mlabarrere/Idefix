@@ -84,11 +84,12 @@ uv run python scripts/bootstrap.py db      # start; restore + migrate an empty d
 
 `db` starts the Compose service and waits for the healthcheck. If the
 database is empty, it restores the database file from `dataset/downloads/` and
-then runs `alembic upgrade head`, which applies the additive migrations that
-postdate the snapshot (it predates `0007` and `0008`). It migrates only right
-after its own restore: a database that already holds data is left untouched —
-no restore, no migration — and if its schema is behind, `db` prints the
-`alembic upgrade head` command for you to run. The bootstrap never deletes
+then runs `alembic upgrade head`. The `v1.0.0` dump is already at the head
+revision, `0008` (`alembic_revision` in `dataset/manifest.json`), so today
+that call is a no-op; it applies only revisions added after the release. It
+migrates only right after its own restore: a database that already holds data
+is left untouched — no restore, no migration — and if its schema is behind,
+`db` prints the `alembic upgrade head` command for you to run. The bootstrap never deletes
 data. Make equivalents: `make data`, `make db-up`, `make db-down`
 (`docker compose stop`: stops the container, keeps its data).
 

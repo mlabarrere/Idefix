@@ -8,9 +8,9 @@ Usage::
 
     from src.shared.db import get_pool
 
-    async with get_pool() as pool:
-        async with pool.acquire() as conn:
-            ...
+    pool = await get_pool()
+    async with pool.acquire() as conn:
+        ...
 
 Legacy one-shot connection (deprecated, use pool):
 
