@@ -5,7 +5,7 @@
 > British spelling, sentence-case headings, and the project's own reporting
 > channel under [Enforcement](#enforcement).
 
-## Our pledge
+## 🤝 Our pledge
 
 We as members, contributors, and leaders pledge to make participation in our
 community a harassment-free experience for everyone, regardless of age, body
@@ -17,7 +17,7 @@ and orientation.
 We pledge to act and interact in ways that contribute to an open, welcoming,
 diverse, inclusive, and healthy community.
 
-## Our standards
+## 🤝 Our standards
 
 Examples of behaviour that contributes to a positive environment for our
 community include:
@@ -41,7 +41,7 @@ Examples of unacceptable behaviour include:
 - Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
-## Enforcement responsibilities
+## 🤝 Enforcement responsibilities
 
 Community leaders are responsible for clarifying and enforcing our standards of
 acceptable behaviour and will take appropriate and fair corrective action in
@@ -53,7 +53,7 @@ comments, commits, code, wiki edits, issues, and other contributions that are
 not aligned to this Code of Conduct, and will communicate reasons for moderation
 decisions when appropriate.
 
-## Scope
+## 🧭 Scope
 
 This Code of Conduct applies within all community spaces, and also applies when
 an individual is officially representing the community in public spaces.
@@ -61,7 +61,9 @@ Examples of representing our community include using an official email address,
 posting via an official social media account, or acting as an appointed
 representative at an online or offline event.
 
-## Enforcement
+<a id="enforcement"></a>
+
+## 🔒 Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behaviour may be
 reported to the community leaders responsible for enforcement through GitHub's
@@ -73,7 +75,7 @@ directly. All complaints will be reviewed and investigated promptly and fairly.
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
 
-## Enforcement guidelines
+## 🤝 Enforcement guidelines
 
 Community leaders will follow these Community Impact Guidelines in determining
 the consequences for any action they deem in violation of this Code of Conduct:
@@ -119,7 +121,7 @@ individual, or aggression towards or disparagement of classes of individuals.
 **Consequence**: A permanent ban from any sort of public interaction within the
 community.
 
-## Attribution
+## 📚 Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage],
 version 2.1, available at

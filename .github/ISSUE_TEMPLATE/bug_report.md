@@ -13,29 +13,29 @@ Report security problems privately:
 https://github.com/mlabarrere/Idefix/security/advisories/new
 -->
 
-## Description
+## 🧭 Description
 
 <!-- What is wrong? Be clear and concise. -->
 
-## Affected area
+## 🧩 Affected area
 
 <!-- A mission (russosphere, france_ukraine, gan, dircom_minarm) or a component (bootstrap, pipeline, a script, webapp, documentation). -->
 
-## Steps to reproduce
+## 🩺 Steps to reproduce
 
 1.
 2.
 3.
 
-## Expected behaviour
+## 📊 Expected behaviour
 
 <!-- What should have happened? -->
 
-## Actual behaviour
+## 🩺 Actual behaviour
 
 <!-- What happened instead? Attach the log or traceback, with no secrets and no personal data. -->
 
-## Environment
+## 🔧 Environment
 
 - Operating system:
 - Python (`python --version`):

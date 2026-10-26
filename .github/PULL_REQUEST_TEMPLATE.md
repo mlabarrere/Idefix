@@ -1,17 +1,17 @@
-## Summary
+## 🧭 Summary
 
-<!-- What does this pull request change, and why? Link the issue it closes, for example "Closes #12". -->
+<!-- What does this pull request change, and why? Link the issue it closes, for example 'Closes #12'. -->
 
-## Type of change
+## 📝 Type of change
 
 - [ ] `fix`: bug fix
 - [ ] `feat`: new feature
 - [ ] `docs`: documentation only
 - [ ] `refactor`, `chore`, `ci`, or `build`
 
-## Checklist
+## 🧪 Checklist
 
-<!-- The commands are described in CONTRIBUTING.md, under "Checks". -->
+<!-- The commands are described in CONTRIBUTING.md, under 'Checks'. -->
 
 - [ ] Tests pass: `uv run --extra dev python -m pytest`
 - [ ] Lint and types pass: `uv run ruff check src/ tests/` and `uv run mypy src/ --ignore-missing-imports`
