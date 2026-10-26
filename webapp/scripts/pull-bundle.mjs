@@ -1,25 +1,30 @@
-// Prebuild Vercel : reconstruit le bundle scoré depuis Supabase `channel_scores`.
-// Le scoring est matérialisé hors-ligne (build_scores.py) ; ici on ne fait QUE
-// lire le payload scoré via REST et écrire les fichiers que la webapp consomme :
-//   public/data/<mission>/channels_index.json  (table Canaux + Synthèse)
+// Vercel prebuild: rebuilds the scored bundle from the Supabase `channel_scores` table.
+// Scoring is materialized offline (build_scores.py); this script ONLY reads the
+// scored payload over REST and writes the files the webapp reads:
+//   public/data/<mission>/channels_index.json  (Channels table + Synthesis)
 //   public/data/<mission>/channels/<id>.json   (ChannelDrawer, lazy)
-//   public/data/<mission>/manifest.json        (stats réelles)
-// Sans identifiants (dev local), on garde le bundle committé et on n'échoue pas.
-// Creds = variables d'env Vercel (SUPABASE_URL + SUPABASE_KEY service-role).
+//   public/data/<mission>/manifest.json        (real stats)
+// webapp/public/data/ is gitignored: no bundle is committed. Without credentials
+// (local dev) the script writes nothing, leaves whatever is already in public/data/
+// (written by the offline pipeline, scripts/pipeline.py) untouched, and does not fail the build.
+// Credentials = Vercel env vars (SUPABASE_URL + SUPABASE_KEY, service role).
 import { mkdir, writeFile } from 'node:fs/promises'
 
 const url = process.env.SUPABASE_URL
 const key = process.env.SUPABASE_KEY
 if (!url || !key) {
-  console.warn('[pull-bundle] SUPABASE_URL/SUPABASE_KEY absents — bundle committé conservé.')
+  console.warn(
+    '[pull-bundle] SUPABASE_URL/SUPABASE_KEY not set: skipped. public/data/ is left as is ' +
+      '(no bundle is committed; the offline pipeline, scripts/pipeline.py, builds it).',
+  )
   process.exit(0)
 }
 
 const REST = url.replace(/\/$/, '') + '/rest/v1'
 const H = { apikey: key, Authorization: `Bearer ${key}` }
-const PAGE = 1000 // plafond REST Supabase -> pagination
+const PAGE = 1000 // Supabase REST row cap -> paginate
 const TIMEOUT = 30_000
-const MISSIONS = ['russosphere', 'gan'] // missions ayant des scores matérialisés
+const MISSIONS = ['russosphere', 'gan'] // missions with materialized scores
 
 async function rest(path, { range } = {}) {
   const headers = { ...H }
@@ -66,10 +71,13 @@ for (const mission of MISSIONS) {
   try {
     rows = await paginate('channel_scores', 'payload', `mission=eq.${mission}`)
   } catch (err) {
-    console.warn(`[pull-bundle] ${mission}: ${err.message} — bundle committé conservé.`)
+    console.warn(`[pull-bundle] ${mission}: ${err.message}; public/data/${mission}/ left as is.`)
     continue
   }
-  if (!rows.length) { console.warn(`[pull-bundle] ${mission}: 0 score — sauté.`); continue }
+  if (!rows.length) {
+    console.warn(`[pull-bundle] ${mission}: no scores in channel_scores; public/data/${mission}/ left as is.`)
+    continue
+  }
   const payloads = rows.map((r) => r.payload)
   const dir = `public/data/${mission}`
   await mkdir(`${dir}/channels`, { recursive: true })
@@ -78,7 +86,7 @@ for (const mission of MISSIONS) {
   try {
     const { rows: m } = await rest(`scores_run_meta?select=envelope&mission=eq.${mission}&limit=1`)
     env = m[0]?.envelope || {}
-  } catch { /* envelope optionnelle */ }
+  } catch { /* the envelope is optional */ }
 
   await writeFile(`${dir}/channels_index.json`, JSON.stringify({
     generated_at: 'rest-build',
@@ -95,5 +103,5 @@ for (const mission of MISSIONS) {
   }, null, 2))
 
   const t2 = payloads.filter((p) => p.tier === 'T2').length
-  console.log(`[pull-bundle] ${mission}: ${payloads.length} canaux (${t2} T2)`)
+  console.log(`[pull-bundle] ${mission}: ${payloads.length} channels (${t2} T2)`)
 }

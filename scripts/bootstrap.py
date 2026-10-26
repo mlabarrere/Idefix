@@ -143,6 +143,17 @@ def human_bytes(n: float) -> str:
     return f"{n:.1f} GB"  # pragma: no cover - loop always returns
 
 
+def env_hint(name: str, value: str, command: str | None = None) -> str:
+    """Shell syntax that sets ``name`` (then runs ``command``) in the user's shell.
+
+    PowerShell on Windows (the default shell there), POSIX sh everywhere else.
+    """
+    if os.name == "nt":
+        assign = f'$env:{name}="{value}"'
+        return f"{assign}; {command}" if command else assign
+    return f"{name}={value} {command}" if command else f"export {name}={value}"
+
+
 class Progress:
     """Byte progress on one line (TTY) or every few seconds (logs, CI)."""
 
@@ -677,12 +688,16 @@ def port_available(port: int) -> bool:
 
 
 def port_hint(port: int) -> str:
-    return (
+    hint = (
         f"127.0.0.1:{port} is taken: pick another port and re-run, e.g. "
-        "`export IDEFIX_DB_PORT=55432` (bash/zsh) or `$env:IDEFIX_DB_PORT=55432` "
-        "(PowerShell). On Windows, Hyper-V may also reserve it: "
-        "`netsh interface ipv4 show excludedportrange protocol=tcp`."
+        f"`{env_hint('IDEFIX_DB_PORT', '55432')}`."
     )
+    if os.name == "nt":
+        hint += (
+            " Hyper-V may also reserve it: "
+            "`netsh interface ipv4 show excludedportrange protocol=tcp`."
+        )
+    return hint
 
 
 def docker_daemon_hint(stderr: str) -> str:
@@ -815,7 +830,9 @@ def check_embeddings(required: bool) -> Check:
         False,
         "the `embed` extra is not installed",
         "run `uv run --extra embed python scripts/bootstrap.py ...` (installs "
-        "sentence-transformers + torch, about 1 GB), or pass --skip-embeddings",
+        "sentence-transformers + torch: about 150 MB of packages on Windows and macOS, "
+        "about 3 GB on Linux, where torch pulls the CUDA libraries; the first pipeline "
+        "run also downloads the ~458 MB Hugging Face model), or pass --skip-embeddings",
         required,
     )
 
@@ -1066,8 +1083,8 @@ def step_db(manifest: Manifest, port: int, downloads: Path = DOWNLOADS) -> DbSta
         if head and revision != head:
             warn(
                 f"its schema is at revision {revision or 'none'}, the code expects {head}. "
-                f"To migrate it yourself: DATABASE_URL={database_url(port)} "
-                "uv run alembic upgrade head"
+                "To migrate it yourself: "
+                f"`{env_hint('DATABASE_URL', database_url(port), 'uv run alembic upgrade head')}`"
             )
     revision = psql(REVISION_SQL, port)
     counts = row_counts(list(manifest.row_counts) or list(DEFAULT_COUNTED_TABLES), port)
@@ -1075,7 +1092,7 @@ def step_db(manifest: Manifest, port: int, downloads: Path = DOWNLOADS) -> DbSta
         f"  schema at alembic revision {revision or 'none'}; rows: "
         + ", ".join(f"{t} {n}" for t, n in sorted(counts.items()))
     )
-    info(f"  DATABASE_URL={database_url(port)}")
+    info(f"  {env_hint('DATABASE_URL', database_url(port))}")
     return state
 
 
@@ -1116,7 +1133,7 @@ def step_pipeline(mission: str, skip_embeddings: bool, port: int, automatic: boo
         raise BootstrapError(
             "the database is empty: run `uv run python scripts/bootstrap.py db` first."
         )
-    rerun = "`uv run python scripts/bootstrap.py pipeline` runs it explicitly"
+    rerun = "`uv run --extra embed python scripts/bootstrap.py pipeline` runs it explicitly"
     if automatic and state.marker is None:
         info(f"  skipped: this database was not restored by the bootstrap ({rerun})")
         return
@@ -1127,10 +1144,12 @@ def step_pipeline(mission: str, skip_embeddings: bool, port: int, automatic: boo
         info("  note: this database was not restored by the bootstrap")
     proc = run(pipeline_cmd(mission, skip_embeddings), env=child_env(port), check=False)
     if proc.returncode != 0:
+        extra, flag = ("", " --skip-embeddings") if skip_embeddings else ("--extra embed ", "")
+        resume = f"uv run {extra}python scripts/pipeline.py --mission {mission}{flag} --from STAGE"
         raise BootstrapError(
             f"the pipeline failed (exit {proc.returncode}). Stages: "
-            "`uv run python scripts/pipeline.py --list`; resume with `--from STAGE`, with "
-            f"DATABASE_URL={database_url(port)} in the environment."
+            "`uv run python scripts/pipeline.py --list`; resume with "
+            f"`{env_hint('DATABASE_URL', database_url(port), resume)}`."
         )
     if state.marker is not None:
         state.marker.setdefault("pipeline", {})[pipeline_key(mission, skip_embeddings)] = (
@@ -1171,8 +1190,8 @@ def prepare_webapp(webapp: Path = WEBAPP) -> None:
     if not any((webapp / "public" / "data").glob("*/channels_index.json")):
         warn(
             "no analyst bundle under webapp/public/data/ yet: run "
-            "`uv run python scripts/bootstrap.py pipeline` (or, for a synthetic demo, "
-            "`uv run python scripts/make_fixture_bundle.py`)."
+            "`uv run --extra embed python scripts/bootstrap.py pipeline` (or, for a "
+            "synthetic demo, `uv run python scripts/make_fixture_bundle.py`)."
         )
 
 
@@ -1238,7 +1257,7 @@ def run_all(args: argparse.Namespace, port: int) -> None:
     heading("ready")
     for name, seconds in timings:
         info(f"  {name:<9} {seconds:8.1f} s")
-    info(f"  DATABASE_URL={database_url(port)}")
+    info(f"  {env_hint('DATABASE_URL', database_url(port))}")
     if not args.no_webapp:
         serve_webapp()
 
