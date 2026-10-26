@@ -385,7 +385,7 @@ If it fails: [`uv` not found](./troubleshooting.md#uv-not-found),
 ## Step 3: Check the prerequisites
 
 ```bash
-uv run python scripts/bootstrap.py check
+uv run --extra embed python scripts/bootstrap.py check
 ```
 
 ```text

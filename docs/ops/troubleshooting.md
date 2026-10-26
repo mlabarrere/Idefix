@@ -268,11 +268,16 @@ uv run --extra collect python scripts/backfill.py --channel @France24_fr --limit
 
 <a id="module-mistralai"></a>
 
-### `ModuleNotFoundError: No module named 'mistralai'`
+### `ModuleNotFoundError: No module named 'mistralai'` or `'httpx'`
 
 ```text
 E       ModuleNotFoundError: No module named 'mistralai'
 FAILED tests/test_mistral_client.py::test_cache_miss_then_hit - ModuleNotFoun...
+```
+
+```text
+E   ModuleNotFoundError: No module named 'httpx'
+ERROR tests/test_mistral_client.py
 ```
 
 **Cause.** Before version 0.4.1, `tests/test_mistral_client.py` needed the
