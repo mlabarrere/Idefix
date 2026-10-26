@@ -50,7 +50,7 @@ conclusion from an output.
 |---|---|
 | See it running | [`docs/ops/quickstart.md`](./docs/ops/quickstart.md), then [`docs/ops/troubleshooting.md`](./docs/ops/troubleshooting.md) if a step fails |
 | Read a ranking | [`docs/product/product.md`](./docs/product/product.md) for the queue, [`docs/method/03-suspicion-score.md`](./docs/method/03-suspicion-score.md) for the score, [`docs/reference/glossary.md`](./docs/reference/glossary.md) for the terms, and [`docs/limitations.md`](./docs/limitations.md) before any conclusion |
-| Contribute | [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/STYLE.md`](./docs/STYLE.md) |
+| Contribute | [`ONBOARDING.md`](./ONBOARDING.md) for a guided tour of the setup and the database, then [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/STYLE.md`](./docs/STYLE.md) |
 | Audit the method | [`METHODOLOGY.md`](./METHODOLOGY.md), the chapters in [`docs/method/`](./docs/method/), the defects in [`docs/limitations.md`](./docs/limitations.md), and the protocols in [`docs/experiments/`](./docs/experiments/) |
 | Brief my organization | [`docs/product/product.md`](./docs/product/product.md), [`docs/method/07-tiers-and-governance.md`](./docs/method/07-tiers-and-governance.md), and the five-minute [`docs/ops/demo-runbook.md`](./docs/ops/demo-runbook.md) |
 | Use the corpus | [`dataset/DATASHEET.md`](./dataset/DATASHEET.md) and [`dataset/README.md`](./dataset/README.md) |

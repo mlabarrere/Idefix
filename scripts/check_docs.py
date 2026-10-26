@@ -403,7 +403,8 @@ def document_anchors(doc: Doc) -> set[str]:
 LINK_TARGET_RE = re.compile(
     r"!?\[(?:[^\[\]]|\[[^\]]*\])*\]\(\s*(<[^>]*>|[^\s)]+)(?:\s+(?:\"[^\"]*\"|'[^']*'|\([^)]*\)))?\s*\)"
 )
-REF_DEF_RE = re.compile(r"^\s{0,3}\[[^\]]+\]:\s*(<[^>]*>|\S+)")
+# A footnote definition, ``[^id]: text``, is not a link reference definition.
+REF_DEF_RE = re.compile(r"^\s{0,3}\[(?!\^)[^\]]+\]:\s*(<[^>]*>|\S+)")
 HTML_LINK_RE = re.compile(r"<(?:a|img)\b[^>]*?\b(?:href|src)\s*=\s*([\"'])(.*?)\1", re.IGNORECASE)
 SCHEME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.\-]*:")
 

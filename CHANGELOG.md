@@ -17,6 +17,38 @@ Defect numbers (D1, D19, …) refer to [`docs/limitations.md`](./docs/limitation
 Releases: [0.4.1](#041---2026-10-26), [0.4.0](#040---2026-09-10),
 [0.3.0-poc](#030-poc---2026-06-29), and [0.2.0-poc](#020-poc).
 
+## [Unreleased]
+
+### Normative
+
+None. No change here alters what the pipeline computes, and no ranking moves.
+
+### Editorial
+
+- **Onboarding guide.** `ONBOARDING.md` is a single tutorial for new
+  contributors, from the one-command setup to the database in depth (schema,
+  read-only exploration, Alembic migrations with a worked example, corpus
+  enrichment, and dataset releases), with an improvement backlog and good first
+  issues. `README.md` links to it.
+- **Good first issues fixed**, from `ONBOARDING.md` §7.3:
+  - D18 in `docs/limitations.md` adds that the bootstrap's
+    `alembic upgrade head` after a restore is a no-op, since the dump is
+    already at `0008`, and that `channel_llm_scores` is empty;
+  - the docstring of `scripts/build_scores.py` describes the per-mission
+    `DELETE … WHERE mission = $1` in a transaction instead of a `TRUNCATE`;
+  - the usage example in `src/shared/db.py` awaits `get_pool()`, a coroutine,
+    instead of using it as an async context manager.
+
+  The other items (the `0007` and `0008` claim in `docs/ops/`, the stale
+  `scripts/README.md` and `webapp/README.md`) went with the rewrites of those
+  pages.
+
+### Fixed
+
+- `scripts/check_docs.py` no longer reads a footnote definition
+  (`[^id]: text`) as a link reference definition, which reported its first
+  word as a dead link.
+
 ## [0.4.1] - 2026-10-26
 
 ### Normative

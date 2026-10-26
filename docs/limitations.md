@@ -407,8 +407,9 @@ when it was taken (`edges`, `channel_scores`, `scores_run_meta`), and the
 `gan_targeting`). Nothing was emptied. The source snapshot was at schema
 revision `0006`; the release script applied the two additive migrations `0007`
 and `0008` before dumping, so the published dump is at `0008`, the current
-Alembic head, and its `channel_scores` rows have no `gate_families` until
-scores are recomputed.
+Alembic head, and the bootstrap's `alembic upgrade head` after a restore is a
+no-op. `channel_llm_scores` is empty, and the `channel_scores` rows have no
+`gate_families` until scores are recomputed.
 
 Those derived values come from an **earlier pipeline run**: before the D1, D4
 and D15b fixes, with code that is not recorded. They are not results. **Cite
