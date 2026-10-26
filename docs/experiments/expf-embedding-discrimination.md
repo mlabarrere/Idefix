@@ -1,13 +1,13 @@
 # Experiment f — Embedding discrimination
 
-**Status:** `NOT YET RUN` — the script must be fixed before it tests anything
+**Status:** `NOT YET RUN` (the harness cannot yet read the public corpus, [D12](../limitations.md#d12))
 **Script:** `scripts/eval_embedding_discrimination.py`
-**Artefact:** `results/embedding_discrimination_<mission>.json`
+**Artefact:** `results/embedding_discrimination_russosphere.json` (the script writes `data/eval/embedding_discrimination_russosphere.json` and a `.png` today, [D25](../limitations.md#d25))
 
 ## Question
 
-Does semantic family (f) separate an external organic-French baseline from the
-scored population?
+Does the representation behind semantic family (f) separate an external
+organic-French baseline from the scored population?
 
 ## Hypothesis
 
@@ -16,62 +16,63 @@ distinguishable regions of the embedding space.
 
 ## Falsification criterion
 
-Fixed in the script: the family is **not discriminative** if
+Fixed in the script: the representation is **not discriminative** if
 
-```
-ROC-AUC <= 0.7    OR    silhouette <= 0.3
-```
-
-## The defect that must be fixed first
-
-`eval_embedding_discrimination.py:77`:
-
-```python
-texts = [f"@{u}" for u in all_usernames]
+```text
+ROC-AUC < 0.7    OR    silhouette < 0.3
 ```
 
-The experiment embeds **channel handles** — the literal string `@somechannel` —
-and nothing else. The deployed family (f) embeds the mean of a channel's 15
-longest **messages** (`05-semantic-family.md` §5.1).
+ROC-AUC is computed on each channel's distance to the centroid of the scored
+channels in the same run.
 
-So the script does not test the family it names. A near-chance ROC-AUC on handle
-strings is the expected outcome and carries no information about the method: two
-handles are not separable because handles are arbitrary tokens, not because the
-semantic signal is weak.
+## Precondition
 
-The June 2026 run produced exactly that, and it was recorded as a weak result
-for family (f). That reading was wrong. The artefact is quarantined and may not
-be cited — see `archive/2026-06-russosphere/README.md`.
+Family (f) is computed, not scored ([D19](../limitations.md#d19)). A pass would
+therefore show that the representation could carry signal, not that the score
+uses it.
 
-**Fix:** encode the same channel representation the scorer uses — mean of the 15
-longest messages, L2-normalized, via `src/embed/encoder.py` with the same cache —
-so that the experiment and the deployed family share one code path.
-
-## Second precondition
-
-Before interpreting any output, verify that the mission's baseline and adversary
-anchors **resolved**. On failure `embedding_signals.py:98` substitutes
-`np.zeros(384)`, which silently sets `baseline_distance = 1.0` for every channel
-(`../limitations.md` D10). A run with unresolved anchors will produce numbers
-that look valid and mean nothing.
+The script builds its own two classes, from the baseline file and the scored
+channels, and does not use the mission's anchor handles, so the silent
+zero-vector fallback of [D10](../limitations.md#d10) does not affect it. Its
+module docstring promises a refusal when anchors fail to resolve; no such check
+exists.
 
 ## Method
 
 Encode the external organic-FR baseline channels and the scored channels with
-the deployed representation. Report ROC-AUC of the baseline-versus-scored
-separation, silhouette, and centroid separation.
+the deployed representation,
+`src/scorer/embedding_signals.py::compute_channel_embeddings` (the mean of each
+channel's 15 longest messages, L2-normalized, `05-semantic-family.md` §5.1).
+Report ROC-AUC of the baseline-versus-scored separation, silhouette, and
+centroid separation. The script refuses to report when either class has fewer
+than 10 usable channels.
 
 ## Command
 
+`scripts/bootstrap_baseline.py` writes the baseline file
+`data/eval/baseline_organic_fr.json`. The evaluation script accepts
+`--mission`, but uses it only to name its output: the scored channels always
+come from `data/channels.json`, which a clean clone does not have
+([D12](../limitations.md#d12), [D24](../limitations.md#d24)).
+
 ```bash
 uv run python scripts/bootstrap_baseline.py
-uv run python scripts/eval_embedding_discrimination.py --mission <mission>
+uv run python scripts/eval_embedding_discrimination.py --mission russosphere
 ```
 
 ## Interpretation limits
 
 The organic-FR baseline supplies **anchors**, not the organic *negatives*
 Experiment 3 needs. A pass here would show that the embedding space distinguishes
-mainstream French outlets from the scored corpus — which is a much weaker claim
+mainstream French outlets from the scored corpus, which is a much weaker claim
 than distinguishing hostile from organic coordination, and must not be reported
 as the latter.
+
+## History
+
+Until version 0.4.0 the script embedded channel handles (the literal string
+`@somechannel`) instead of message content, so it did not test the family it
+named ([D11](../limitations.md#d11)). The June 2026 run produced a near-chance
+result that was recorded as a weak result for family (f). That reading was
+wrong. The artefact is quarantined and may not be cited; see
+`archive/2026-06-russosphere/README.md`.
