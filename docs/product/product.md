@@ -80,7 +80,7 @@ not a classifier. They are a navigation aid, not evidence.
 | Attribute to a sponsor (T3) | Crosses into investigation — out of scope by construction |
 | Act on platforms (reporting, takedown) | Arm-only: output goes to designated institutional recipients |
 | Analyse private messages or closed groups | MTProto read-only, public channels only |
-| Deanonymize members | Member identifiers are never collected |
+| Deanonymize members | Channel member lists are never collected. Commenters in public linked discussion groups are: their identifier, username and text are stored (`comments` table) and published in dataset `v1.0.0` — see [`DATASHEET.md`](../../dataset/DATASHEET.md) |
 
 ## Architecture, in two halves
 
@@ -142,8 +142,13 @@ platforms and never publishes attribution itself.
 ### ToS-respecting collection
 
 Public channels only. One dedicated account, serialized, never parallelized.
-Strict `FLOOD_WAIT` discipline. Member identifiers are not collected. Secrets are
-scrubbed by key and by value from every export.
+Strict `FLOOD_WAIT` discipline. Channel member lists are not collected.
+Commenters are: `scripts/enrich_recrawl.py` stores the identifier, username and
+text of people who commented in public discussion groups linked to collected
+channels (`comments` table). Those are personal data of private individuals,
+and the public dataset (`v1.0.0`) includes that table; its terms of use are in
+[`DATASHEET.md`](../../dataset/DATASHEET.md). Secrets are scrubbed by key and
+by value from every export.
 
 ### Published methodology
 
