@@ -18,15 +18,15 @@ Defect numbers (D1, D19, …) refer to [`docs/limitations.md`](./docs/limitation
 
 ### Normative
 
-None. No change here alters what the pipeline computes, and no ranking moves.
+None. No change here alters what the pipeline computes.
 
 ### Editorial
 
-- **Onboarding guide.** `ONBOARDING.md` is a single tutorial for new
-  contributors, from the one-command setup to the database in depth (schema,
-  read-only exploration, Alembic migrations with a worked example, corpus
-  enrichment, dataset releases), with an improvement backlog and good first
-  issues. `README.md` links to it.
+- **`ONBOARDING.md`**: a single tutorial for new contributors. It covers the
+  one-command setup, then the database in depth: schema, read-only
+  exploration, Alembic migrations with a worked example, corpus enrichment,
+  and dataset releases. It ends with an improvement backlog and good first
+  issues. It is linked from `README.md`.
 - **Good first issues fixed**, from `ONBOARDING.md` §7.3:
   - D18 in `docs/limitations.md` adds that the bootstrap's
     `alembic upgrade head` after a restore is a no-op, since the dump is
@@ -39,12 +39,8 @@ None. No change here alters what the pipeline computes, and no ranking moves.
   The other items (the `0007` and `0008` claim in `docs/ops/`, the stale
   `scripts/README.md` and `webapp/README.md`) went with the rewrites of those
   pages.
-
-### Fixed
-
-- `scripts/check_docs.py` no longer reads a footnote definition
-  (`[^id]: text`) as a link reference definition, which reported its first
-  word as a dead link.
+- `scripts/check_docs.py` no longer reads a footnote definition (`[^id]: text`)
+  as a link reference definition.
 
 ## [0.4.1] — 2026-10-26
 
