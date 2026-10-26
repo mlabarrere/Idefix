@@ -11,6 +11,11 @@ Nothing in this file is hypothetical. Every defect below was verified against
 the code it names, cited as a path and a symbol, such as
 `src/scorer/rigor.py::compute_family_significance`.
 
+**Contents:** [Status](#status) · [Part I. Permanent limits](#part-i) ·
+[Part II. Open defects](#part-ii) ·
+[Part III. Reproducibility status](#part-iii) ·
+[Part IV. Priority order](#part-iv) · [Part V. Closed defects](#part-v)
+
 <a id="status"></a>
 
 ## Status
@@ -58,7 +63,7 @@ defects.
 
 <a id="part-i"></a>
 
-## Part I — Permanent limits
+## Part I. Permanent limits
 
 <a id="l1"></a>
 
@@ -126,7 +131,7 @@ may be claimed.
 
 <a id="part-ii"></a>
 
-## Part II — Open defects
+## Part II. Open defects
 
 Each is a concrete, fixable problem. D2 to D18 are ordered by severity, except
 D18, which describes a property of the dataset release and is appended rather
@@ -135,7 +140,7 @@ order they were found. The fixed defects are in [Part V](#part-v).
 
 <a id="d2"></a>
 
-### D2. Family (c) has no null model — **critical**
+### D2. Family (c) has no null model (critical)
 
 `src/scorer/rigor.py::compute_family_significance` gives families (b) and (d) a
 rigorous treatment and leaves coordination out. Its p-value falls back to
@@ -198,8 +203,9 @@ docstring of `src/scorer/significance.py` calls them 'bandes +/-0.15
 factices'. The coordination bands enter the Stouffer bound calculation as
 though they were intervals.
 
-A published interval on any family other than (b) or (d) is a formatting
-convention, not an uncertainty estimate.
+> [!WARNING]
+> A published interval on any family other than (b) or (d) is a formatting
+> convention, not an uncertainty estimate.
 
 <a id="d8"></a>
 
@@ -331,11 +337,11 @@ justify and no experiment has probed:
 | `EMB_SIM` `k = 5`, threshold `0.5`, scale `3.0` | `src/embed/community.py::add_embedding_edges` |
 | Leiden `resolution = 1.6` | `scripts/analyze_communities.py::detect_communities` |
 | 27 regex themes, `MIN_COVER .12`, `MIN_SCORE .18` | `scripts/analyze_communities.py::TAXONOMY`, `::MIN_COVER`, `::MIN_SCORE` |
-| EEFI severities, all in [0.75, 1.00] | `src/scorer/eefi_rubric.py::_INDICATORS` |
+| EEFI (essential elements of friendly information) severities, all in [0.75, 1.00] | `src/scorer/eefi_rubric.py::_INDICATORS` |
 | 10 hard-coded adversary domains | `src/scorer/channel_suspicion.py::ADVERSARY_DOMAINS` |
 | 5 baseline and 3 adversary handles for family (f) | `embedding_baseline_channels` and `embedding_adversary_channels` in `src/missions/russosphere/__init__.py` |
 
-Every EEFI (essential elements of friendly information) severity lies in
+Every EEFI severity lies in
 [0.75, 1.00], which makes that family effectively binary: any regex match
 yields roughly 0.9. Its header correctly labels the weights a business decision
 pending sponsor calibration.
@@ -378,7 +384,7 @@ from it.
 
 <a id="d17"></a>
 
-### D17. The rigorous path is untested — **partly fixed in 0.4.0**
+### D17. The rigorous path is untested (partly fixed in 0.4.0)
 
 The September 2026 audit found that `cascade_role.py`, `recidivism.py` and
 `rigor.py` had **no dedicated test file**, despite carrying families (b) and (d)
@@ -396,7 +402,7 @@ graph.
 Dataset `v1.0.0` is the **complete** database snapshot named as
 `source_snapshot` in `dataset/manifest.json`. Besides the collected tables
 (`channels`, `messages`, `comments`), it holds the derived tables as they stood
-when it was taken (`edges`, `channel_scores`, `scores_run_meta`) and the
+when it was taken (`edges`, `channel_scores`, `scores_run_meta`), and the
 `channels.extra` keys written by the tagging stages (`fr_score`,
 `gan_targeting`). Nothing was emptied. The source snapshot was at schema
 revision `0006`; the release script applied the two additive migrations `0007`
@@ -729,7 +735,7 @@ interface, and turn the end-to-end assertion around.
 
 <a id="part-iii"></a>
 
-## Part III — Reproducibility status
+## Part III. Reproducibility status
 
 **The corpus is reproducible; no result has been regenerated from it yet.**
 
@@ -772,16 +778,21 @@ There is a further consequence worth stating plainly. The historical bundles
 were produced by a **renormalized weighted average** of family values, whereas
 the implementation combines p-values by Stouffer's method under
 Benjamini–Hochberg control. Verified directly: no shipped channel file contains
-`p_combined`. **Nothing ever published was produced by the statistics this
-project describes.** The implementation is now the canonical method
-(`03-suspicion-score.md` §3.5), and the historical numbers document a method
+`p_combined`.
+
+> [!WARNING]
+> **Nothing ever published was produced by the statistics this project
+> describes.**
+
+The implementation is now the canonical method
+([`03-suspicion-score.md` §3.5](./method/03-suspicion-score.md#s3-5)), and the historical numbers document a method
 that is no longer claimed.
 
 ---
 
 <a id="part-iv"></a>
 
-## Part IV — Priority order for closing these
+## Part IV. Priority order for closing these
 
 **Closed in September 2026:** D1 (language prior), D4 (combiner
 discontinuity), D7 (bootstrap size), D11 (both evaluation bugs) and D15b
@@ -826,13 +837,13 @@ fixed.
 
 <a id="part-v"></a>
 
-## Part V — Closed defects
+## Part V. Closed defects
 
 Kept with their original numbers so that existing references stay valid.
 
 <a id="d1"></a>
 
-### D1. `credibility_prior` was a language partition — **fixed in 0.4.0**
+### D1. `credibility_prior` was a language partition (fixed in 0.4.0)
 
 `src/graph/loader.py` used to set `credibility_prior = "suspect"` **if and only
 if `fr_score < 0.15`**, where `fr_score` is simply the fraction of a channel's
@@ -841,7 +852,7 @@ in few French keywords'**.
 
 That prior drives `suspect_reforward_fraction` (the detail key
 `reforward_suspect_frac`), one of the two largest severity modulators, tied at
-0.20 with thematic targeting (`03-suspicion-score.md` §3.8). On the June 2026
+0.20 with thematic targeting ([`03-suspicion-score.md` §3.8](./method/03-suspicion-score.md#s3-8)). On the June 2026
 run the suspicion ranking correlated far more strongly with adversary linkage
 than with coordination value: **the ranking was substantially a ranking by
 language, not by coordination structure.** The figures behind that statement
@@ -874,7 +885,7 @@ measurement possible; it has not been run. The protocol is
 
 <a id="d4"></a>
 
-### D4. Discontinuity at zero in the combiner — **fixed in 0.4.0**
+### D4. Discontinuity at zero in the combiner (fixed in 0.4.0)
 
 The combiner dropped families on the exact equality `p >= 1.0`. Given family
 (c)'s pseudo-p of `1 - value`, a channel with `coord_value = 0.0` was dropped,
@@ -889,14 +900,14 @@ Locked by
 
 <a id="d7"></a>
 
-### D7. `n_bootstrap = 100` was too low — **fixed in 0.4.0**
+### D7. `n_bootstrap = 100` was too low (fixed in 0.4.0)
 
 Raised to 1,000 in `src/missions/spec.py`. Cost is linear and it does not touch
 the p-values (which come from `n_null`), so it cannot shift the ranking.
 
 <a id="d11"></a>
 
-### D11. Two evaluation scripts were mis-specified — **fixed in 0.4.0**
+### D11. Two evaluation scripts were mis-specified (fixed in 0.4.0)
 
 `scripts/eval_episode_recovery.py` computed `len(members)*k/n` and labelled it
 `random_control_recall@k`. That is an **expected hit count**, not a recall, yet
@@ -921,7 +932,7 @@ and it refuses to report when either class has fewer than 10 usable channels.
 
 <a id="d15b"></a>
 
-### D15b. Isolated channels scored 1.0 in family (b) — **fixed in 0.4.0**
+### D15b. Isolated channels scored 1.0 in family (b) (fixed in 0.4.0)
 
 Found while writing the tests D17 called for. Not present in any earlier audit.
 

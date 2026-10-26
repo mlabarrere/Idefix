@@ -1,4 +1,6 @@
-# 7 — Attribution tiers, output discipline and governance
+# 7. Attribution tiers, output discipline and governance
+
+<a id="s7-1"></a>
 
 ## 7.1 Attribution tiers
 
@@ -16,7 +18,7 @@ T1 (`src/scorer/channel_suspicion.py::compute_channel_queue`); no episode
 aggregation enters it. The triggered family set is persisted as
 `gate_families`, so any assignment can be audited from the stored record.
 Episodes carry their own tier, from the count of distinct pivot types
-(`06-episodes-and-communities.md` §6.1). The pipeline's one dossier,
+([`06-episodes-and-communities.md` §6.1](./06-episodes-and-communities.md#s6-1)). The pipeline's one dossier,
 `dugin_cluster.json`, does not follow either rule: `scripts/build_dossier.py::main`
 hard-codes its attribution tier to T2, whatever its own gate decides
 ([D16](../limitations.md#d16)).
@@ -26,14 +28,27 @@ corpus*.** It never means originator. The corpus is a partial projection of a
 partial platform; earliest-observed is a statement about the observation window,
 not about causation.
 
-**A caveat on T2 as currently implemented.** The tier vocabulary implies that T2
-rests on independent corroboration. The gate counts *distinct families*, but
-family (c) triggers on two coordination edge types alone, and one of those types
-(`CO_HASHTAG`) is close to noise on a topical corpus. Episode-level tiering has
-the same shape: it counts pivot types. Until family (c) has a null model and
-`CO_HASHTAG` is reconsidered, T2 should be read as 'two distinct signal types
-fired', which is weaker than what the label suggests. Tracked as
-[D2](../limitations.md#d2) and [D5](../limitations.md#d5).
+```mermaid
+flowchart LR
+    CH["Channel"] --> G{"At least 2 distinct triggered families?"}
+    G -- yes --> T2["T2"]
+    G -- no --> T1["T1"]
+    EP["Episode"] --> P{"At least 2 distinct pivot types?"}
+    P -- yes --> E2["T2"]
+    P -- no --> E1["T1"]
+    DS["dugin_cluster.json dossier"] --> H["T2, hard-coded (D16)"]
+```
+
+> [!WARNING]
+> **A caveat on T2 as currently implemented.** The tier vocabulary implies that
+> T2 rests on independent corroboration. The gate counts *distinct families*,
+> but family (c) triggers on two coordination edge types alone, and one of
+> those types (`CO_HASHTAG`) is close to noise on a topical corpus.
+> Episode-level tiering has the same shape: it counts pivot types. Until family
+> (c) has a null model and `CO_HASHTAG` is reconsidered, T2 should be read as
+> 'two distinct signal types fired', which is weaker than what the label
+> suggests. Tracked as [D2](../limitations.md#d2) and
+> [D5](../limitations.md#d5).
 
 A separate T1–T5 *severity* ladder exists alongside the attribution tiers. The
 pipeline's dossier gets its severity from `scripts/build_dossier.py::main`,
@@ -49,12 +64,14 @@ accepts T1 to T5 (`src/shared/dossier.py::DossierSchema`). Read a dossier's
 severity tier as evidence severity, never as attribution. The contradictions
 between the dossier gates are recorded as [D16](../limitations.md#d16).
 
+<a id="s7-2"></a>
+
 ## 7.2 Output discipline
 
 - **Arm-only.** Outputs go to designated institutional recipients. Never to
   platforms, never to the public, never to candidates or press.
 - **Mandatory coverage callout.** The single-platform-blindness disclosure of
-  `01-problem-and-scope.md` §1.3 is written into every bundle manifest, from the
+  [`01-problem-and-scope.md` §1.3](./01-problem-and-scope.md#s1-3) is written into every bundle manifest, from the
   mission's callout or a default
   (`scripts/export_static.py::build_export_metadata`).
 - **Evidence-first.** Every component of every channel's score is preserved in
@@ -73,6 +90,8 @@ between the dossier gates are recorded as [D16](../limitations.md#d16).
 - **Tiered vocabulary** is mandatory in every output; a T3 claim is a reportable
   defect.
 
+<a id="s7-3"></a>
+
 ## 7.3 Collection posture
 
 Public channels only, via MTProto, with a single dedicated read-only account,
@@ -81,7 +100,12 @@ collection, no scraping outside the terms of service, no deanonymization.
 Channel member lists are not collected. Commenters are: the enrichment pass
 (`scripts/enrich_recrawl.py`) stores the identifier, username and text of
 people who commented in public discussion groups linked to collected channels
-(`comments` table). Those are personal data of private individuals. The public
+(`comments` table).
+
+> [!CAUTION]
+> Those are personal data of private individuals.
+
+The public
 dataset (`v1.0.0`, a complete database snapshot) **includes** that table; its
 terms of use are in `dataset/DATASHEET.md`. The pipeline republishes part of
 it: the `build_commenters` stage (`scripts/build_commenters.py`) writes the
@@ -104,6 +128,8 @@ Two further collection blind spots are permanent and accepted: channels under a
 French legal block are invisible to an EU-anchored collector account, and
 private channels are invisible entirely.
 
+<a id="s7-4"></a>
+
 ## 7.4 Governance commitments
 
 - The methodology is published before any live detection output ships. Outputs
@@ -125,6 +151,8 @@ private channels are invisible entirely.
   credibility prior ([D1](../limitations.md#d1)) it rests on documented
   adversary linkage, so its interpretation is bounded by the coverage of the
   adversary catalogue instead.
+
+<a id="s7-5"></a>
 
 ## 7.5 Standing claim
 

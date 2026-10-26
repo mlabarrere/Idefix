@@ -1,4 +1,4 @@
-# Idéfix public corpus — dataset `v1.0.0`
+# Idéfix public corpus: dataset `v1.0.0`
 
 A versioned, checksummed release of the data Idéfix collected from public
 Telegram channels, so that anyone can rebuild the analysis **without Telegram
@@ -17,7 +17,7 @@ The authoritative description is [`manifest.json`](./manifest.json): file names,
 URLs, sizes, SHA-256, row count and content checksum of every table, and the
 list of what was done to the source (`sanitization`).
 
-## Folder layout
+## 🧩 Folder layout
 
 ```text
 dataset/
@@ -27,9 +27,9 @@ dataset/
 └── downloads/      fetched or locally built artefacts (gitignored)
 ```
 
-## Get it
+## 🚀 Get it
 
-The bootstrap does everything — download, verify, restore, pipeline, webapp:
+The bootstrap does everything—download, verify, restore, pipeline, webapp:
 
 ```bash
 uv run --extra embed python scripts/bootstrap.py    # all steps
@@ -54,7 +54,7 @@ overwrites a local file that differs). Two alternatives:
 The `db` step then restores the dump into the local PostgreSQL of
 `docker-compose.yml`, only when that database is empty.
 
-## Check it by hand
+## 🧪 Check it by hand
 
 Download the two files from the release page into `dataset/downloads/`, then
 compare with the table above (or `manifest.json`):
@@ -93,7 +93,7 @@ content MD5 recorded in `manifest.json`. The checksum is
 computed with `TimeZone=UTC`, `DateStyle='ISO, MDY'`, `IntervalStyle=postgres`,
 `extra_float_digits=1`, `bytea_output=hex`; you can run it in `psql` yourself.
 
-## What was done to the source
+## 📊 What was done to the source
 
 Nothing that changes data. The release is the complete snapshot
 `idefix-supabase-post-cutover-20260618-132009` (alembic `0006`):
@@ -104,7 +104,7 @@ Nothing that changes data. The release is the complete snapshot
    empty table `channel_llm_scores`, `0008` adds the nullable column
    `channel_scores.gate_families` (NULL on every row);
 4. the same fingerprints recomputed on the source columns: identical for all 8
-   source tables (`alembic_version` excepted — it records the upgrade);
+   source tables (`alembic_version` excepted—it records the upgrade);
 5. `pg_dump -Fc --no-owner --no-privileges`, then a restore of that dump into a
    second database that must reproduce every fingerprint.
 
@@ -119,7 +119,7 @@ collector account's secrets (`src.ingestor.session.secret_values()`): 0
 occurrences. The annotation archive holds every file of `data/annotations/`
 and `data/claims/` byte-for-byte.
 
-## Rebuild it
+## 🔧 Rebuild it
 
 Maintainers only: it needs the private snapshot under `backups/` (never
 published as such) and Docker.
@@ -140,8 +140,7 @@ container is removed at the end unless `--keep-db`.
 
 The annotation archive is byte-reproducible (sorted members, fixed mtime taken
 from the snapshot name, uid/gid 0, no gzip timestamp): the same files give the
-same SHA-256. The database dump is not — `pg_dump` records its own timestamp —
-so a rebuilt dump has a new SHA-256 but the same per-table fingerprints. A
+same SHA-256. The database dump is not—`pg_dump` records its own timestamp—so a rebuilt dump has a new SHA-256 but the same per-table fingerprints. A
 rebuild is therefore a new release: bump `--version`, publish the files under
 the new tag, commit the new `manifest.json`.
 

@@ -1,10 +1,18 @@
 # Contributing to Idéfix
 
 Thank you for your interest. This guide covers how to propose a change: the
-workflow, the rules for branches and pull requests, the checks that CI runs,
-and the conventions the project follows.
+workflow, the rules for branches and pull requests, the checks that
+continuous integration (CI) runs, and the conventions the project follows.
 
-## Set up
+- [🚀 Set up](#-set-up)
+- [🤝 Workflow](#-workflow)
+- [🧪 Checks](#checks)
+- [📝 Conventions](#-conventions)
+- [🔒 Never commit secrets](#-never-commit-secrets)
+- [🔒 Data and personal data](#data-and-personal-data)
+- [📚 Documentation](#-documentation)
+
+## 🚀 Set up
 
 Follow [`docs/ops/quickstart.md`](./docs/ops/quickstart.md), the one canonical
 setup tutorial. It covers the prerequisites, the Python environment, and running
@@ -16,7 +24,7 @@ the code: the tests run offline, with network and database access mocked.
 Telegram collection is optional and only for extending the corpus; see
 [`docs/ops/install.md`](./docs/ops/install.md).
 
-## Workflow
+## 🤝 Workflow
 
 1. **Find or open an issue** for anything larger than a small fix, so the
    approach can be agreed before you write the code. Use the issue templates.
@@ -42,7 +50,9 @@ missing final newlines, and reject large files, private keys, and unresolved
 merge-conflict markers. Their configuration is in
 [`.pre-commit-config.yaml`](./.pre-commit-config.yaml).
 
-## Checks
+<a id="checks"></a>
+
+## 🧪 Checks
 
 The checks in `ci.yml` run on every pull request, and those in `ui-gate.yml`
 when the web app changes. All of them are blocking; reproduce them locally
@@ -99,7 +109,7 @@ pipeline stage, and builds the web app on the regenerated bundle. A change to
 the bootstrap, the pipeline, or the migrations should keep it green; the
 maintainer can run it from the Actions tab.
 
-## Conventions
+## 📝 Conventions
 
 - **Commits** follow [Conventional Commits](https://www.conventionalcommits.org/):
   `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `ci:`, `build:`, and so on,
@@ -116,7 +126,7 @@ maintainer can run it from the Actions tab.
   [`scripts/README.md`](./scripts/README.md). Add one when you add a script,
   and update it when you change a script's flags.
 
-## Never commit secrets
+## 🔒 Never commit secrets
 
 No key, token, or session string may enter the repository. `.env*` files are
 ignored by git, except `.env.example`; the `detect-private-key` hook runs on
@@ -124,7 +134,9 @@ every commit; and the static export scrubs secrets
 (`tests/test_export_secret_scrub.py`). If a secret is committed by mistake,
 follow [`SECURITY.md`](./SECURITY.md).
 
-## Data and personal data
+<a id="data-and-personal-data"></a>
+
+## 🔒 Data and personal data
 
 - **Never commit collected data or analyst bundles** (`webapp/public/data/`).
   They are specific to one corpus and one run. The reference corpus is
@@ -143,7 +155,7 @@ follow [`SECURITY.md`](./SECURITY.md).
 > (`scripts/make_fixture_bundle.py`). The terms of use are in
 > [`dataset/DATASHEET.md`](./dataset/DATASHEET.md).
 
-## Documentation
+## 📚 Documentation
 
 [`README.md`](./README.md) is the engineering guide;
 [`METHODOLOGY.md`](./METHODOLOGY.md) is the versioned scientific

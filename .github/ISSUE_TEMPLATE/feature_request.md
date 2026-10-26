@@ -6,22 +6,22 @@ labels: enhancement
 assignees: ""
 ---
 
-## Problem
+## 🧭 Problem
 
 <!-- What problem would this solve, and for whom? -->
 
-## Affected area
+## 🧩 Affected area
 
 <!-- A mission (russosphere, france_ukraine, gan, dircom_minarm) or a component (pipeline, scoring, graph, webapp, documentation). -->
 
-## Proposed solution
+## 🔧 Proposed solution
 
 <!-- Describe the behaviour you would like. -->
 
-## Alternatives considered
+## 📝 Alternatives considered
 
 <!-- Other approaches, and why you set them aside. -->
 
-## Methodological impact
+## 📚 Methodological impact
 
 <!-- Does this touch METHODOLOGY.md or the scientific validity of the results? If so, how? -->

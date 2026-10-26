@@ -1,6 +1,6 @@
 # Security policy
 
-## Reporting a vulnerability
+## 🔒 Reporting a vulnerability
 
 > [!IMPORTANT]
 > Do not open a public issue for a security problem or for anything involving
@@ -20,7 +20,7 @@ Please include:
 We aim to reply within 72 hours and will keep you informed until the problem
 is resolved.
 
-## Scope
+## 🧭 Scope
 
 Idéfix processes data from public Telegram channels in an institutional and
 operations security (OPSEC) context. These are especially critical:
@@ -43,7 +43,7 @@ operations security (OPSEC) context. These are especially critical:
 The legal basis recorded for collecting commenters is in
 `alembic/versions/0003_enrich_media_description_comments.py`.
 
-## Personal data and removal requests
+## 🔒 Personal data and removal requests
 
 If you are, or represent, a person whose data appears in the dataset, use the
 same private channel to ask for it to be removed. A removal means a new
@@ -51,7 +51,7 @@ dataset release; the old release assets have to be withdrawn. The process is
 described in [`dataset/DATASHEET.md`](./dataset/DATASHEET.md) under
 Maintenance.
 
-## Handling secrets
+## 🔒 Handling secrets
 
 - `.env*` files are ignored by git, except `.env.example`. Never commit a real
   key.
@@ -64,11 +64,11 @@ Maintenance.
 > (`git filter-repo`), and tell the maintainer through the private channel
 > above.
 
-## Supported versions
+## 📚 Supported versions
 
 Idéfix is a proof of concept: only the `main` branch is maintained.
 
 | Version | Supported |
 |---|---|
-| `main` (currently 0.4.1) | Yes |
-| Earlier tags and releases | No |
+| `main` (currently 0.4.1) | ✅ Yes |
+| Earlier tags and releases | 🔴 No |

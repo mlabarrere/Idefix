@@ -1,19 +1,19 @@
-# Experiment 2 — Known-episode recovery
+# Experiment 2: Known-episode recovery
 
-**Status:** `BLOCKED` — no real external gold exists
+**Status:** `BLOCKED`—no real external gold exists
 **Script:** `scripts/eval_episode_recovery.py`
 **Artefact:** `results/episode_recovery.json` (the script writes `data/eval/episode_recovery.json` today, [D25](../limitations.md#d25))
 
-## Question
+## 🧭 Question
 
 Does the ranking surface the channels of an operation that was documented
 independently of this system?
 
-## Hypothesis
+## 🧪 Hypothesis
 
 Channels belonging to a documented operation rank materially higher than chance.
 
-## Falsification criterion
+## 🧪 Falsification criterion
 
 To be fixed **before** the run, against a gold list of size `m` in a corpus of
 size `n`:
@@ -33,7 +33,7 @@ when the top-50 hits are at most twice the random expectation or when the
 median rank of the gold sources exceeds 200, and `NON CONCLUANT`
 (inconclusive) when fewer than 10 gold channels are in the corpus.
 
-## Why it is blocked
+## 🧭 Why it is blocked
 
 The gold must be produced **independently** of Idéfix, or the experiment is
 circular. The only gold assembled so far was *hypothetical*, constructed by the
@@ -55,7 +55,7 @@ The script also scores the `russosphere` dossier `dugin_cluster.json` whenever
 the pipeline has produced it. That cluster was selected by the system itself,
 so recovering it is circular and says nothing about the hypothesis.
 
-## Command
+## 🔧 Command
 
 The script takes no arguments ([D24](../limitations.md#d24)): it reads every
 `data/eval/gold_episode_*.json` it finds, and `data/channels.json`, which a
@@ -65,13 +65,13 @@ clean clone does not have ([D12](../limitations.md#d12)).
 uv run python scripts/eval_episode_recovery.py
 ```
 
-## What a pass would establish
+## 📊 What a pass would establish
 
 That the ranking surfaces one documented operation, on one corpus. Recovering a
 single episode is weak evidence for a general detector, and it says nothing
 about false positives, which is Experiment 3.
 
-## History
+## 📝 History
 
 Until version 0.4.0 the script reported an expected hit count as a recall
 control, so one output file supported two contradictory readings. That defect

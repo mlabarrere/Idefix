@@ -1,30 +1,42 @@
-# Datasheet — Idéfix public Telegram corpus `v1.0.0`
+# Datasheet: Idéfix public Telegram corpus `v1.0.0`
 
 Structured after *Datasheets for Datasets* (Gebru et al., 2021). Every count
 below is taken from [`manifest.json`](./manifest.json) or measured on the
 release database; how to fetch and verify the files is in
 [`README.md`](./README.md).
 
-| | |
+| Field | Value |
 |---|---|
 | Name | `idefix-telegram-public-corpus` |
 | Version | `1.0.0` (release tag `dataset-v1.0.0`) |
 | Source snapshot | `idefix-supabase-post-cutover-20260618-132009` |
-| Format | PostgreSQL 17 `pg_dump` custom format (schema at alembic `0008`) + `tar.gz` of annotation files |
+| Format | PostgreSQL 17 `pg_dump` custom format (schema at Alembic `0008`) + `tar.gz` of annotation files |
 | Post timestamps | 2018-12-14T02:45:39Z → 2026-06-10T15:16:34Z (`collection_window`) |
 | Collected | 2026-06-03 → 2026-06-10 (ingestion timestamps) |
-| Licence | **pending maintainer decision** — see [§ Licence](#licence-pending-maintainer-decision) |
+| Licence | **pending maintainer decision**—see [§ Licence](#licence-pending-maintainer-decision) |
 
+> [!CAUTION]
 > **Personal data.** The release is the complete database snapshot. It includes
 > the `comments` table: the Telegram identifier, username and text of private
 > individuals who commented in public discussion groups. Read
 > [§ Uses](#uses) before using the data.
 
+## Contents
+
+- [Motivation](#motivation)
+- [Composition](#composition)
+- [Collection process](#collection-process)
+- [Preprocessing, cleaning, labelling](#preprocessing-cleaning-labelling)
+- [Uses](#uses)
+- [Distribution](#distribution)
+- [Maintenance](#maintenance)
+- [Open decisions for the maintainer](#open-decisions-for-the-maintainer)
+
 ## Motivation
 
 **Why was the dataset created?** Idéfix studies how content spreads across
-public Telegram channels relevant to France — forwards, shared media, shared
-links — to describe observable diffusion structures (who
+public Telegram channels relevant to France—forwards, shared media, shared
+links—to describe observable diffusion structures (who
 seeded, who relayed, how fast). The method is in the repository
 [`docs/`](../docs/README.md). The dataset exists so that third parties can
 rerun that offline pipeline on the same corpus, check the published method
@@ -39,7 +51,7 @@ with a single dedicated Telegram account used read-only.
 
 **What are the instances?** Public Telegram channels, the posts they published,
 and comments posted in the channels' public linked discussion
-groups — plus the tables an earlier run of the pipeline derived from them.
+groups—plus the tables an earlier run of the pipeline derived from them.
 
 | Table | Rows | What a row is |
 |---|---:|---|
@@ -69,7 +81,7 @@ posts date from May or June 2026 and 22,373 from before 2026. `language`,
 `urls` and `raw_content` are NULL on every row; `is_deleted` is false on every
 row.
 
-**Comments — personal data.** 9,241 comments in the discussion groups of 55 channels,
+**Comments—personal data.** 9,241 comments in the discussion groups of 55 channels,
 written by 2,644 distinct Telegram accounts (`commenter_id`, every row); 5,618
 rows carry a `commenter_username` (1,562 distinct); 8,399 have text. Comment
 timestamps run from 2025-06-16 to 2026-06-06; they were collected on 2026-06-05
@@ -99,18 +111,17 @@ results must be cited from a fresh run, not from these tables.
 **Annotation archive** (`idefix-annotations-v1.0.0.tar.gz`, extracted into
 `data/`), 9 files:
 
-- `annotations/batch-20260604.jsonl` — 200 posts sampled for message-level
+- `annotations/batch-20260604.jsonl`—200 posts sampled for message-level
   labelling, each with its channel, a candidate fact-checked claim and a
-  proximity score; `annotations/batch-20260604__needs_manual_screening.jsonl` —
-  211 posts set aside (claim link too weak);
-- `annotations/judgments/batch-20260604__claude.jsonl` — 200 verdicts by one
+  proximity score; `annotations/batch-20260604__needs_manual_screening.jsonl`—211 posts set aside (claim link too weak);
+- `annotations/judgments/batch-20260604__claude.jsonl`—200 verdicts by one
   LLM judge (Claude), with atomic claims, sources and rationale; no human
   adjudication was recorded;
-- `annotations/channel_digests.jsonl` and `.md` — 23 channel-level digests
+- `annotations/channel_digests.jsonl` and `.md`—23 channel-level digests
   (sample posts, forward neighbours, a provisional label and rationale);
-- `annotations/PROTOCOLE_LABELLISATION.md`, `annotations/README.md` — the
+- `annotations/PROTOCOLE_LABELLISATION.md`, `annotations/README.md`—the
   labelling protocol (in French), `annotations/.gitkeep`;
-- `claims/claims_fr.jsonl` — 15 seed claims from French fact-checkers.
+- `claims/claims_fr.jsonl`—15 seed claims from French fact-checkers.
 
 The protocol and README name the maintainer ('Micky') as the human arbiter.
 Post texts in the archive are copies of posts of the database.
@@ -129,7 +140,7 @@ block, and comments of groups that were not accessible are invisible.
 **Confidential or sensitive content.** Channel posts are public broadcast
 content but include propaganda, disinformation and possibly hateful or violent
 material. Comments are personal data (above) and may reveal political
-opinions — a special category under GDPR Art. 9. A read-only scan found none of
+opinions—a special category under GDPR Art. 9. A read-only scan found none of
 the collector account's secrets (Telegram session, phone, API hash, LLM key) in
 any table or archived file.
 
@@ -186,7 +197,7 @@ by this collector version.
 each verified by the release script and listed in `manifest.json`
 (`sanitization`):
 
-- no row deleted, no table emptied, no column nulled — including `comments`,
+- no row deleted, no table emptied, no column nulled—including `comments`,
   the derived tables and every `channels.extra` key;
 - lossless restore proved per table: row count and content MD5 of the 8 source
   tables identical before and after the upgrade (`alembic_version` excepted);
@@ -215,13 +226,13 @@ the repository.
 - Methodological work on detection of coordinated behaviour, at the channel
   level, with the tiered vocabulary of the project.
 
-**Out of scope — do not use the dataset to:**
+**Out of scope—do not use the dataset to:**
 
 - identify, profile, contact, track or harass any commenter, or link a
   Telegram account to a real person (deanonymization is excluded by the
   project's governance);
 - republish commenter identifiers, usernames or comment text, or redistribute
-  the `comments` table outside the terms you received it under — this
+  the `comments` table outside the terms you received it under—this
   includes deploying an analyst bundle where others can reach it, since its
   `commenters.json` carries commenter identifiers and usernames;
 - claim a real-world attribution (state sponsorship, who operates a channel):
@@ -229,7 +240,7 @@ the repository.
 - present the shipped `channel_scores`, `edges` or LLM verdicts as facts, as
   ground truth, or as a list of disinformation actors: they are stale,
   machine-generated and unreviewed;
-- target candidates, press or platforms with the outputs — the project's
+- target candidates, press or platforms with the outputs—the project's
   outputs are reserved for designated institutional recipients ([repository README](../README.md#11-governance) §11,
   'Arm-only');
 - train models whose purpose is to recognize or score individuals.

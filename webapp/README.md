@@ -8,20 +8,20 @@ screen.
 
 **Stack:** React, Vite, TypeScript, Tailwind CSS v4, and Radix UI primitives
 composed in the shadcn/ui pattern, with Cytoscape.js for the graph, i18next for
-translations, and React Router. Every dependency is free and open-source; no
+translations, and React Router. Every dependency is free and open source; no
 commercial component library is needed.
 
 For a full setup, database and pipeline included, follow
 [`docs/ops/quickstart.md`](../docs/ops/quickstart.md). This page covers the web
 app on its own.
 
-## Requirements
+## 📦 Requirements
 
-- **Node.js** `^20.19.0` or `>=22.12.0`, the range Vite requires. CI uses
-  Node.js 20.
+- **Node.js** `^20.19.0` or `>=22.12.0`, the range Vite requires. Continuous
+  integration (CI) uses Node.js 20.
 - **npm**, which ships with Node.js.
 
-## Commands
+## 🔧 Commands
 
 Run every command from `webapp/`. Install the exact locked dependencies first:
 
@@ -64,7 +64,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-## Data
+## 📊 Data
 
 The app reads `public/data/<mission>/<file>`, falling back to
 `public/data/<file>` for the old flat layout. The bundles are **not tracked in
@@ -91,7 +91,9 @@ There are two ways to get one:
 `webapp/public/data/<mission>/` by default; see
 [`scripts/README.md`](../scripts/README.md).
 
-## Building
+<a id="building"></a>
+
+## 🔧 Building
 
 `npm run build` runs two pre-build steps before `vite build`.
 `scripts/pull-snapshots.mjs` fetches the community snapshots, and
@@ -106,7 +108,7 @@ coordinates never replaces one that has them.
 > `SUPABASE_KEY` is a service-role key. Set it only in the build environment;
 > it must never reach the browser bundle or the repository.
 
-## The interface
+## 🧩 The interface
 
 Routes are scoped by mission: `/m/russosphere`, `/m/gan`, and so on. The
 detailed specification is in [`docs/product/frontend.md`](../docs/product/frontend.md),
@@ -129,7 +131,7 @@ and translation in [`docs/product/i18n.md`](../docs/product/i18n.md).
   whether the galaxy shows the analytics communities or the communities
   grouped by embeddings.
 
-## Performance budget
+## 🧪 Performance budget
 
 Keep these properties with every change:
 

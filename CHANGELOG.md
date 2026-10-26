@@ -14,6 +14,9 @@ The methodology's own version history, with the reasoning behind each
 withdrawn claim, is in [`METHODOLOGY.md`](./METHODOLOGY.md#version-history).
 Defect numbers (D1, D19, …) refer to [`docs/limitations.md`](./docs/limitations.md).
 
+Releases: [0.4.1](#041---2026-10-26), [0.4.0](#040---2026-09-10),
+[0.3.0-poc](#030-poc---2026-06-29), and [0.2.0-poc](#020-poc).
+
 ## [Unreleased]
 
 ### Normative
@@ -46,7 +49,7 @@ None. No change here alters what the pipeline computes, and no ranking moves.
   (`[^id]: text`) as a link reference definition, which reported its first
   word as a dead link.
 
-## [0.4.1] — 2026-10-26
+## [0.4.1] - 2026-10-26
 
 ### Normative
 
@@ -65,11 +68,11 @@ changing the code. The code fixes are separate, later, versioned changes.
   <!-- fact:methodology.hash -->**cd38fde0**<!-- /fact -->. A checkout with CRLF line endings computes a different value
   ([D27](./docs/limitations.md#d27)).
 - **Privacy.** The README now opens with a caution: the `comments` table holds
-  the Telegram user ID, username and text of private commenters, and dataset
+  the Telegram user ID, username, and text of private commenters, and dataset
   `v1.0.0` publishes it. The `build_commenters` pipeline stage copies the IDs
   and usernames of each channel's most frequent commenters into the analyst
   bundle, and the interface displays them; the README, the product page, the
-  governance chapter and the datasheet now say so. `docs/product/product.md`
+  governance chapter, and the datasheet now say so. `docs/product/product.md`
   had said that member identifiers are never collected.
 - **Withdrawn as false**, each rewritten to the present-tense truth:
   - family (f) is active and helps a channel cross the gate. It is computed,
@@ -108,25 +111,26 @@ changing the code. The code fixes are separate, later, versioned changes.
   ([D24](./docs/limitations.md#d24)), and the artefact paths those scripts
   actually write ([D25](./docs/limitations.md#d25)).
 - **Code references** in the documentation now name a path and a symbol, such
-  as `src/scorer/rigor.py::compute_family_significance`, instead of a line. Commit `cc258e4` had broken 23 of them.
+  as `src/scorer/rigor.py::compute_family_significance`, instead of a line.
+  Commit `cc258e4` had broken 23 of them.
 - **Language.** This changelog and `CITATION.cff` are now in British English.
 
 ### Added
 
 - **Public dataset `v1.0.0`** (`dataset/`): the complete database snapshot,
   with channels, channel posts, and comments from public linked discussion
-  groups (commenter identifiers, usernames and text included), plus the
+  groups (commenter identifiers, usernames, and text included), plus the
   derived tables of an earlier pipeline run, as a GitHub Release asset pinned
   by SHA-256 in `dataset/manifest.json`, with a datasheet
   (`dataset/DATASHEET.md`).
 - `scripts/bootstrap.py` (`make setup`): check prerequisites, fetch and verify
   the dataset, start a local PostgreSQL 17 with Docker Compose
   (`docker-compose.yml`), restore and migrate an empty database (a database
-  that holds data is left untouched), run the pipeline, and start the webapp.
+  that holds data is left untouched), run the pipeline, and start the web app.
   It never reads `.env` and never deletes data. Make targets `setup`, `data`,
-  `db-up`, `db-down`, `pipeline` and `webapp`.
+  `db-up`, `db-down`, `pipeline`, and `webapp`.
 - `scripts/pipeline.py`: runs every offline stage in order for one mission or
-  all of them, with per-stage timings and `--list`, `--only`, `--from` and
+  all of them, with per-stage timings and `--list`, `--only`, `--from`, and
   `--skip-embeddings`.
 - `scripts/release_dataset.py`: builds the release artefacts and the manifest
   (maintainers).
@@ -136,7 +140,7 @@ changing the code. The code fixes are separate, later, versioned changes.
 
 ### Changed
 
-- `README.md`, `docs/ops/quickstart.md` and `docs/ops/install.md`: the default
+- `README.md`, `docs/ops/quickstart.md`, and `docs/ops/install.md`: the default
   path is the bootstrap on the public corpus, and Telegram collection moved to
   an optional section. The manual `docker run` instructions gave way to the
   Compose database (`idefix`/`idefix`, `127.0.0.1:5433`, `IDEFIX_DB_PORT`).
@@ -165,13 +169,13 @@ changing the code. The code fixes are separate, later, versioned changes.
 
 - Dependency updates folded from the open Dependabot pull requests (`6d58bba`).
   Python: aiohttp 3.14.5, anyio 4.14.2, filelock 4.2.4, GitPython 3.2.1,
-  opentelemetry-api 1.45.1, Pillow 13.0.0, urllib3 2.8.0 and virtualenv
-  21.14.13. Webapp: react-router-dom 7.18.4, Vite 8.3.5, brace-expansion
+  opentelemetry-api 1.45.1, Pillow 13.0.0, urllib3 2.8.0, and virtualenv
+  21.14.13. Web app: react-router-dom 7.18.4, Vite 8.3.5, brace-expansion
   5.0.12, source-map-js 1.2.2, and zod 4.6.7 for advisory GHSA-mrhx-c7xc-m3w5
   (a development-only dependency); `npm audit` reported no vulnerabilities
   afterwards.
 
-## [0.4.0] — 2026-09-10
+## [0.4.0] - 2026-09-10
 
 ### Normative
 
@@ -218,7 +222,7 @@ and in [`docs/limitations.md`](./docs/limitations.md).
   large corpora. The register now carries the measurements and a test that
   reproduces the crossover.
 - `docs/` restructured as a paper: `method/`, `experiments/`, `limitations.md`,
-  `reference/`, `ops/` and `product/`. `METHODOLOGY.md` became a versioned
+  `reference/`, `ops/`, and `product/`. `METHODOLOGY.md` became a versioned
   cover page, and the methodology moved to `docs/method/`.
 - `docs/limitations.md`: one register of the permanent limits and the verified
   defects.
@@ -236,7 +240,7 @@ and in [`docs/limitations.md`](./docs/limitations.md).
 
 ### Added
 
-- `scripts/check_docs.py`, a blocking CI job: no dead links, no number in
+- `scripts/check_docs.py`, a blocking continuous integration (CI) job: no dead links, no number in
   experiment prose without a backing artefact, no citation of the quarantined
   archive.
 - Test files for families (b) and (d) (`tests/scorer/test_cascade_role.py`,
@@ -269,8 +273,8 @@ and in [`docs/limitations.md`](./docs/limitations.md).
 
 - **Six modules documented as part of the method but imported only by
   tests:** `pockets`, `registry`, `readiness`, `coordination_fabric`,
-  `dossier/v1` and `analytical_contract`, with their documentation.
-- **The webapp's science section**: about 160 KB of hand-written TSX that
+  `dossier/v1`, and `analytical_contract`, with their documentation.
+- **The web app's science section**: about 160 KB of hand-written TSX that
   duplicated the Markdown and had already drifted from it, with its routes and
   i18n keys.
 - **Analyst bundles from version control** (`webapp/public/data/`). They are
@@ -286,10 +290,10 @@ and in [`docs/limitations.md`](./docs/limitations.md).
   Pillow `>=12.3.0` (heap out-of-bounds reads and decompression bombs),
   aiohttp 3.14.3 (HTTP response parser and WebSocket advisories), setuptools
   `>=83.0.0` (a `MANIFEST.in` exclusion bypass), and the npm overrides PostCSS
-  `>=8.5.28`, browserslist `>=4.28.9` and brace-expansion `>=5.0.9` (build
+  `>=8.5.28`, browserslist `>=4.28.9`, and brace-expansion `>=5.0.9` (build
   toolchain only).
 
-## [0.3.0-poc] — 2026-06-29
+## [0.3.0-poc] - 2026-06-29
 
 See the 0.2.0-poc → 0.3.0-poc entry in the
 [`METHODOLOGY.md`](./METHODOLOGY.md#version-history) version history: the

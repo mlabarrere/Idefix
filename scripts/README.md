@@ -8,7 +8,7 @@ To set up a machine, follow [`docs/ops/quickstart.md`](../docs/ops/quickstart.md
 the one canonical setup tutorial. When something fails, see
 [`docs/ops/troubleshooting.md`](../docs/ops/troubleshooting.md).
 
-## Where the scripts fit
+## 🧭 Where the scripts fit
 
 The deliverable is the static analyst web app in [`webapp/`](../webapp/README.md):
 it reads precomputed JSON bundles under `webapp/public/data/<mission>/` and has
@@ -33,7 +33,7 @@ corpus in PostgreSQL ──► build_edges ──► tag_france / tag_gan ──
 - **Everything else** reads the database or the bundles: labelling, the
   parallel classification tracks, evaluation, and inspection tools.
 
-## Conventions
+## 📝 Conventions
 
 ### Running a script
 
@@ -107,7 +107,7 @@ missions are the packages under `src/missions/` (`russosphere`,
 > collector, and the client handles `FLOOD_WAIT`. Account hygiene is set out in
 > [`docs/method/07-tiers-and-governance.md`](../docs/method/07-tiers-and-governance.md).
 
-## Script index
+## 📚 Script index
 
 | Script | Section | Extras | Opens Telegram |
 |---|---|---|---|
@@ -166,7 +166,7 @@ missions are the packages under `src/missions/` (`russosphere`,
 | [`bench.py`](#benchpy) | Supabase utilities | `embed` | no |
 | [`EXPORT_AND_DEPLOY.ps1`](#export_and_deployps1) | Supabase utilities | none | no |
 
-## Reproducibility and orchestration
+## 🚀 Reproducibility and orchestration
 
 None of these scripts contacts Telegram or a paid API.
 
@@ -217,7 +217,7 @@ uv run --extra embed python scripts/bootstrap.py pipeline --mission russosphere
 | `--manifest` | `dataset/manifest.json` | Use another dataset manifest. |
 | `--mission` | `all` | Mission or missions for the pipeline step. |
 | `--skip-embeddings` | off | Forwarded to `pipeline.py`; removes the need for the `embed` extra. |
-| `--no-webapp` | off | `all` stops after the pipeline (CI, headless machines). |
+| `--no-webapp` | off | `all` stops after the pipeline (continuous integration, headless machines). |
 
 ### `pipeline.py`
 
@@ -312,7 +312,7 @@ uv run python scripts/release_dataset.py --verify-only --out dataset/downloads
 
 Generates a small, obviously synthetic analyst bundle with a fixed seed:
 invented channels and a planted coordination cluster. It lets the browser tests
-run in CI and lets a reader see the interface without a database. Nothing it
+run in continuous integration (CI) and lets a reader see the interface without a database. Nothing it
 produces says anything about Telegram, and none of it may be cited.
 
 - **Extras:** none; standard library only.
@@ -342,7 +342,7 @@ docstring.
 uv run --no-project python scripts/check_docs.py
 ```
 
-## Telegram collection
+## 📊 Telegram collection
 
 These scripts open a Telegram session and write to the database selected by
 `DATABASE_URL`. They need the `collect` extra and the `TELEGRAM_*` variables
@@ -558,7 +558,7 @@ async with tg_client("probe") as client:
     ...
 ```
 
-## Offline pipeline stages
+## 🔧 Offline pipeline stages
 
 The stages `pipeline.py` runs, in its order. They read PostgreSQL through
 `DATABASE_URL` and never contact Telegram. Run them through `pipeline.py`
@@ -852,7 +852,7 @@ uv run python scripts/build_stories.py --mission gan
 | `--mission` | `russosphere` | Mission to build. |
 | `--out` | `webapp/public/data/<mission>/` | Bundle directory. |
 
-## Parallel classification tracks
+## 🔧 Parallel classification tracks
 
 Two parallel tracks classify channels and label communities: the paid Mistral
 track and a free local embedding track. Both write to their own table or
@@ -980,7 +980,7 @@ uv run --extra embed python scripts/calibrate_text_sim.py --limit 800 --threshol
 | `--model` | `IDEFIX_EMBED_MODEL` or the encoder default | sentence-transformers model. |
 | `--thresholds` | `0.6 0.7 0.8 0.85 0.9` | Candidate thresholds to inspect. |
 
-## Labelling and gold
+## 📊 Labelling and gold
 
 Building ground truth: a stratified batch, aggregation of several judges, a
 validated gold file, and the channel-level gold derived from external sources.
@@ -1065,7 +1065,7 @@ window, share of anti-France messages, prior credibility, who the channel
 forwards and who forwards it, and representative anti-France samples.
 
 - **Reads:** `channels` and `messages`.
-- **Writes:** `data/annotations/channel_digests.jsonl` (for an LLM judge) and
+- **Writes:** `data/annotations/channel_digests.jsonl` (for a large language model (LLM) judge) and
   `data/annotations/channel_digests.md` (for a human reader).
 
 ```bash
@@ -1112,7 +1112,7 @@ positives. It has no `argparse` parser and takes no arguments.
 uv run python scripts/bootstrap_baseline.py
 ```
 
-## Evaluation and falsification
+## 🧪 Evaluation and falsification
 
 The falsification programme asks whether the suspicion score measures
 manipulation or only a structural position in the graph. Most of these scripts
@@ -1319,7 +1319,7 @@ uv run python scripts/eval_embeddings_classification.py --mission gan
 | `--k` | `10 20 50` | Values of k. |
 | `--model` | `IDEFIX_EMBED_MODEL` or the encoder default | sentence-transformers model to filter on. |
 
-## Inspection
+## 🧪 Inspection
 
 ### `detect_clusters.py`
 
@@ -1360,7 +1360,7 @@ uv run python scripts/compare_snapshots.py --mission russosphere
 |---|---|---|
 | `--mission` | `russosphere` | One of `russosphere`, `gan`, `france_ukraine`. |
 
-## Supabase utilities
+## 🔧 Supabase utilities
 
 Tools for the hosted Supabase deployment, reached over REST because the
 PostgreSQL port can be blocked on the deployment network. The default path,

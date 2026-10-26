@@ -14,7 +14,7 @@ To search: copy a distinctive fragment of your error (for example
 > line. When it does, that line is the authoritative fix; this page adds the
 > background.
 
-## Contents
+## 🧭 Contents
 
 - [Shells and operating systems](#shells-and-operating-systems)
 - [Python environment](#python-environment)
@@ -27,7 +27,9 @@ To search: copy a distinctive fragment of your error (for example
 - [Telegram collection](#telegram-collection)
 - [Symptoms without an error message](#symptoms-without-an-error-message)
 
-## Shells and operating systems
+<a id="shells-and-operating-systems"></a>
+
+## 🩺 Shells and operating systems
 
 <a id="ps51-ampersand"></a>
 
@@ -136,7 +138,9 @@ Copy-Item .env.example .env -Force
 PowerShell 7 writes UTF-8 without a byte-order mark, so this does not recur
 there.
 
-## Python environment
+<a id="python-environment"></a>
+
+## 🩺 Python environment
 
 <a id="uv-not-found"></a>
 
@@ -306,7 +310,9 @@ error: Failed to spawn: `streamlit`
 uv run --extra session streamlit run scripts/session_web.py --server.port 8502
 ```
 
-## Network, proxies, and corporate TLS
+<a id="network-proxies-and-corporate-tls"></a>
+
+## 🩺 Network, proxies, and corporate TLS
 
 Many corporate networks send traffic through a proxy that inspects Transport
 Layer Security (TLS) connections and re-signs them with the organization's own
@@ -481,7 +487,9 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
 **Fix.** None needed: the model is public and the download succeeds. A token
 (`HF_TOKEN`) only raises the rate limit.
 
-## Step `check`
+<a id="step-check"></a>
+
+## 🚀 Step `check`
 
 `check` prints one line per prerequisite: `[ ok ]`, `[FAIL]` (stops the run), or
 `[warn]` (reported, does not stop it). A failing line is followed by its fix
@@ -635,7 +643,9 @@ quickstart does), or run with `--extra embed`, or skip those stages with
 git restore dataset/manifest.json
 ```
 
-## Step `fetch`
+<a id="step-fetch"></a>
+
+## 🚀 Step `fetch`
 
 <a id="fetch-download"></a>
 
@@ -720,7 +730,9 @@ renamed it (for example `idefix-corpus-v1.0.0 (1).dump`).
 **Fix.** Put both files listed in `dataset/manifest.json` in the folder under
 their exact names, then re-run.
 
-## Step `db`
+<a id="step-db"></a>
+
+## 🚀 Step `db`
 
 <a id="db-unhealthy"></a>
 
@@ -894,7 +906,9 @@ sets `shm_size: 256mb`; a PostgreSQL container you started yourself does not.
 **Fix.** Use the repository's Compose service, or give your own container
 `--shm-size=256m`.
 
-## Step `pipeline`
+<a id="step-pipeline"></a>
+
+## 🚀 Step `pipeline`
 
 <a id="pipeline-empty-db"></a>
 
@@ -970,7 +984,9 @@ not inject the local database URL.
 **Fix.** Set the variable as in the previous entry, or run the pipeline through
 the bootstrap, which sets it for you.
 
-## Analyst interface
+<a id="analyst-interface"></a>
+
+## 🩺 Analyst interface
 
 <a id="webapp-no-bundle"></a>
 
@@ -1045,7 +1061,9 @@ stop the other server with <kbd>Ctrl</kbd>+<kbd>C</kbd> in its terminal.
 
 **Fix.** None needed. The dev server starts normally.
 
-## Telegram collection
+<a id="telegram-collection"></a>
+
+## 🩺 Telegram collection
 
 <a id="tg-credentials"></a>
 
@@ -1079,7 +1097,9 @@ wait in seconds.
 **Fix.** Wait out the delay. Run one collection script at a time, and never use
 the collection account from anywhere else while a script runs.
 
-## Symptoms without an error message
+<a id="symptoms-without-an-error-message"></a>
+
+## 🩺 Symptoms without an error message
 
 <a id="blank-page"></a>
 
