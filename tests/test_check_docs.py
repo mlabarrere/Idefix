@@ -267,10 +267,13 @@ def test_scope_excludes_vendored_and_fixture_markdown(tmp_path):
     assert cd.Context(tmp_path).md_files == ["README.md", "docs/a.md"]
 
 
-def test_exit_code_follows_rule_modes(tmp_path, capsys):
+def test_exit_code_follows_rule_modes(tmp_path, capsys, monkeypatch):
     (tmp_path / "README.md").write_text(
         "# Doc\n\nA [dead link](missing.md). The color.\n", encoding="utf-8"
     )
+    assert cd.main(["--root", str(tmp_path), "--rule", "spelling"]) == 1  # blocking
+    spelling = cd.RULES["spelling"]
+    monkeypatch.setitem(cd.RULES, "spelling", cd.Rule(cd.WARN, spelling.check, spelling.summary))
     assert cd.main(["--root", str(tmp_path), "--rule", "spelling"]) == 0  # warn
     assert cd.main(["--root", str(tmp_path), "--rule", "spelling", "--strict"]) == 1
     assert cd.main(["--root", str(tmp_path), "--rule", "links"]) == 1  # blocking
