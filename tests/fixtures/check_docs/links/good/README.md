@@ -7,6 +7,10 @@ an image ![logo](docs/logo.svg "Logo"), a [site](https://example.org) and
 
 [guide]: docs/guide.md
 
+A footnote[^note] is not a link either.
+
+[^note]: Commit text, not a link target.
+
 `[not a link](missing.md)` is code.
 
 ```text

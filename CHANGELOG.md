@@ -31,6 +31,9 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
     coroutine, instead of using it as a context manager.
   - The stale `scripts/README.md` and `webapp/README.md` items went with their
     translation to British English.
+- `scripts/check_docs.py` no longer reads a footnote definition
+  (`[^id]: text`) as a link reference definition, which reported its first
+  word as a dead link.
 
 ### Reproducible setup on the public corpus (2026-10)
 
