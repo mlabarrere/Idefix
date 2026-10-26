@@ -798,10 +798,10 @@ docker run --rm -d --name idefix-scratch \
 docker exec idefix-scratch pg_isready -h 127.0.0.1 -U idefix   # repeat until "accepting connections"
 
 export DATABASE_URL=postgresql+asyncpg://idefix:idefix@localhost:55435/idefix
-uv run alembic upgrade head      # 0001 → 0009 on an empty schema
+uv run alembic upgrade head      # on an empty schema, applies 0001 to 0009
 uv run alembic downgrade -1      # 0009 → 0008
 uv run alembic upgrade head      # and back
-uv run alembic current           # expected: 0009 (head)
+uv run alembic current           # expected: 0009, now marked as the head
 docker stop idefix-scratch       # --rm disposes of the container
 ```
 
