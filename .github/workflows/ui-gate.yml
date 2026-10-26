@@ -17,9 +17,9 @@ name: ui-gate
 
 on:
   pull_request:
-    paths: ['webapp/**']
+    paths: ['webapp/**', '.github/workflows/ui-gate.yml']
   push:
-    paths: ['webapp/**']
+    paths: ['webapp/**', '.github/workflows/ui-gate.yml']
 
 # Least privilege: these jobs only need to read the repo.
 permissions:
