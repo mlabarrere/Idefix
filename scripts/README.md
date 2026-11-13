@@ -82,7 +82,7 @@ environment, so a variable you set explicitly wins. `bootstrap.py` never reads
 | `TELEGRAM_PHONE_NUMBER` | the collection scripts | Phone number for the first sign-in. Fallback: `TG_PHONE`. |
 | `MISTRAL_API_KEY`, `MISTRAL_MODEL`, `MISTRAL_API_BASE` | the Mistral track | API key, model (default `mistral-large-latest`), and endpoint override. |
 | `IDEFIX_EMBED_MODEL` | the embedding stages | sentence-transformers model (default `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`). |
-| `SUPABASE_URL`, `SUPABASE_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | the Supabase utilities, `--push` | The hosted Supabase deployment, reached over its REST API. |
+| `SUPABASE_URL`, `SUPABASE_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | the Supabase utilities, `--push` | The hosted Supabase deployment, reached over its REST API. Obsolete: the hosted project was deleted in November 2026. |
 | `IDEFIX_DB_PORT`, `IDEFIX_DATASET_BASE_URL` | `bootstrap.py` | Host port of the local database (default `5433`) and a dataset mirror. |
 
 The `TELEGRAM_*` names take precedence over the `TG_*` fallbacks
@@ -164,7 +164,6 @@ missions are the packages under `src/missions/` (`russosphere`,
 | [`export_via_rest_api.py`](#export_via_rest_apipy) | Supabase utilities | none | no |
 | [`test_supabase_connection.py`](#test_supabase_connectionpy) | Supabase utilities | none | no |
 | [`bench.py`](#benchpy) | Supabase utilities | `embed` | no |
-| [`EXPORT_AND_DEPLOY.ps1`](#export_and_deployps1) | Supabase utilities | none | no |
 
 ## 🚀 Reproducibility and orchestration
 
@@ -663,7 +662,8 @@ the static bundle.
 
 - **Reads:** `channels` and `edges`.
 - **Writes:** `webapp/public/data/<mission>/russosphere_snapshot.json`; with
-  `--push`, also the Supabase table `community_snapshots`.
+  `--push`, also the Supabase table `community_snapshots`, which no longer
+  exists since the hosted project was deleted.
 
 ```bash
 uv run python scripts/analyze_communities.py --mission russosphere
@@ -672,7 +672,7 @@ uv run python scripts/analyze_communities.py --mission russosphere
 | Flag | Default | Effect |
 |---|---|---|
 | `--mission` | `russosphere` | Mission whose bundle directory receives the snapshot. |
-| `--push` | off | Push the scrubbed snapshot to Supabase `community_snapshots` (needs `SUPABASE_URL` and `SUPABASE_KEY`). |
+| `--push` | off | Push the scrubbed snapshot to Supabase `community_snapshots` (needs `SUPABASE_URL` and `SUPABASE_KEY`). Obsolete: the hosted project is deleted. |
 
 ### `analyze_communities_embed.py`
 
@@ -685,9 +685,10 @@ the galaxy's comparison callout. The default snapshot is never touched.
 - **Extras:** `embed`.
 - **Reads:** `channels`, `edges`, and message text; if the database is
   unreachable, the static bundle, plus message text over Supabase REST when
-  `SUPABASE_URL` and `SUPABASE_KEY` are set.
+  `SUPABASE_URL` and `SUPABASE_KEY` are set (obsolete: the hosted project is
+  deleted).
 - **Writes:** `webapp/public/data/<mission>/<mission>_embed_snapshot.json`;
-  with `--push`, also Supabase.
+  with `--push`, also Supabase (obsolete).
 
 ```bash
 uv run --extra embed python scripts/analyze_communities_embed.py --mission russosphere
@@ -704,7 +705,7 @@ uv run --extra embed python scripts/analyze_communities_embed.py --mission russo
 | `--k` | `5` | Semantic neighbours per channel. |
 | `--threshold` | `0.5` | Minimum cosine similarity of an `EMB_SIM` edge. |
 | `--weight-scale` | `3.0` | Weight of the embedding edges. |
-| `--push` | off | Push the scrubbed snapshot to Supabase `community_snapshots`. |
+| `--push` | off | Push the scrubbed snapshot to Supabase `community_snapshots`. Obsolete: the hosted project is deleted. |
 
 </details>
 
@@ -1121,8 +1122,9 @@ their reports under `data/eval/`, which is not tracked.
 
 > [!IMPORTANT]
 > The harness does not yet run from a clean clone: only
-> `prep_eval_inputs.py` writes the snapshot files, and it reads Supabase over
-> REST rather than the local database. See
+> `prep_eval_inputs.py` writes the snapshot files, and it reads the hosted
+> Supabase project over REST rather than the local database. That project was
+> deleted in November 2026, so the script cannot run anywhere today. See
 > [`docs/limitations.md`](../docs/limitations.md#d12) and, for two scripts that
 > were mis-specified, [`docs/limitations.md`](../docs/limitations.md#d11).
 
@@ -1137,6 +1139,10 @@ A shared module, not a script: loaders for `data/channels.json` and
 Rebuilds the evaluation snapshot from Supabase over REST: the scored channel
 payloads from `channel_scores` and the graph from `edges`. Credentials come
 from the environment, never from the code. It is idempotent.
+
+> [!WARNING]
+> Obsolete until it reads `DATABASE_URL`: the hosted Supabase project it reads
+> was deleted in November 2026 ([D12](../docs/limitations.md#d12)).
 
 - **Reads:** Supabase REST, with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`
   (or `SUPABASE_KEY`).
@@ -1345,7 +1351,9 @@ uv run python scripts/detect_clusters.py --seed @Dugin_Aleksandr --hops 5
 
 Temporal diff of the community snapshots, to detect network reconfigurations:
 it pulls the analytics and embedding snapshots stored in Supabase, if present,
-and compares channels, communities, and embeddings.
+and compares channels, communities, and embeddings. Obsolete: the hosted
+Supabase project, and with it `community_snapshots`, was deleted in November
+2026.
 
 - **Reads:** Supabase `community_snapshots`, with `SUPABASE_URL` and
   `SUPABASE_KEY`.
@@ -1365,6 +1373,11 @@ uv run python scripts/compare_snapshots.py --mission russosphere
 Tools for the hosted Supabase deployment, reached over REST because the
 PostgreSQL port can be blocked on the deployment network. The default path,
 the local database, does not need them.
+
+> [!WARNING]
+> The hosted Supabase project was deleted in November 2026, and the interface
+> now runs locally only. `export_via_rest_api.py` and `bench.py` no longer have
+> a source. `test_supabase_connection.py` still works: it reads `DATABASE_URL`.
 
 ### `export_via_rest_api.py`
 
@@ -1415,16 +1428,3 @@ takes no arguments.
 ```bash
 uv run --extra embed python scripts/bench.py
 ```
-
-### `EXPORT_AND_DEPLOY.ps1`
-
-A PowerShell script from the hosted deployment: it activates `.venv`, loads
-`.env` if `DATABASE_URL` is unset, runs `export_static.py` for `russosphere`
-and `gan`, then stages, commits, and pushes `webapp/public/data/` for Vercel to
-redeploy.
-
-> [!CAUTION]
-> Do not run it. It commits and pushes the analyst bundles, which this
-> repository no longer tracks, and they can carry commenters' personal data
-> (see [`build_commenters.py`](#build_commenterspy)). A push cannot be taken
-> back. See [`CONTRIBUTING.md`](../CONTRIBUTING.md#data-and-personal-data).

@@ -1,8 +1,10 @@
 """Push d'un snapshot communautés vers Supabase (REST, service-role).
 
 Source de vérité = table ``public.community_snapshots`` (mission, label_source,
-snapshot jsonb). Le clustering (ici) PUSH ; le build Vercel PULL (prebuild Node,
-``webapp/scripts/pull-snapshots.mjs``). Le navigateur ne touche jamais la DB —
+snapshot jsonb). Le clustering (ici) PUSH ; plus rien ne relit cette table.
+OBSOLÈTE : le projet Supabase hébergé a été supprimé en novembre 2026 (avec le
+build Vercel qui en lisait les snapshots), donc ``--push`` n'a plus de cible.
+Le navigateur ne touche jamais la DB —
 durcissement RLS conservé (service-role seul). Le scrub canonique est appliqué
 AU PUSH : ce qui entre en base est déjà public-safe.
 

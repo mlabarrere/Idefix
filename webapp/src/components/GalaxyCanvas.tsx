@@ -15,7 +15,7 @@
 // Fond TOUJOURS sombre (espace), quel que soit le thème.
 //
 // ponytail: Split into NebulaeLayer + BloomCanvas + DomainNodes + Filters components,
-// upgrade: when bundle size (currently ~500kb) impacts Vercel deployment metrics
+// upgrade: when bundle size (currently ~500kb) impacts load time
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cytoscape, { type Core, type EdgeSingular, type NodeSingular } from 'cytoscape'
