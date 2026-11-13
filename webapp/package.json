@@ -10,9 +10,8 @@
     "lint": "eslint .",
     "ui:contract": "tsx scripts/check-ui-contract.ts",
     "i18n:parity": "tsx scripts/check-i18n-parity.ts",
-    "check:galaxy-guard": "node scripts/check-galaxy-guard.mjs",
     "test:e2e": "playwright test",
-    "build": "node scripts/pull-snapshots.mjs && node scripts/pull-bundle.mjs && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "overrides": {

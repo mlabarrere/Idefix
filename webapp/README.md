@@ -32,16 +32,15 @@ npm ci
 | Command | What it does |
 |---|---|
 | `npm run dev` | Starts the Vite development server on <http://localhost:5173>. |
-| `npm run build` | Pulls snapshots and the scored bundle from Supabase when credentials are set (see [Building](#building)), then builds the static site into `dist/`. |
+| `npm run build` | Builds the static site into `dist/` from the bundle in `public/data/` (see [Building](#building)). |
 | `npm run preview` | Serves the contents of `dist/` locally. |
 | `npm run typecheck` | Type-checks with `tsc --noEmit`. |
 | `npm run lint` | Runs ESLint. |
 | `npm run i18n:parity` | Checks that every locale has every key, with no empty or missing value and no drifted placeholder. |
 | `npm run ui:contract` | Design-system ratchet: violation counts may only go down from `ui-contract-baseline.json`. |
-| `npm run check:galaxy-guard` | Self-test of the rule that stops a snapshot without layout coordinates from overwriting a precomputed one. |
 | `npm run test:e2e` | Playwright smoke tests in Chromium. |
 
-All but `dev`, `build`, `preview`, and `check:galaxy-guard` run in CI, in the
+All but `dev`, `build`, and `preview` run in CI, in the
 `ui-gate` workflow; see [`CONTRIBUTING.md`](../CONTRIBUTING.md#checks).
 
 ### End-to-end tests
@@ -95,18 +94,13 @@ There are two ways to get one:
 
 ## 🔧 Building
 
-`npm run build` runs two pre-build steps before `vite build`.
-`scripts/pull-snapshots.mjs` fetches the community snapshots, and
-`scripts/pull-bundle.mjs` rebuilds the scored bundle from Supabase
-`channel_scores`, both into `public/data/`. They are meant for the hosted
-Vercel build and need `SUPABASE_URL` and `SUPABASE_KEY`. Without those
-variables they print a warning and leave the local bundle untouched, so a
-local build uses whatever is in `public/data/`. A snapshot without layout
-coordinates never replaces one that has them.
+`npm run build` runs `vite build` and writes the static site into `dist/`. It
+packages whatever is in `public/data/`, so run the pipeline first (or
+`make_fixture_bundle.py` for a synthetic bundle). Nothing is downloaded at
+build time.
 
-> [!WARNING]
-> `SUPABASE_KEY` is a service-role key. Set it only in the build environment;
-> it must never reach the browser bundle or the repository.
+The interface is not hosted anywhere: it runs locally only, with `make webapp`
+or with `npm run preview` after a build.
 
 ## 🧩 The interface
 

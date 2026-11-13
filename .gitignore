@@ -44,12 +44,9 @@ data/*.json
 data/*.js
 data/episodes/
 
-# Mode Vercel-only : le bundle servi par la webapp statique est committé et
-# déployé avec le repo (auto-deploy git-push). Régénérable via analyze_*.py.
 # Build & deps Vite
 webapp/dist/
 webapp/node_modules/
-webapp/.vercel/
 
 # Rapports de validation/falsification (régénérables ; contiennent du texte de messages)
 data/eval/
@@ -99,7 +96,7 @@ _bmad-output/
 docs/onboarding-report.html
 docs/operational-plan.html
 
-# CLI Vercel installée localement à la racine (junk)
+# npm junk at the root: the only npm project is webapp/
 /node_modules/
 /package.json
 /package-lock.json
@@ -109,7 +106,6 @@ docs/operational-plan.html
 # specific to a corpus and a scoring run. Publishing them would ship numbers that
 # no third party can regenerate. Keep them on disk, out of git.
 webapp/public/data/
-.vercel
 .env*
 # The template holds no secret and documents the setup: keep it publishable
 # (the `.env*` line above would otherwise re-ignore it).

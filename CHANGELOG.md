@@ -43,6 +43,20 @@ None. No change here alters what the pipeline computes, and no ranking moves.
   `scripts/README.md` and `webapp/README.md`) went with the rewrites of those
   pages.
 
+### Removed
+
+- **Hosting leftovers.** The Vercel project and the hosted Supabase project
+  are deleted, and the interface now runs locally only. Removed:
+  `webapp/vercel.json`, both `.vercelignore` files,
+  `scripts/EXPORT_AND_DEPLOY.ps1`, and the two Vercel pre-build steps that
+  pulled bundles from Supabase, `webapp/scripts/pull-snapshots.mjs` and
+  `pull-bundle.mjs`, with their self-test `check-galaxy-guard.mjs`.
+  `npm run build` is now `vite build` on the local bundle.
+- The scripts that still read Supabase are marked obsolete in
+  `scripts/README.md`: `prep_eval_inputs.py`, `export_via_rest_api.py`,
+  `compare_snapshots.py`, `bench.py`, and the `--push` options. No file was
+  deleted from `supabase/`, and no data was touched.
+
 ### Fixed
 
 - `scripts/check_docs.py` no longer reads a footnote definition

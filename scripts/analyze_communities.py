@@ -258,7 +258,7 @@ def cluster_type(channels: list[dict], domains: list[str], top_cov: float) -> st
 def load_graph_from_bundle() -> nx.MultiDiGraph:
     """Repli sans DB : reconstruit le graphe depuis le bundle statique déjà
     exporté (``channels.json`` + ``edges_sample.json``). Source de vérité quand
-    l'app tourne en mode Vercel-only (aucune base joignable). Les edges du
+    aucune base n'est joignable. Les edges du
     bundle portent déjà les bons champs ; fr_score vit dans ``extra``,
     l'engagement n'est pas exporté → 0 (n'affecte pas la structure Leiden)."""
     d = OUT_PATH.parent
@@ -282,7 +282,7 @@ async def load_graph() -> nx.MultiDiGraph:
     try:
         conn = await db_connect()
     except (OSError, asyncpg.PostgresError):
-        print("DB injoignable → repli sur le bundle statique (mode Vercel-only)")
+        print("DB injoignable → repli sur le bundle statique")
         return load_graph_from_bundle()
     try:
         edges = await fetch_edge_rows(conn)

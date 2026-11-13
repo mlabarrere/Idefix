@@ -30,7 +30,7 @@ import betterTailwind from 'eslint-plugin-better-tailwindcss'
 export default tseslint.config(
   // ── Never lint build output, deps, or the plain-JS build scripts ────────────
   {
-    ignores: ['dist/**', 'node_modules/**', '.vercel/**', 'public/**', 'scripts/*.mjs'],
+    ignores: ['dist/**', 'node_modules/**', 'public/**', 'scripts/*.mjs'],
   },
 
   // ── Base recommended rulesets ───────────────────────────────────────────────

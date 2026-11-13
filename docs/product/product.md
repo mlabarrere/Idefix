@@ -116,10 +116,8 @@ ANALYST INTERFACE (React, static)
 
 The two halves are **strictly disjoint** at consultation time: the browser
 never touches the database and never calls Telegram. It reads precomputed JSON
-only, so an analyst can work a mission while collection is idle. One build-time
-exception: `npm run build` first runs `webapp/scripts/pull-snapshots.mjs` and
-`webapp/scripts/pull-bundle.mjs`, which download bundles from Supabase when
-`SUPABASE_URL` and `SUPABASE_KEY` are set.
+only, so an analyst can work a mission while collection is idle. The build
+downloads nothing either: `npm run build` packages the local bundle as it is.
 
 Bundles are **not published in this repository**: they are corpus-specific by
 construction. Generate them with `scripts/pipeline.py`; several of its stages

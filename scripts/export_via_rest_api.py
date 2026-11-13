@@ -10,7 +10,8 @@ Produit, par mission, dans ``webapp/public/data/<mission>/`` :
   * channels/<id>.json    (payload complet : ce que lit le ChannelDrawer)
   * manifest.json         (stats réelles : n_channels/n_edges/n_messages)
 
-Les snapshots communautés (galaxie) sont déjà gérés par pull-snapshots.mjs au build.
+OBSOLÈTE : le projet Supabase hébergé a été supprimé en novembre 2026 ; ce script
+n'a plus de source. Le bundle se reconstruit avec scripts/pipeline.py.
 Les épisodes nécessitent mine_episodes (corpus messages) — hors de ce script.
 
 Creds lues depuis l'env (.env) — JAMAIS en dur. Idempotent.

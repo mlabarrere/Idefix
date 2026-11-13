@@ -116,7 +116,7 @@ Idefix/
 ├── docs/               method · experiments · limitations · ops · product
 ├── scripts/            bootstrap, pipeline runner, collectors, release tooling
 ├── src/                the engine (see the table below)
-├── supabase/           hosting overlay for a managed database (not Alembic)
+├── supabase/           former hosting overlay, project deleted (not Alembic)
 ├── tests/              offline pytest suite: no database, no network
 └── webapp/             React 18 + Vite + TypeScript analyst interface
 ```
@@ -475,13 +475,14 @@ lossless.
 </details>
 
 > [!NOTE]
-> **Supabase is a separate overlay, not a second schema.** The SQL files under
-> [`supabase/migrations/`](./supabase/migrations/) secure a hosted copy
+> **Supabase was a separate overlay, not a second schema.** The SQL files under
+> [`supabase/migrations/`](./supabase/migrations/) secured a hosted copy
 > (an `idefix_owner` role, row-level security on every table, and no access for
-> `anon` or `authenticated`) and add one table, `community_snapshots`, that
-> exists **only** there and is reached over REST by
-> [`src/shared/snapshot_store.py`](./src/shared/snapshot_store.py). Alembic
-> remains the source of truth for the business schema.
+> `anon` or `authenticated`) and added one table, `community_snapshots`, that
+> existed **only** there and was reached over REST by
+> [`src/shared/snapshot_store.py`](./src/shared/snapshot_store.py). The hosted
+> project was deleted in November 2026: the files stay as a record, and nothing
+> applies them. Alembic remains the source of truth for the business schema.
 
 <a id="db-raw-derived"></a>
 
@@ -1134,8 +1135,8 @@ flowchart LR
   `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `ci:`, `build(deps):`.
   Subjects are imperative and lower-case, for example
   `docs: correct the false 'member identifiers are never collected' claim`.
-- **Commit email**: use the address attached to your GitHub account, or the
-  Vercel deployment is blocked.
+- **Commit email**: use the address attached to your GitHub account, so that
+  GitHub credits the commits to you.
 - **Pull requests** use [the template](./.github/PULL_REQUEST_TEMPLATE.md):
   tests pass, lint passes, a test was added, docs were updated, no secret was
   committed.

@@ -302,7 +302,9 @@ the database those files are derived from: the bootstrap restores dataset
 that writes `data/channels.json` and `data/graph.json`,
 `scripts/prep_eval_inputs.py`, reads them over the Supabase REST API (it reads
 `SUPABASE_URL` at import and fails without it), not over a PostgreSQL
-connection, so it cannot read the local database. `channel_gold.json` comes
+connection, so it cannot read the local database. That hosted project was
+deleted in November 2026, so the script cannot run anywhere today.
+`channel_gold.json` comes
 from `scripts/derive_channel_gold.py`, which needs external gold files that do
 not exist ([L4](#l4), [L5](#l5)).
 

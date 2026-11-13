@@ -115,7 +115,7 @@ maintainer can run it from the Actions tab.
   `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `ci:`, `build:`, and so on,
   as in the existing history.
 - **Commit email.** Commit with the email address linked to your GitHub
-  account; otherwise the Vercel deployment is blocked.
+  account, so that GitHub credits the commits to you.
 - **Python style** is ruff (format and lint, line length 100) and mypy,
   configured in [`pyproject.toml`](./pyproject.toml).
 - **Documentation style** is set out in [`docs/STYLE.md`](./docs/STYLE.md):
