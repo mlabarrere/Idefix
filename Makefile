@@ -23,7 +23,7 @@ COMPOSE := docker compose --env-file $(NULL_DEVICE)
 
 help:
 	@echo "Idéfix — available commands:"
-	@echo "  Reproduce on the public corpus (Docker + Node 20.19+, no credentials):"
+	@echo "  Reproduce on the public corpus (Docker + Node 22.12+, no credentials):"
 	@echo "  make setup         Everything: check, fetch dataset, restore DB, pipeline, webapp"
 	@echo "  make data          Download + verify the pinned dataset (dataset/manifest.json)"
 	@echo "  make db-up         Start the local PostgreSQL 17; restore the dataset if the DB is empty"

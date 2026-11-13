@@ -92,7 +92,7 @@ You need four tools. Follow the section for your system, then go to
 |---|---|---|
 | [Git](https://git-scm.com/) | any recent | Clone the repository |
 | [uv](https://docs.astral.sh/uv/) | any recent | Python environment; it installs Python 3.14 itself |
-| [Node.js](https://nodejs.org/) with npm | 22.12 or later (20.19 is accepted, but Node.js 20 is past its end of life) | Analyst interface (Vite 8) |
+| [Node.js](https://nodejs.org/) with npm | 22.12 or later (Node.js 20 is past its end of life and refused) | Analyst interface (Vite 8) |
 | [Docker](https://docs.docker.com/get-docker/) with Compose | Compose 2.17 or later, engine **running** | Local PostgreSQL 17 |
 
 A C compiler is **not** needed. Only Telegram collection (the `collect` extra)

@@ -493,7 +493,7 @@ def test_only_the_known_harmless_restore_error_is_ignored():
     [
         ("v18.20.0", False),
         ("v20.18.1", False),
-        ("v20.19.0", True),
+        ("v20.19.0", False),  # Vite accepts it, but Node.js 20 is past its end of life
         ("v21.7.3", False),
         ("v22.11.0", False),
         ("v22.12.0", True),
@@ -502,7 +502,7 @@ def test_only_the_known_harmless_restore_error_is_ignored():
         ("", False),
     ],
 )
-def test_node_version_rule_matches_vite(version, ok):
+def test_node_version_rule_is_22_12_or_later(version, ok):
     assert bs.node_version_ok(version) is ok
 
 
