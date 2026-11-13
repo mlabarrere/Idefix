@@ -17,8 +17,9 @@ app on its own.
 
 ## 📦 Requirements
 
-- **Node.js** `^20.19.0` or `>=22.12.0`, the range Vite requires. Continuous
-  integration (CI) uses Node.js 20.
+- **Node.js** 22.12 or later. Vite accepts `^20.19.0 || >=22.12.0`, but
+  Node.js 20 is past its end of life. Continuous integration (CI) uses
+  Node.js 22.
 - **npm**, which ships with Node.js.
 
 ## 🔧 Commands

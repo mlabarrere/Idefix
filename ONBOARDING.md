@@ -4,7 +4,7 @@
 [![Licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.14-3776AB?logo=python&logoColor=white)](./pyproject.toml)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791?logo=postgresql&logoColor=white)](./docker-compose.yml)
-[![Node](https://img.shields.io/badge/node-20.19%2B%20%7C%2022.12%2B-339933?logo=node.js&logoColor=white)](./webapp/package.json)
+[![Node](https://img.shields.io/badge/node-22.12%2B-339933?logo=node.js&logoColor=white)](./webapp/package.json)
 [![Dataset](https://img.shields.io/badge/dataset-v1.0.0-8A2BE2)](./dataset/DATASHEET.md)
 
 > **TL;DR** 🏁 Clone the repository and run **one command**: you get the public
@@ -144,7 +144,7 @@ Idefix/
 | 🐍 [uv](https://docs.astral.sh/uv/) | recent | Installs Python 3.14 for you and manages every dependency | `uv --version` |
 | 🐍 Python | **3.14** exactly | Pinned in `.python-version` and `pyproject.toml` | `uv run python --version` |
 | 🐳 [Docker](https://docs.docker.com/get-docker/) | Compose v2 **≥ 2.17**, daemon running | Local PostgreSQL 17 | `docker compose version` |
-| 🟩 [Node.js](https://nodejs.org/) + npm | **20.19+** or **22.12+** (21.x is refused) | Vite 8 for the interface | `node --version` |
+| 🟩 [Node.js](https://nodejs.org/) + npm | **22.12+** (20.x, past its end of life, and 21.x are refused) | Vite 8 for the interface | `node --version` |
 | 🧶 make | optional | Shortcuts; everything also works without it | `make --version` |
 
 A short pre-flight checklist:
