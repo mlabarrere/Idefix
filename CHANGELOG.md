@@ -43,11 +43,25 @@ None. No change here alters what the pipeline computes, and no ranking moves.
   `scripts/README.md` and `webapp/README.md`) went with the rewrites of those
   pages.
 
+### Changed
+
+- **Node.js 22.12 or later.** Node.js 20 reached its end of life on
+  2026-04-30. `scripts/bootstrap.py check` now refuses it, although Vite 8 still
+  accepts 20.19, and every CI workflow builds the interface on Node.js 22. The
+  setup pages, `webapp/README.md`, `ONBOARDING.md`, and the `Makefile` help
+  say so.
+- **CI actions on current major versions:** `actions/checkout` v7,
+  `actions/setup-node` v7, `actions/upload-artifact` v7, all on Node.js 24, and
+  `astral-sh/setup-uv` pinned to the immutable `v10.3.3`, since it no longer
+  publishes major tags.
+
 ### Fixed
 
 - `scripts/check_docs.py` no longer reads a footnote definition
   (`[^id]: text`) as a link reference definition, which reported its first
   word as a dead link.
+- The weekly `setup-smoke` run failed on macOS: GitHub no longer offers the
+  `macos-14` runner. The matrix now uses `macos-15`.
 
 ## [0.4.1] - 2026-10-26
 

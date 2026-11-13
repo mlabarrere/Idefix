@@ -600,11 +600,12 @@ port too.
 
 ```text
   [FAIL] node        v18.20.4 is too old
-                     -> install Node.js 20.19+ or 22.12+ (Vite 8): https://nodejs.org/
+                     -> install Node.js 22.12+ (Vite 8): https://nodejs.org/
 ```
 
-**Cause.** Node.js is missing, older than Vite 8 accepts, or installed without
-`npm`.
+**Cause.** Node.js is missing, older than 22.12, or installed without `npm`.
+Vite 8 still accepts 20.19, but Node.js 20 is past its end of life, so the
+bootstrap refuses it.
 
 **Fix.** Install the current long-term support (LTS) release of Node.js, open a new terminal, and
 re-run. With `--no-webapp` the line becomes a `[warn]` and does not stop

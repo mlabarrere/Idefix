@@ -90,8 +90,9 @@ HEALTH_TIMEOUT_S = 180
 MIN_PYTHON = (3, 14)
 # `up --wait-timeout` appeared in Compose 2.17.
 MIN_COMPOSE = (2, 17)
-# Vite 8 engines field: ^20.19.0 || >=22.12.0.
-NODE_REQUIREMENT = "Node.js 20.19+ or 22.12+"
+# Vite 8 accepts ^20.19.0 || >=22.12.0, but Node.js 20 reached its end of life
+# on 2026-04-30, so the bootstrap asks for 22.12+, the version CI runs.
+NODE_REQUIREMENT = "Node.js 22.12+"
 
 STEPS = ("check", "fetch", "db", "pipeline", "webapp", "all")
 CHUNK = 1 << 20
@@ -666,8 +667,6 @@ def node_version_ok(text: str) -> bool:
     if version is None:
         return False
     major, minor = version
-    if major == 20:
-        return minor >= 19
     if major == 22:
         return minor >= 12
     return major >= 23

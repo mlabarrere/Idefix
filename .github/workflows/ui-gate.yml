@@ -39,10 +39,10 @@ jobs:
     name: typecheck (tsc --noEmit)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: webapp/package-lock.json
       - run: npm ci
@@ -54,10 +54,10 @@ jobs:
     # Blocking: key parity is also compiler-enforced (Messages type), and this
     # gate adds empty/__MISSING__/placeholder-drift detection. It passes clean.
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: webapp/package-lock.json
       - run: npm ci
@@ -68,10 +68,10 @@ jobs:
     runs-on: ubuntu-latest
     # Blocking since 2026-09: the baseline is zero errors and zero warnings.
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: webapp/package-lock.json
       - run: npm ci
@@ -85,10 +85,10 @@ jobs:
     # down. A clean run is still a Phase 2 deliverable, but regressions are
     # caught today instead of hiding behind a permanently-red advisory job.
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: webapp/package-lock.json
       - run: npm ci
@@ -106,20 +106,20 @@ jobs:
     # deterministic, obviously fake, and sufficient to drive the galaxy and the
     # channel table. Nothing it contains may be cited.
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: webapp/package-lock.json
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v10.3.3
       - name: Generate synthetic bundle
         working-directory: .
         run: uv run --no-project python scripts/make_fixture_bundle.py
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
